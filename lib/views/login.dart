@@ -39,26 +39,26 @@ class _LoginPageState extends State<LoginPage> {
       };
 
       try {
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        final String? bearerToken = prefs.getString('token');
-
-        if (bearerToken == null) {
-          // Handle the case where the bearer token is not available
-          // You may want to redirect the user to the login page to obtain the token
-          print('bearer empty');
-        }
-
         final http.Response response = await http.post(
           Uri.parse(apiUrl),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer $bearerToken',
           },
           body: json.encode(data),
         );
 
         if (response.statusCode == 200) {
           // Login successful
+          final Map<String, dynamic> responseData = jsonDecode(response.body);
+          final String? bearerToken = responseData['token'];
+
+          if (bearerToken != null) {
+            // Save the token to shared preferences
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            prefs.setString('token', bearerToken);
+          }
+
           print('Login successful');
           print('Bearer Token: $bearerToken');
 
