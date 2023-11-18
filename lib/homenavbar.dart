@@ -13,35 +13,43 @@ class HomeNavbarPage extends StatefulWidget {
 }
 
 class _HomeNavbarPageState extends State<HomeNavbarPage> {
-  final List<Map<String, dynamic>> pageDetails = [
-    {'pageName': PredictPage(), 'title': 'Predict'},
-    {'pagename': PostTravelPage(), 'title': 'Diagnostics'},
-    {'pagename': RiwayatPerjalanan(), 'title': 'Riwayat'},
-    {'pagename': HomePage(), 'title': 'Home'},
-  ];
+  int currentPage = 0;
 
-  var _selectedPageIndex = 0;
+  List<Widget> pages = const [
+    HomePage(),
+    PredictPage(),
+    PostTravelPage(),
+    RiwayatPerjalanan()
+  ];
+  // final List<Map<String, dynamic>> pageDetails = [
+  //   {'pageName': const PredictPage(), 'title': 'Predict'},
+  //   {'pagename': const PostTravelPage(), 'title': 'Diagnostics'},
+  //   {'pagename': const RiwayatPerjalanan(), 'title': 'Riwayat'},
+  //   {'pagename': const HomePage(), 'title': 'Home'},
+  // ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Header(context, titleText: "Travel Healthcare"),
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedPageIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedPageIndex = index;
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.online_prediction_outlined), label: 'Predict'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.add_to_queue_outlined), label: 'Diagnostics'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.list_alt_outlined), label: 'Riwayat'),
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home')
-          ]),
+      body: pages[currentPage],
+      bottomNavigationBar: NavigationBar(
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.home_filled), label: 'Home'),
+          NavigationDestination(
+              icon: Icon(Icons.online_prediction_outlined), label: 'Predict'),
+          NavigationDestination(
+              icon: Icon(Icons.add_to_queue_outlined), label: 'Diagnostics'),
+          NavigationDestination(
+              icon: Icon(Icons.list_alt_outlined), label: 'Riwayat')
+        ],
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPage = index;
+          });
+        },
+        selectedIndex: currentPage,
+      ),
     );
   }
 }

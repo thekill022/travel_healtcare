@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travel_healthcare/homenavbar.dart';
 import 'package:travel_healthcare/views/register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -22,6 +28,58 @@ class _LoginPageState extends State<LoginPage> {
   String? email;
 
   String? password;
+
+  static const String apiUrl = 'http://localhost:5000/api/users/login';
+
+  Future<void> loginUser() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      final Map<String, dynamic> data = {
+        'email': _controllerEmail.text,
+        'password': _controllerPassword.text,
+      };
+
+      try {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final String? bearerToken = prefs.getString('token');
+
+        if (bearerToken == null) {
+          // Handle the case where the bearer token is not available
+          // You may want to redirect the user to the login page to obtain the token
+          print('bearer empty');
+        }
+
+        final http.Response response = await http.post(
+          Uri.parse(apiUrl),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $bearerToken',
+          },
+          body: json.encode(data),
+        );
+
+        if (response.statusCode == 200) {
+          // Login successful
+          print('Login successful');
+          print('Bearer Token: $bearerToken');
+
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) {
+              return HomeNavbarPage();
+            },
+          ));
+
+          // Add any additional logic or navigation you want to perform after successful login
+        } else {
+          // Login failed
+          print('Login failed: ${response.statusCode}');
+          // Handle the error or show an appropriate message to the user
+        }
+      } catch (e) {
+        // Handle any exception that occurs during the HTTP request
+        print('Error during login: $e');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +119,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   onEditingComplete: () => _focusNodePassword.requestFocus(),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    email = value;
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -102,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      onPressed: () async {},
+                      onPressed: loginUser,
                       child: const Text("Login"),
                     ),
                     Row(
