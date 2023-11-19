@@ -25,5 +25,6 @@ AppBar Header(context, {bool isTitle = false, required String titleText}) {
       ],
     ),
     backgroundColor: Colors.lightBlueAccent,
+    automaticallyImplyLeading: false,
   );
 }

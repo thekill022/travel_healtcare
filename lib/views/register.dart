@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:travel_healthcare/homenavbar.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -13,6 +17,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final FocusNode _focusNodePassword = FocusNode();
 
   final TextEditingController _controllerUsername = TextEditingController();
+  final TextEditingController _controllerEmail = TextEditingController();
 
   final TextEditingController _controllerPassword = TextEditingController();
 
@@ -23,6 +28,48 @@ class _RegisterPageState extends State<RegisterPage> {
   String? email;
 
   String? password;
+
+  Future<void> _register() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      final Map<String, dynamic> data = {
+        'username': _controllerUsername.text,
+        'email': _controllerEmail.text,
+        'password': _controllerPassword.text,
+      };
+
+      try {
+        final http.Response response = await http.post(
+          Uri.parse('http://10.0.2.2:5000/api/users/register'),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(data),
+        );
+
+        if (response.statusCode == 201) {
+          // Registrasi berhasil
+          print('Registrasi berhasil');
+          // Tambahkan logika atau navigasi tambahan setelah registrasi berhasil
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) {
+              return HomeNavbarPage();
+            },
+          ));
+        } else {
+          // Registrasi gagal
+          print('Registrasi gagal: ${response.statusCode}');
+          print('Response body: ${response.body}');
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) {
+              return RegisterPage();
+            },
+          ));
+          // Handle error atau tampilkan pesan kesalahan yang sesuai
+        }
+      } catch (e) {
+        // Handle exception yang terjadi selama permintaan HTTP
+        print('Error selama registrasi: $e');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +109,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   onEditingComplete: () => _focusNodePassword.requestFocus(),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    nama = value;
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: _controllerUsername,
+                  controller: _controllerEmail,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     labelText: "Email",
@@ -79,7 +128,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   onEditingComplete: () => _focusNodePassword.requestFocus(),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    email = value;
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -120,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      onPressed: () async {},
+                      onPressed: _register,
                       child: const Text("Sign Up"),
                     ),
                   ],

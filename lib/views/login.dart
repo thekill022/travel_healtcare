@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_healthcare/homenavbar.dart';
 import 'package:travel_healthcare/views/register.dart';
@@ -29,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
 
   String? password;
 
-  static const String apiUrl = 'http://localhost:5000/api/users/login';
+  static const String apiUrl = 'http://10.0.2.2:5000/api/users/login';
 
   Future<void> loginUser() async {
     if (_formKey.currentState?.validate() ?? false) {
