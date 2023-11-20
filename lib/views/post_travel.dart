@@ -65,7 +65,7 @@ class _PostTravelPageState extends State<PostTravelPage> {
         child: ListView.builder(
           itemCount: mapResponse?.length ?? 0,
           itemBuilder: (context, index) {
-            final Map<String, dynamic>? symptomData = mapResponse;
+            final Map<String, dynamic>? symptomData = mapResponse?[index];
             // final SymptomModel symptom =
             //     SymptomModel.fromMap(symptomData as Map<String, dynamic>);
 
