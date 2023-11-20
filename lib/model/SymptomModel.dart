@@ -10,21 +10,21 @@ class SymptomModel {
     required this.symptomChar,
   });
 
-  SymptomModel copyWith({
-    int? id,
-    String? symptomName,
-    String? symptomChar,
-  }) {
-    return SymptomModel(
-      id: id ?? this.id,
-      symptomName: symptomName ?? this.symptomName,
-      symptomChar: symptomChar ?? this.symptomChar,
-    );
-  }
+  // SymptomModel copyWith({
+  //   int? id,
+  //   String? symptomName,
+  //   String? symptomChar,
+  // }) {
+  //   return SymptomModel(
+  //     id: id ?? this.id,
+  //     symptomName: symptomName ?? this.symptomName,
+  //     symptomChar: symptomChar ?? this.symptomChar,
+  //   );
+  // }
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id.toMap(),
+      'id': id,
       'symptom_name': symptomName,
       'symptom_char': symptomChar,
     };
@@ -32,7 +32,7 @@ class SymptomModel {
 
   factory SymptomModel.fromMap(Map<String, dynamic> map) {
     return SymptomModel(
-      id: map['id'] ?? '',
+      id: map['id'],
       symptomName: map['symptom_name'] ?? '',
       symptomChar: map['symptom_char'] ?? '',
     );
@@ -42,10 +42,6 @@ class SymptomModel {
 
   factory SymptomModel.fromJson(String source) =>
       SymptomModel.fromMap(json.decode(source));
-
-  @override
-  String toString() =>
-      'SymptomModel(id: $id, symptomName: $symptomName, symptomChar: $symptomChar)';
 
   @override
   bool operator ==(Object other) {
