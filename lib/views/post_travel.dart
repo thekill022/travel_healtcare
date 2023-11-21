@@ -22,6 +22,7 @@ class _PostTravelPageState extends State<PostTravelPage> {
   //List<Iterable<dynamic>>? mapResponse; // Perbarui tipe data
 
   Map<String, dynamic>? mapResponse;
+  //Map? dataResponse;
 
   Future symptomCall() async {
     try {
@@ -42,7 +43,9 @@ class _PostTravelPageState extends State<PostTravelPage> {
       if (response.statusCode == 200) {
         setState(() {
           mapResponse = json.decode(response.body);
+          //dataResponse = mapResponse!['data'];
         });
+        print(response);
       } else {
         print('Response body: ${response.body}');
       }
@@ -53,7 +56,6 @@ class _PostTravelPageState extends State<PostTravelPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     symptomCall();
   }
@@ -62,24 +64,21 @@ class _PostTravelPageState extends State<PostTravelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView.builder(
-          itemCount: mapResponse?.length ?? 0,
-          itemBuilder: (context, index) {
-            final Map<String, dynamic>? symptomData = mapResponse?[index];
-            // final SymptomModel symptom =
-            //     SymptomModel.fromMap(symptomData as Map<String, dynamic>);
-
-            return Card(
-              child: Container(
-                child: Column(
-                  children: [
-                    Text(symptomData?['symptom_name'].toString() ?? ''),
-                    // ...
-                  ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              if (mapResponse != null)
+                Card(
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Text(mapResponse!['data'].toString()),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            );
-          },
+            ],
+          ),
         ),
       ),
     );
