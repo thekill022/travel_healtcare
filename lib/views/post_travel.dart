@@ -14,72 +14,44 @@ class PostTravelPage extends StatefulWidget {
 }
 
 class _PostTravelPageState extends State<PostTravelPage> {
-  //SymptomController symptomController = SymptomController();
+  SymptomController symptomController = SymptomController();
   //List<SymptomModel> listsymptom = [];
-
-  String? selectSymptom;
-  final String apiUrl = 'http://10.0.2.2:5000/api/symptoms/';
-  //List<Iterable<dynamic>>? mapResponse; // Perbarui tipe data
-
-  Map<String, dynamic>? mapResponse;
-  //Map? dataResponse;
-
-  Future symptomCall() async {
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String? token = prefs.getString('token');
-
-      if (token == null) {
-        throw Exception('Bearer token not found in SharedPreferences');
-      }
-
-      final response = await http.get(
-        Uri.parse(apiUrl),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        setState(() {
-          mapResponse = json.decode(response.body);
-          //dataResponse = mapResponse!['data'];
-        });
-        print(response);
-      } else {
-        print('Response body: ${response.body}');
-      }
-    } catch (e) {
-      throw Exception('Error: $e');
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    symptomCall();
+    symptomController.getSymptoms();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              if (mapResponse != null)
-                Card(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        Text(mapResponse!['data'].toString()),
-                      ],
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
+      appBar: AppBar(
+        title: Text('Symptom List'),
+      ),
+      body: FutureBuilder<List<SymptomModel>>(
+        future: symptomController.getSymptoms(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            List<SymptomModel> symptoms = snapshot.data!;
+            return ListView.builder(
+              itemCount: symptoms.length,
+              itemBuilder: (context, index) {
+                SymptomModel symptom = symptoms[index];
+                return ListTile(
+                  title: Text(symptom.symptomName),
+                  subtitle: Text(symptom.symptomChar),
+                );
+              },
+            );
+          }
+        },
       ),
     );
   }
