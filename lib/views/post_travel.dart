@@ -11,9 +11,8 @@ class PostTravelPage extends StatefulWidget {
 
 class _PostTravelPageState extends State<PostTravelPage> {
   SymptomController symptomController = SymptomController();
-  //List<SymptomModel> listsymptom = [];
-
   late Future<List<SymptomModel>> _symptoms;
+
   @override
   void initState() {
     super.initState();
@@ -28,7 +27,7 @@ class _PostTravelPageState extends State<PostTravelPage> {
           future: _symptoms,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
+              return Center(
                 child: CircularProgressIndicator(
                   color: Colors.lightBlueAccent,
                 ),
@@ -39,54 +38,79 @@ class _PostTravelPageState extends State<PostTravelPage> {
               );
             } else {
               List<SymptomModel> symptoms = snapshot.data!;
-
-              // Use toSet() to remove duplicates based on symptomName
-              List<SymptomModel> distinctSymptoms = symptoms.toSet().toList();
-
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.builder(
-                  itemCount: distinctSymptoms.length,
-                  itemBuilder: (context, index) {
-                    SymptomModel symptom = distinctSymptoms[index];
-                    return Card(
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8.0),
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              symptom.symptomName,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          DropdownButtonFormField<SymptomModel>(
-                            hint: const Text('Select a symptom'),
-                            value: null, // Initially, no value is selected
-                            onChanged: (SymptomModel? selectedSymptom) {
-                              // Handle selected value
-                            },
-                            items: symptoms
-                                .where(
-                                    (s) => s.symptomName == symptom.symptomName)
-                                .map((SymptomModel s) {
-                              return DropdownMenuItem<SymptomModel>(
-                                value: s,
-                                child: Text(s.symptomChar),
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              );
+              return SymptomList(symptoms: symptoms);
             }
           },
         ),
+      ),
+    );
+  }
+}
+
+class SymptomList extends StatefulWidget {
+  final List<SymptomModel> symptoms;
+
+  const SymptomList({Key? key, required this.symptoms}) : super(key: key);
+
+  @override
+  _SymptomListState createState() => _SymptomListState();
+}
+
+class _SymptomListState extends State<SymptomList> {
+  late List<bool> checkboxStatus;
+
+  @override
+  void initState() {
+    super.initState();
+    checkboxStatus = List<bool>.filled(widget.symptoms.length, false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ListView.builder(
+        itemCount: widget.symptoms.length,
+        itemBuilder: (context, index) {
+          SymptomModel symptom = widget.symptoms[index];
+          return SymptomCheckbox(
+            symptom: symptom,
+            isChecked: checkboxStatus[index],
+            onChanged: (bool? value) {
+              setState(() {
+                checkboxStatus[index] = value ?? true;
+              });
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class SymptomCheckbox extends StatelessWidget {
+  final SymptomModel symptom;
+  final bool isChecked;
+  final ValueChanged<bool?> onChanged;
+
+  SymptomCheckbox({
+    required this.symptom,
+    required this.isChecked,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: CheckboxListTile(
+        title: Text(
+          symptom.symptomName,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        value: isChecked,
+        onChanged: onChanged,
       ),
     );
   }
