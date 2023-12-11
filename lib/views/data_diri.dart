@@ -398,7 +398,7 @@ class _DataDiriState extends State<DataDiri> {
                     buildVaksinCheckbox('Vaksin Dengue'),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Column(
                   children: [
                     ElevatedButton(
@@ -414,7 +414,7 @@ class _DataDiriState extends State<DataDiri> {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content:
-                                      Text('Data Ibu Hamil berhasil diedit')));
+                                      Text('Data diri berhasil disimpan')));
 
                           Navigator.pop(context, true);
                           Navigator.pop(context, true);
