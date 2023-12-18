@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:travel_healthcare/controller/travelhistory_controller.dart';
+import 'package:travel_healthcare/model/travelhistory_model.dart';
 
 class FormPerjalanan extends StatefulWidget {
   const FormPerjalanan({super.key});
@@ -12,10 +14,21 @@ class _FormPerjalananState extends State<FormPerjalanan> {
 
   final TextEditingController _kotaTujuan = TextEditingController();
 
+  final travelhistoryCtrl = TravelHistoryController();
+
   String? kotaTujuan;
   String? provinsiTujuan;
   String? durasiTravel;
   String? tujuanTravel;
+
+  Future<void> addTravelHistory() async {
+    TravelHistoryModel travelHistoryModel = TravelHistoryModel(
+        kotaTujuan: kotaTujuan!,
+        provinsiTujuan: provinsiTujuan!,
+        durasiTravel: durasiTravel!,
+        tujuanTravel: tujuanTravel!);
+    await travelhistoryCtrl.createTravelHistory(travelHistoryModel);
+  }
 
   List<String> daftarProvinsi = [
     'Jawa Barat',
@@ -232,13 +245,17 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
+
+                          addTravelHistory();
+
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text(
                                       'Data Form Perjalanan berhasil disimpan')));
 
                           Navigator.pop(context, true);
-                          Navigator.pop(context, true);
+                          // Navigator.pop(context, true);
+                          // Navigator.pop(context, true);
                         }
                       },
                       child: const Text("Simpan"),
