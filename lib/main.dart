@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:travel_healthcare/views/perjalanan/form_perjalanan.dart';
+import 'package:travel_healthcare/views/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
         useMaterial3: true,
       ),
-      home: FormPerjalanan(),
+      home: LoginPage(),
     );
   }
 }
