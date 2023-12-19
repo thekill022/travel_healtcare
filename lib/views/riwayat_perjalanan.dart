@@ -86,18 +86,20 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         IconButton(
-                            onPressed: () {
-                              deleteTravelHistory(listtravelHistory[index].id);
-                              setState(() {
-                                listtravelHistory.removeAt(index);
-                              });
+                          onPressed: () {
+                            _showDeleteConfirmationDialog(context, index);
+                            // deleteTravelHistory(listtravelHistory[index].id);
+                            // setState(() {
+                            //   listtravelHistory.removeAt(index);
+                            // });
 
-                              var snackBar = const SnackBar(
-                                  content: Text('Data Berhasil Dihapus'));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            },
-                            icon: const Icon(Icons.delete))
+                            // var snackBar = const SnackBar(
+                            //     content: Text('Data Berhasil Dihapus'));
+                            // ScaffoldMessenger.of(context)
+                            //     .showSnackBar(snackBar);
+                          },
+                          icon: const Icon(Icons.delete),
+                        )
                       ],
                     ),
                   ),
@@ -109,11 +111,55 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const FormPerjalanan()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const FormPerjalanan()),
+          ).then((value) {
+            if (value == true) {
+              setState(() {
+                getTravelHistory();
+              });
+            }
+          });
         },
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  Future<void> _showDeleteConfirmationDialog(
+      BuildContext context, int index) async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // title: Text('Delete Confirmation'),
+          content: Text('Apakah anda ingin menghapus ini?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Tidak'),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop(); // Close the dialog
+                // Call the delete function here
+                deleteTravelHistory(listtravelHistory[index].id);
+                setState(() {
+                  listtravelHistory.removeAt(index);
+                });
+
+                var snackBar =
+                    const SnackBar(content: Text('Data Berhasil Dihapus'));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              },
+              child: Text('Hapus'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

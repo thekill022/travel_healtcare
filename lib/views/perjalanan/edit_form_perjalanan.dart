@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/travelhistory_model.dart';
 
@@ -25,6 +26,8 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
   final _formKey = GlobalKey<FormState>();
 
   final travelhistoryCtrl = TravelHistoryController();
+
+  Color myColor = Color(0xFFE0F4FF);
 
   String? newkotaTujuan;
   String? newprovinsiTujuan;
@@ -92,7 +95,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
     'Backpaker',
     'Perjalanan untuk pekerjaan',
     'Mengunjungi teman dan kerabat',
-    'Liburan pantai',
+    'Liburan',
     'Berpergian ke luar daerah',
     'Safari',
     'Kegiatan olahraga',
@@ -117,6 +120,8 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: HeaderSub(context, titleText: 'Edit Form'),
+      backgroundColor: myColor,
       body: SafeArea(
         child: Form(
           key: _formKey,

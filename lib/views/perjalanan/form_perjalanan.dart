@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/travelhistory_model.dart';
 
@@ -11,6 +12,8 @@ class FormPerjalanan extends StatefulWidget {
 
 class _FormPerjalananState extends State<FormPerjalanan> {
   final _formKey = GlobalKey<FormState>();
+
+  Color myColor = Color(0xFFE0F4FF);
 
   final TextEditingController _kotaTujuan = TextEditingController();
 
@@ -73,7 +76,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
     'Backpaker',
     'Perjalanan untuk pekerjaan',
     'Mengunjungi teman dan kerabat',
-    'Liburan pantai',
+    'Liburan',
     'Berpergian ke luar daerah',
     'Safari',
     'Kegiatan olahraga',
@@ -98,11 +101,13 @@ class _FormPerjalananState extends State<FormPerjalanan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: HeaderSub(context, titleText: 'Form Perjalanan'),
+      backgroundColor: myColor,
       body: SafeArea(
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
                 Container(
@@ -120,6 +125,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                   controller: _kotaTujuan,
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
+                    hintText: 'Masukkan kota tujuan anda',
                     filled: true,
                     fillColor: Colors.lightBlue[
                         50], // Set the background color to light blue
@@ -136,6 +142,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                     kotaTujuan = value;
                   },
                 ),
+                const SizedBox(height: 15),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
@@ -159,6 +166,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                     borderRadius: BorderRadius.circular(10),
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     dropdownColor: Colors.lightBlueAccent,
+                    hint: const Text('pilih provinsi tujuan'),
                     value: provinsiTujuan,
                     items: generateProvinsi(daftarProvinsi),
                     onChanged: (item) {
@@ -168,6 +176,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                     },
                   ),
                 ),
+                const SizedBox(height: 15),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
@@ -191,6 +200,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                     borderRadius: BorderRadius.circular(10),
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     dropdownColor: Colors.lightBlueAccent,
+                    hint: const Text('pilih durasi travel'),
                     value: durasiTravel,
                     items: generateDurasi(daftarDurasi),
                     onChanged: (item) {
@@ -200,6 +210,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                     },
                   ),
                 ),
+                const SizedBox(height: 15),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
@@ -223,6 +234,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                     borderRadius: BorderRadius.circular(10),
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     dropdownColor: Colors.lightBlueAccent,
+                    hint: const Text('pilih tujuan perjalanan'),
                     value: tujuanTravel,
                     items: generateTujuan(daftarTujuan),
                     onChanged: (item) {
