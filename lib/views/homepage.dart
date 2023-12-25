@@ -31,9 +31,9 @@ class _HomePageState extends State<HomePage> {
               ),
               Container(
                 padding: const EdgeInsets.only(left: 10, right: 20),
-                child: Text(
+                child: const Text(
                   "Aplikasi Travel Healthcare menyediakan fitur pra dan post travel yang informatif. Pengguna dapat memilih provinsi di Indonesia dan mendapatkan informasi tentang lima penyakit kesehatan khas setiap provinsi.",
-                  style: TextStyle(fontSize: 14, color: Colors.blue[800]),
+                  style: TextStyle(fontSize: 14, color: Colors.black),
                   textAlign: TextAlign.justify,
                 ),
               )
