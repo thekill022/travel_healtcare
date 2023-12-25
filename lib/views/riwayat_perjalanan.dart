@@ -42,70 +42,82 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView.builder(
-          itemCount: listtravelHistory.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UpdateFormPerjalanan(
-                        id: listtravelHistory[index].id,
-                        kotaTujuan: listtravelHistory[index].kotaTujuan,
-                        provinsiTujuan: listtravelHistory[index].provinsiTujuan,
-                        durasiTravel: listtravelHistory[index].durasiTravel,
-                        tujuanTravel: listtravelHistory[index].tujuanTravel,
-                      ),
-                    ),
-                  ).then((value) {
-                    if (value == true) {
-                      setState(() {
-                        getTravelHistory();
-                      });
-                    }
-                  });
-                },
-                child: Card(
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.lightBlueAccent,
-                      child: Text(
-                        listtravelHistory[index]
-                            .kotaTujuan
-                            .substring(0, 1)
-                            .toUpperCase(),
-                        style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    title: Text(listtravelHistory[index].kotaTujuan),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          onPressed: () {
-                            _showDeleteConfirmationDialog(context, index);
-                            // deleteTravelHistory(listtravelHistory[index].id);
-                            // setState(() {
-                            //   listtravelHistory.removeAt(index);
-                            // });
+        child: FutureBuilder(
+          future: travelhistoryCtrl.getTravelHistory(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              // Menampilkan indikator progres sirkular ketika data sedang dimuat
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              // Menampilkan pesan error jika terjadi kesalahan
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else {
+              listtravelHistory = snapshot.data as List<TravelHistoryModel>;
 
-                            // var snackBar = const SnackBar(
-                            //     content: Text('Data Berhasil Dihapus'));
-                            // ScaffoldMessenger.of(context)
-                            //     .showSnackBar(snackBar);
-                          },
-                          icon: const Icon(Icons.delete),
-                        )
-                      ],
+              return ListView.builder(
+                itemCount: listtravelHistory.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpdateFormPerjalanan(
+                              id: listtravelHistory[index].id,
+                              kotaTujuan: listtravelHistory[index].kotaTujuan,
+                              provinsiTujuan:
+                                  listtravelHistory[index].provinsiTujuan,
+                              durasiTravel:
+                                  listtravelHistory[index].durasiTravel,
+                              tujuanTravel:
+                                  listtravelHistory[index].tujuanTravel,
+                            ),
+                          ),
+                        ).then((value) {
+                          if (value == true) {
+                            setState(() {});
+                          }
+                        });
+                      },
+                      child: Card(
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.lightBlueAccent,
+                            child: Text(
+                              listtravelHistory[index]
+                                  .kotaTujuan
+                                  .substring(0, 1)
+                                  .toUpperCase(),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          title: Text(listtravelHistory[index].kotaTujuan),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                onPressed: () {
+                                  _showDeleteConfirmationDialog(context, index);
+                                },
+                                icon: const Icon(Icons.delete),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-            );
+                  );
+                },
+              );
+            }
           },
         ),
       ),
@@ -116,9 +128,7 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
             MaterialPageRoute(builder: (context) => const FormPerjalanan()),
           ).then((value) {
             if (value == true) {
-              setState(() {
-                getTravelHistory();
-              });
+              setState(() {});
             }
           });
         },
