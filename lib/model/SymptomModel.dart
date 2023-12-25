@@ -17,6 +17,8 @@ class SymptomModel {
     );
   }
 
+  bool get isChecked => false;
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

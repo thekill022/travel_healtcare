@@ -12,35 +12,75 @@ class PostTravelPage extends StatefulWidget {
 class _PostTravelPageState extends State<PostTravelPage> {
   SymptomController symptomController = SymptomController();
   late Future<List<SymptomModel>> _symptoms;
+  late List<SymptomModel> _filteredSymptoms;
 
   @override
   void initState() {
     super.initState();
     _symptoms = symptomController.getSymptoms();
+    _filteredSymptoms = [];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: FutureBuilder<List<SymptomModel>>(
-          future: _symptoms,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: Colors.lightBlueAccent,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                onChanged: (value) {
+                  // Filter symptoms based on search keyword
+                  _symptoms.then((symptoms) {
+                    setState(() {
+                      _filteredSymptoms = symptoms
+                          .where((symptom) => symptom.symptomName
+                              .toLowerCase()
+                              .contains(value.toLowerCase()))
+                          .toList();
+                    });
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: 'Search Symptoms',
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      // Clear the search field and reset the filtered list
+                      setState(() {
+                        _filteredSymptoms = [];
+                      });
+                    },
+                  ),
                 ),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            } else {
-              List<SymptomModel> symptoms = snapshot.data!;
-              return SymptomList(symptoms: symptoms);
-            }
-          },
+              ),
+            ),
+            Expanded(
+              child: FutureBuilder<List<SymptomModel>>(
+                future: _symptoms,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.lightBlueAccent,
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  } else {
+                    List<SymptomModel> symptoms = _filteredSymptoms.isNotEmpty
+                        ? _filteredSymptoms
+                        : snapshot.data!;
+
+                    return SymptomList(symptoms: symptoms);
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
