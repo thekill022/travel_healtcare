@@ -119,6 +119,7 @@ class _SymptomListState extends State<SymptomList> {
             onChanged: (bool? value) {
               setState(() {
                 checkboxStatus[index] = value ?? true;
+                print(checkboxStatus);
               });
             },
           );
