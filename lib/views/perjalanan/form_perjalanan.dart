@@ -108,173 +108,210 @@ class _FormPerjalananState extends State<FormPerjalanan> {
           key: _formKey,
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Nama Kota Tujuan :',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+            child: Container(
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      'Nama Kota Tujuan :',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
-                ),
-                TextFormField(
-                  controller: _kotaTujuan,
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                    hintText: 'Masukkan kota tujuan anda',
-                    filled: true,
-                    fillColor: Colors.lightBlue[
-                        50], // Set the background color to light blue
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          color: Colors.black), // Set border color
-                    ),
-                  ),
-                  onSaved: (value) {
-                    kotaTujuan = value;
-                  },
-                ),
-                const SizedBox(height: 15),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Provinsi Tujuan :',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(right: 130),
-                  decoration: BoxDecoration(
-                      color: Colors.lightBlue[50],
-                      border: Border.all(color: Colors.black, width: 1),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: DropdownButton(
-                    borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.lightBlueAccent,
-                    hint: const Text('pilih provinsi tujuan'),
-                    value: provinsiTujuan,
-                    items: generateProvinsi(daftarProvinsi),
-                    onChanged: (item) {
-                      setState(() {
-                        provinsiTujuan = item;
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Durasi Perjalanan :',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(right: 130),
-                  decoration: BoxDecoration(
-                      color: Colors.lightBlue[50],
-                      border: Border.all(color: Colors.black, width: 1),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: DropdownButton(
-                    borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.lightBlueAccent,
-                    hint: const Text('pilih durasi travel'),
-                    value: durasiTravel,
-                    items: generateDurasi(daftarDurasi),
-                    onChanged: (item) {
-                      setState(() {
-                        durasiTravel = item;
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Tujuan Perjalanan :',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(right: 50),
-                  decoration: BoxDecoration(
-                      color: Colors.lightBlue[50],
-                      border: Border.all(color: Colors.black, width: 1),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: DropdownButton(
-                    borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.lightBlueAccent,
-                    hint: const Text('pilih tujuan perjalanan'),
-                    value: tujuanTravel,
-                    items: generateTujuan(daftarTujuan),
-                    onChanged: (item) {
-                      setState(() {
-                        tujuanTravel = item;
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(height: 80),
-                Column(
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(50),
-                        shape: RoundedRectangleBorder(
+                    child: TextFormField(
+                      controller: _kotaTujuan,
+                      keyboardType: TextInputType.name,
+                      decoration: InputDecoration(
+                        hintText: 'Masukkan kota tujuan anda',
+                        filled: true,
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
+                          borderSide:
+                              BorderSide(color: Colors.transparent, width: 0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide:
+                              BorderSide(color: Colors.transparent, width: 0),
                         ),
                       ),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-
-                          addTravelHistory();
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text(
-                                      'Data Form Perjalanan berhasil disimpan')));
-
-                          Navigator.pop(context, true);
-                          // Navigator.pop(context, true);
-                          // Navigator.pop(context, true);
-                        }
+                      onSaved: (value) {
+                        kotaTujuan = value;
                       },
-                      child: const Text("Simpan"),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      'Provinsi Tujuan :',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 10),
+                    margin: const EdgeInsets.only(right: 130),
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: DropdownButton(
+                      borderRadius: BorderRadius.circular(10),
+                      icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                      dropdownColor: Colors.lightBlueAccent,
+                      hint: const Text('pilih provinsi tujuan'),
+                      value: provinsiTujuan,
+                      items: generateProvinsi(daftarProvinsi),
+                      onChanged: (item) {
+                        setState(() {
+                          provinsiTujuan = item;
+                        });
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      'Durasi Perjalanan :',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 10),
+                    margin: const EdgeInsets.only(right: 130),
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: DropdownButton(
+                      borderRadius: BorderRadius.circular(10),
+                      icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                      dropdownColor: Colors.lightBlueAccent,
+                      hint: const Text('pilih durasi travel'),
+                      value: durasiTravel,
+                      items: generateDurasi(daftarDurasi),
+                      onChanged: (item) {
+                        setState(() {
+                          durasiTravel = item;
+                        });
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      'Tujuan Perjalanan :',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 10),
+                    margin: const EdgeInsets.only(right: 50),
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: DropdownButton(
+                      borderRadius: BorderRadius.circular(10),
+                      icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                      dropdownColor: Colors.lightBlueAccent,
+                      hint: const Text('pilih tujuan perjalanan'),
+                      value: tujuanTravel,
+                      items: generateTujuan(daftarTujuan),
+                      onChanged: (item) {
+                        setState(() {
+                          tujuanTravel = item;
+                        });
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 80),
+                  Column(
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+
+                            addTravelHistory();
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Data Form Perjalanan berhasil disimpan')));
+
+                            Navigator.pop(context, true);
+                            // Navigator.pop(context, true);
+                            // Navigator.pop(context, true);
+                          }
+                        },
+                        child: const Text("Simpan"),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

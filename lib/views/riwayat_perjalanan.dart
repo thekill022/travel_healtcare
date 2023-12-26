@@ -88,7 +88,8 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
                       child: Card(
                         child: ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: Colors.lightBlueAccent,
+                            backgroundColor:
+                                const Color.fromARGB(255, 81, 134, 177),
                             child: Text(
                               listtravelHistory[index]
                                   .kotaTujuan

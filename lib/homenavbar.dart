@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:travel_healthcare/components/header.dart';
 import 'package:travel_healthcare/views/homepage.dart';
 import 'package:travel_healthcare/views/post_travel.dart';
@@ -35,13 +36,13 @@ class _HomeNavbarPageState extends State<HomeNavbarPage> {
       body: pages[currentPage],
       bottomNavigationBar: NavigationBar(
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.home_filled), label: 'Home'),
+          NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
           NavigationDestination(
-              icon: Icon(Icons.online_prediction_outlined), label: 'Predict'),
+              icon: Icon(Iconsax.search_favorite_1), label: 'Predict'),
           NavigationDestination(
-              icon: Icon(Icons.add_to_queue_outlined), label: 'Diagnostics'),
+              icon: Icon(Iconsax.element_plus), label: 'Diagnostics'),
           NavigationDestination(
-              icon: Icon(Icons.list_alt_outlined), label: 'Riwayat')
+              icon: Icon(Iconsax.clipboard_text), label: 'Riwayat')
         ],
         onDestinationSelected: (int index) {
           setState(() {

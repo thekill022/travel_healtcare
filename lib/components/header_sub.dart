@@ -8,23 +8,11 @@ AppBar HeaderSub(context, {bool isTitle = false, required String titleText}) {
         Text(
           isTitle ? "Travel Healthcare" : titleText,
           style:
-              const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        Container(
-          alignment: Alignment.centerRight,
-          child: GestureDetector(
-            onTap: () {
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (context) => Profile()));
-            },
-            child: const CircleAvatar(
-              child: Icon(Icons.person),
-            ),
-          ),
-        )
       ],
     ),
-    backgroundColor: Colors.lightBlueAccent,
+    backgroundColor: const Color.fromARGB(255, 81, 134, 177),
     automaticallyImplyLeading: true,
   );
 }
