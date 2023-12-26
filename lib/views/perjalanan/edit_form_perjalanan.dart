@@ -140,27 +140,45 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                     ),
                   ),
                 ),
-                TextFormField(
-                  // controller: _kotaTujuan,
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.lightBlue[
-                        50], // Set the background color to light blue
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          color: Colors.black), // Set border color
-                    ),
+                const SizedBox(height: 5),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
                   ),
-                  onSaved: (value) {
-                    newkotaTujuan = value;
-                  },
-                  initialValue: widget.kotaTujuan,
+                  child: TextFormField(
+                    // controller: _kotaTujuan,
+                    keyboardType: TextInputType.name,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors
+                          .white, // Set the background color to light blue
+                      border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.transparent, width: 0),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                            color: Colors.transparent,
+                            width: 0), // Set border color
+                      ),
+                    ),
+                    onSaved: (value) {
+                      newkotaTujuan = value;
+                    },
+                    initialValue: widget.kotaTujuan,
+                  ),
                 ),
+                const SizedBox(height: 15),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
@@ -172,18 +190,26 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 5),
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(left: 10),
                   margin: const EdgeInsets.only(right: 130),
                   decoration: BoxDecoration(
-                      color: Colors.lightBlue[50],
-                      border: Border.all(color: Colors.black, width: 1),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10)),
                   child: DropdownButton(
                     borderRadius: BorderRadius.circular(10),
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.lightBlueAccent,
+                    dropdownColor: Colors.white,
                     value: newprovinsiTujuan,
                     items: generateProvinsi(daftarProvinsi),
                     onChanged: (item) {
@@ -193,6 +219,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                     },
                   ),
                 ),
+                const SizedBox(height: 15),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
@@ -204,13 +231,21 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 5),
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(left: 10),
                   margin: const EdgeInsets.only(right: 130),
                   decoration: BoxDecoration(
-                      color: Colors.lightBlue[50],
-                      border: Border.all(color: Colors.black, width: 1),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10)),
                   child: DropdownButton(
                     borderRadius: BorderRadius.circular(10),
@@ -225,6 +260,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                     },
                   ),
                 ),
+                const SizedBox(height: 15),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
@@ -236,13 +272,21 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 5),
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(left: 10),
                   margin: const EdgeInsets.only(right: 50),
                   decoration: BoxDecoration(
-                      color: Colors.lightBlue[50],
-                      border: Border.all(color: Colors.black, width: 1),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10)),
                   child: DropdownButton(
                     borderRadius: BorderRadius.circular(10),

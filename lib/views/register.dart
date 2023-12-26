@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/homenavbar.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -39,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       try {
         final http.Response response = await http.post(
-          Uri.parse('http://10.0.2.2:5000/api/users/register'),
+          Uri.parse('$baseUrl/users/register'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(data),
         );

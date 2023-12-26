@@ -122,6 +122,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 5),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -169,6 +170,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 5),
                   Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.only(left: 10),
@@ -210,6 +212,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 5),
                   Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.only(left: 10),
@@ -251,6 +254,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 5),
                   Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.only(left: 10),

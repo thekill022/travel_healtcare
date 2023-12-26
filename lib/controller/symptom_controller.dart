@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/SymptomModel.dart';
 
 class SymptomController {
-  final String apiUrl = 'http://10.0.2.2:5000/api/symptoms/';
+  final String apiUrl = '$baseUrl/symptoms/';
   Future<List<SymptomModel>> getSymptoms() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
