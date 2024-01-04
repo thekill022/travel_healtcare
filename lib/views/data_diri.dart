@@ -1,7 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:travel_healthcare/controller/userdata_controller.dart';
+import 'package:travel_healthcare/model/UserDataModel.dart';
 
 class DataDiri extends StatefulWidget {
-  const DataDiri({super.key});
+  int? userId;
+  String? umur;
+  String? kondisiMedis;
+  String? pengobatan;
+  String? alergi;
+  String? reaksiVaksin;
+  String? hamilMenyusui;
+  // String? riwayatVaksin;
+  bool? vaccineBcg;
+  bool? vaccineHepatitis;
+  bool? vaccineDengue;
+  final bool isEdit;
+  DataDiri({
+    Key? key,
+    this.userId,
+    this.umur,
+    this.kondisiMedis,
+    this.pengobatan,
+    this.alergi,
+    this.reaksiVaksin,
+    this.hamilMenyusui,
+    this.vaccineBcg,
+    this.vaccineHepatitis,
+    this.vaccineDengue,
+    required this.isEdit,
+  }) : super(key: key);
 
   @override
   State<DataDiri> createState() => _DataDiriState();
@@ -10,7 +37,9 @@ class DataDiri extends StatefulWidget {
 class _DataDiriState extends State<DataDiri> {
   final _formKey = GlobalKey<FormState>();
 
-  String? nama;
+  var userdatactrl = UserDataController(isEdit: true);
+
+  int? userId;
   String? umur;
   String? kondisiMedis;
   String? pengobatan;
@@ -18,6 +47,43 @@ class _DataDiriState extends State<DataDiri> {
   String? reaksiVaksin;
   String? hamilMenyusui;
   // String? riwayatVaksin;
+  bool? vaccineBcg;
+  bool? vaccineHepatitis;
+  bool? vaccineDengue;
+
+  Future<void> addDataDiri() async {
+    UserDataModel userDataModel = UserDataModel(
+      umur: umur!,
+      kondisiMedis: kondisiMedis!,
+      pengobatan: pengobatan!,
+      alergi: alergi!,
+      reaksiVaksin: reaksiVaksin!,
+      hamilMenyusui: hamilMenyusui!,
+      vaccineBcg: vaccineBcg,
+      vaccineHepatitis: vaccineHepatitis,
+      vaccineDengue: vaccineDengue,
+      // userId: userId!,
+    );
+    await userdatactrl.createUserData(userDataModel);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isEdit) {
+      setState(() {
+        umur = widget.umur;
+        kondisiMedis = widget.kondisiMedis;
+        pengobatan = widget.pengobatan;
+        alergi = widget.alergi;
+        reaksiVaksin = widget.reaksiVaksin;
+        hamilMenyusui = widget.hamilMenyusui;
+        vaccineBcg = widget.vaccineBcg;
+        vaccineHepatitis = widget.vaccineHepatitis;
+        vaccineDengue = widget.vaccineDengue;
+      });
+    }
+  }
 
   List<String> ket = ['Kurang dari 65 tahun', 'Lebih dari 65 tahun'];
 
@@ -136,10 +202,6 @@ class _DataDiriState extends State<DataDiri> {
     return items6;
   }
 
-  List<String>? riwayatVaksin = [];
-
-  final TextEditingController _nama = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,44 +212,6 @@ class _DataDiriState extends State<DataDiri> {
             padding: const EdgeInsets.all(30.0),
             child: Column(
               children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Nama :',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                TextFormField(
-                  controller: _nama,
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.lightBlue[
-                        50], // Set the background color to light blue
-                    // prefixIcon: const Icon(Icons.calendar_view_day_rounded)
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          color: Colors.black), // Set border color
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.black, // Set the color to light blue
-                      ),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    nama = value;
-                  },
-                ),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
@@ -393,9 +417,21 @@ class _DataDiriState extends State<DataDiri> {
                 ),
                 Column(
                   children: [
-                    buildVaksinCheckbox('Vaksin BCG'),
-                    buildVaksinCheckbox('Vaksin Hepatitis A (HAV)'),
-                    buildVaksinCheckbox('Vaksin Dengue'),
+                    buildVaksinCheckbox('Vaksin BCG', (value) {
+                      setState(() {
+                        vaccineBcg = value;
+                      });
+                    }),
+                    buildVaksinCheckbox('Vaksin Hepatitis A (HAV)', (value) {
+                      setState(() {
+                        vaccineHepatitis = value;
+                      });
+                    }),
+                    buildVaksinCheckbox('Vaksin Dengue', (value) {
+                      setState(() {
+                        vaccineDengue = value;
+                      });
+                    }),
                   ],
                 ),
                 const SizedBox(height: 10),
@@ -411,6 +447,8 @@ class _DataDiriState extends State<DataDiri> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
+
+                          addDataDiri();
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content:
@@ -432,20 +470,19 @@ class _DataDiriState extends State<DataDiri> {
     );
   }
 
-  Widget buildVaksinCheckbox(String vaksinName) {
+  Widget buildVaksinCheckbox(
+      String vaksinName, void Function(bool?)? onChanged) {
     return Row(
       children: [
         Checkbox(
-          value: riwayatVaksin!.contains(vaksinName),
-          onChanged: (bool? value) {
-            setState(() {
-              if (value!) {
-                riwayatVaksin!.add(vaksinName);
-              } else {
-                riwayatVaksin!.remove(vaksinName);
-              }
-            });
-          },
+          value: onChanged != null
+              ? vaksinName == 'Vaksin BCG'
+                  ? vaccineBcg ?? false
+                  : vaksinName == 'Vaksin Hepatitis A (HAV)'
+                      ? vaccineHepatitis ?? false
+                      : vaccineDengue ?? false
+              : false,
+          onChanged: onChanged,
         ),
         Text(vaksinName),
       ],

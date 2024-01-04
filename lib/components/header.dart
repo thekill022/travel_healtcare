@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_healthcare/views/profile.dart';
 
 AppBar Header(context, {bool isTitle = false, required String titleText}) {
   return AppBar(
@@ -14,8 +15,8 @@ AppBar Header(context, {bool isTitle = false, required String titleText}) {
           alignment: Alignment.centerRight,
           child: GestureDetector(
             onTap: () {
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (context) => Profile()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()));
             },
             child: const CircleAvatar(
               child: Icon(Icons.person),
