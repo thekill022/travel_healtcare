@@ -46,8 +46,7 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
           future: travelhistoryCtrl.getTravelHistory(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // Menampilkan indikator progres sirkular ketika data sedang dimuat
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (snapshot.hasError) {

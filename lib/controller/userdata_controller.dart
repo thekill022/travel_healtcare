@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_healthcare/model/UserDataModel.dart';
+import 'package:travel_healthcare/model/user_model.dart';
 
 final String baseUrl = "http://10.0.2.2:5000/api";
 final String baseUrlProd = "http://18.141.237.4:5000/api";
@@ -12,6 +13,33 @@ class UserDataController {
   final String apiUrl = '$baseUrl/medicals';
 
   UserDataController({required this.isEdit});
+
+  Future<UserModel> getCurrentUser() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/users/'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+      print('Response body: ${response.body}');
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> userDataJson =
+            jsonDecode(response.body)['data'];
+        final UserModel currentUser = UserModel.fromJson(userDataJson);
+        return currentUser;
+      } else {
+        print('Response body: ${response.body}');
+        throw Exception('Gagal mengambil data user saat ini');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
 
   Future<void> createUserData(UserDataModel userData) async {
     try {
