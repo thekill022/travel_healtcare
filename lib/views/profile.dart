@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/userdata_controller.dart';
 import 'package:travel_healthcare/model/UserDataModel.dart';
 import 'package:travel_healthcare/model/user_model.dart';
@@ -31,6 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: HeaderSub(context, titleText: "Profil"),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
