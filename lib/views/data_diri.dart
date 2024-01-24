@@ -1,34 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/userdata_controller.dart';
 import 'package:travel_healthcare/model/UserDataModel.dart';
 
 class DataDiri extends StatefulWidget {
-  int? userId;
-  String? umur;
-  String? kondisiMedis;
-  String? pengobatan;
-  String? alergi;
-  String? reaksiVaksin;
-  String? hamilMenyusui;
-  // String? riwayatVaksin;
-  bool? vaccineBcg;
-  bool? vaccineHepatitis;
-  bool? vaccineDengue;
-  final bool isEdit;
   DataDiri({
     Key? key,
-    this.userId,
-    this.umur,
-    this.kondisiMedis,
-    this.pengobatan,
-    this.alergi,
-    this.reaksiVaksin,
-    this.hamilMenyusui,
-    this.vaccineBcg,
-    this.vaccineHepatitis,
-    this.vaccineDengue,
-    required this.isEdit,
   }) : super(key: key);
 
   @override
@@ -41,28 +19,28 @@ class _DataDiriState extends State<DataDiri> {
   var userdatactrl = UserDataController(isEdit: true);
 
   // int? userId;
-  String? umurbaru;
-  String? kondisiMedisbaru;
-  String? pengobatanbaru;
-  String? alergibaru;
-  String? reaksiVaksinbaru;
-  String? hamilMenyusuibaru;
+  String? umur;
+  String? kondisiMedis;
+  String? pengobatan;
+  String? alergi;
+  String? reaksiVaksin;
+  String? hamilMenyusui;
   // String? riwayatVaksin;
-  bool? vaccineBcgbaru;
-  bool? vaccineHepatitisbaru;
-  bool? vaccineDenguebaru;
+  bool? vaccineBcg;
+  bool? vaccineHepatitis;
+  bool? vaccineDengue;
 
   Future<void> addDataDiri() async {
     UserDataModel userDataModel = UserDataModel(
-      umur: umurbaru!,
-      kondisiMedis: kondisiMedisbaru!,
-      pengobatan: pengobatanbaru!,
-      alergi: alergibaru!,
-      reaksiVaksin: reaksiVaksinbaru!,
-      hamilMenyusui: hamilMenyusuibaru!,
-      vaccineBcg: vaccineBcgbaru,
-      vaccineHepatitis: vaccineHepatitisbaru,
-      vaccineDengue: vaccineDenguebaru,
+      umur: umur!,
+      kondisiMedis: kondisiMedis!,
+      pengobatan: pengobatan!,
+      alergi: alergi!,
+      reaksiVaksin: reaksiVaksin!,
+      hamilMenyusui: hamilMenyusui!,
+      vaccineBcg: vaccineBcg,
+      vaccineHepatitis: vaccineHepatitis,
+      vaccineDengue: vaccineDengue,
       // userId: userId!,
     );
     await userdatactrl.createUserData(userDataModel);
@@ -71,18 +49,31 @@ class _DataDiriState extends State<DataDiri> {
   @override
   void initState() {
     super.initState();
-    if (widget.isEdit) {
-      setState(() {
-        umurbaru = widget.umur;
-        kondisiMedisbaru = widget.kondisiMedis;
-        pengobatanbaru = widget.pengobatan;
-        alergibaru = widget.alergi;
-        reaksiVaksinbaru = widget.reaksiVaksin;
-        hamilMenyusuibaru = widget.hamilMenyusui;
-        vaccineBcgbaru = widget.vaccineBcg;
-        vaccineHepatitisbaru = widget.vaccineHepatitis;
-        vaccineDenguebaru = widget.vaccineDengue;
-      });
+    fetchData();
+  }
+
+  void fetchData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
+    if (token != null) {
+      List<UserDataModel> userDataList = await userdatactrl.getUserData();
+
+      if (userDataList.isNotEmpty) {
+        UserDataModel userData = userDataList.first;
+
+        setState(() {
+          umur = userData.umur;
+          kondisiMedis = userData.kondisiMedis;
+          pengobatan = userData.pengobatan;
+          alergi = userData.alergi;
+          reaksiVaksin = userData.reaksiVaksin;
+          hamilMenyusui = userData.hamilMenyusui;
+          vaccineBcg = userData.vaccineBcg;
+          vaccineHepatitis = userData.vaccineHepatitis;
+          vaccineDengue = userData.vaccineDengue;
+        });
+      }
     }
   }
 
@@ -250,11 +241,11 @@ class _DataDiriState extends State<DataDiri> {
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     dropdownColor: Colors.lightBlueAccent,
                     hint: const Text('pilih umur anda'),
-                    value: umurbaru,
+                    value: umur,
                     items: generateItems(ket),
                     onChanged: (item) {
                       setState(() {
-                        umurbaru = item;
+                        umur = item;
                       });
                     },
                   ),
@@ -293,11 +284,11 @@ class _DataDiriState extends State<DataDiri> {
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     dropdownColor: Colors.lightBlueAccent,
                     hint: const Text('pilih kondisi medis sebelumnya'),
-                    value: kondisiMedisbaru,
+                    value: kondisiMedis,
                     items: generateKondisi(kondisimed),
                     onChanged: (item2) {
                       setState(() {
-                        kondisiMedisbaru = item2;
+                        kondisiMedis = item2;
                       });
                     },
                   ),
@@ -336,11 +327,11 @@ class _DataDiriState extends State<DataDiri> {
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     dropdownColor: Colors.lightBlueAccent,
                     hint: const Text('pilih pengobatan anda saat ini'),
-                    value: pengobatanbaru,
+                    value: pengobatan,
                     items: generateObat(obat),
                     onChanged: (item3) {
                       setState(() {
-                        pengobatanbaru = item3;
+                        pengobatan = item3;
                       });
                     },
                   ),
@@ -379,11 +370,11 @@ class _DataDiriState extends State<DataDiri> {
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     dropdownColor: Colors.lightBlueAccent,
                     hint: const Text('pilih alergi anda'),
-                    value: alergibaru,
+                    value: alergi,
                     items: generateAlergi(alergidd),
                     onChanged: (item4) {
                       setState(() {
-                        alergibaru = item4;
+                        alergi = item4;
                       });
                     },
                   ),
@@ -422,12 +413,14 @@ class _DataDiriState extends State<DataDiri> {
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     dropdownColor: Colors.lightBlueAccent,
                     hint: const Text('pilih reaksi anda terhadap vaksin'),
-                    value: reaksiVaksinbaru,
+                    value: reaksiVaksin,
                     items: generateReakvaksin(reakvaksin),
                     onChanged: (item5) {
-                      setState(() {
-                        reaksiVaksinbaru = item5;
-                      });
+                      setState(
+                        () {
+                          reaksiVaksin = item5;
+                        },
+                      );
                     },
                   ),
                 ),
@@ -465,11 +458,11 @@ class _DataDiriState extends State<DataDiri> {
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     dropdownColor: Colors.lightBlueAccent,
                     hint: const Text('pilih jawaban anda'),
-                    value: hamilMenyusuibaru,
+                    value: hamilMenyusui,
                     items: generateBusui(busui),
                     onChanged: (item5) {
                       setState(() {
-                        hamilMenyusuibaru = item5;
+                        hamilMenyusui = item5;
                       });
                     },
                   ),
@@ -490,17 +483,17 @@ class _DataDiriState extends State<DataDiri> {
                   children: [
                     buildVaksinCheckbox('Vaksin BCG', (value) {
                       setState(() {
-                        vaccineBcgbaru = value;
+                        vaccineBcg = value;
                       });
                     }),
                     buildVaksinCheckbox('Vaksin Hepatitis A (HAV)', (value) {
                       setState(() {
-                        vaccineHepatitisbaru = value;
+                        vaccineHepatitis = value;
                       });
                     }),
                     buildVaksinCheckbox('Vaksin Dengue', (value) {
                       setState(() {
-                        vaccineDenguebaru = value;
+                        vaccineDengue = value;
                       });
                     }),
                   ],
@@ -548,10 +541,10 @@ class _DataDiriState extends State<DataDiri> {
         Checkbox(
           value: onChanged != null
               ? vaksinName == 'Vaksin BCG'
-                  ? vaccineBcgbaru ?? false
+                  ? vaccineBcg ?? false
                   : vaksinName == 'Vaksin Hepatitis A (HAV)'
-                      ? vaccineHepatitisbaru ?? false
-                      : vaccineDenguebaru ?? false
+                      ? vaccineHepatitis ?? false
+                      : vaccineDengue ?? false
               : false,
           onChanged: onChanged,
         ),

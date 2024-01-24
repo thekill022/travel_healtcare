@@ -41,6 +41,40 @@ class UserDataController {
     }
   }
 
+  Future<List<UserDataModel>> getUserData() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+
+      if (token == null) {
+        throw Exception('Bearer token not found in SharedPreferences');
+      }
+
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> dataResponse = json.decode(response.body)['data'];
+
+        List<UserDataModel> symptoms = dataResponse
+            .map((symptom) => UserDataModel.fromJson(symptom))
+            .toList();
+
+        return symptoms;
+      } else {
+        print('Response body: ${response.body}');
+        throw Exception('Failed to load symptoms');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
+    }
+  }
+
   Future<void> createUserData(UserDataModel userData) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();

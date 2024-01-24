@@ -80,7 +80,9 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
                           ),
                         ).then((value) {
                           if (value == true) {
-                            setState(() {});
+                            setState(() {
+                              getTravelHistory();
+                            });
                           }
                         });
                       },
@@ -128,7 +130,9 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
             MaterialPageRoute(builder: (context) => const FormPerjalanan()),
           ).then((value) {
             if (value == true) {
-              setState(() {});
+              setState(() {
+                getTravelHistory();
+              });
             }
           });
         },
