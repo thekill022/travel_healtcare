@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
+import 'package:travel_healthcare/model/disease_model.dart';
 import 'package:travel_healthcare/model/getpretravel_model.dart';
 
 class GetPreTravelController {
   final String apiUrl = '$baseUrl/pretravel';
-  Future<List<GetPreTravelModel>> getPreTravel(int id) async {
+
+  Future<GetPreTravelModel> getDiseaseEndemic(int id) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? token = prefs.getString('token');
@@ -24,16 +26,38 @@ class GetPreTravelController {
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> dataResponse = json.decode(response.body)['data'];
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
 
-        List<GetPreTravelModel> getpretravel = dataResponse
-            .map((getpretravel) => GetPreTravelModel.fromJson(getpretravel))
-            .toList();
+        if (jsonResponse.containsKey('data')) {
+          final Map<String, dynamic> dataResponse = jsonResponse['data'];
 
-        return getpretravel;
+          if (dataResponse.containsKey('DiseaseEndemic') &&
+              dataResponse['DiseaseEndemic'] is List<dynamic>) {
+            final List<dynamic> diseaseDataList =
+                dataResponse['DiseaseEndemic'];
+
+            List<DiseaseModel> diseaseList = diseaseDataList
+                .map((diseaseData) => DiseaseModel.fromJson(diseaseData))
+                .toList();
+
+            GetPreTravelModel result = GetPreTravelModel(
+              id: dataResponse['id'],
+              diseaseEndemic: diseaseList,
+              countryName: dataResponse['country_name'],
+              riskLevel: dataResponse['risk_level'],
+            );
+
+            return result;
+          } else {
+            throw Exception(
+                'Missing or invalid "DiseaseEndemic" attribute in the server response');
+          }
+        } else {
+          throw Exception('Missing "data" attribute in the server response');
+        }
       } else {
         print('Response body: ${response.body}');
-        throw Exception('Failed to load symptoms');
+        throw Exception('Failed to load diseases');
       }
     } catch (e) {
       print('Error: $e');

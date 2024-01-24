@@ -5,6 +5,7 @@ class GetPreTravelModel {
   final List<DiseaseModel> diseaseEndemic;
   final String countryName;
   final String riskLevel;
+
   GetPreTravelModel({
     required this.id,
     required this.diseaseEndemic,
@@ -15,7 +16,9 @@ class GetPreTravelModel {
   factory GetPreTravelModel.fromJson(Map<String, dynamic> json) {
     return GetPreTravelModel(
       id: json['id'],
-      diseaseEndemic: json['DiseaseEndemic'],
+      diseaseEndemic: (json['DiseaseEndemic'] as List<dynamic>)
+          .map((diseaseData) => DiseaseModel.fromJson(diseaseData))
+          .toList(),
       countryName: json['country_name'],
       riskLevel: json['risk_level'],
     );
@@ -24,9 +27,10 @@ class GetPreTravelModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'DiseaseEndemic': diseaseEndemic,
+      'DiseaseEndemic':
+          diseaseEndemic.map((diseaseModel) => diseaseModel.toJson()).toList(),
       'country_name': countryName,
-      'risk_level': riskLevel
+      'risk_level': riskLevel,
     };
   }
 }

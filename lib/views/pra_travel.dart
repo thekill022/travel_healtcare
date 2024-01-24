@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travel_healthcare/controller/endemicity_controller.dart';
 import 'package:travel_healthcare/model/endemicity_model.dart';
+import 'package:travel_healthcare/views/pratravel/disease_list.dart';
 
 class PredictPage extends StatefulWidget {
   const PredictPage({Key? key});
@@ -32,7 +33,17 @@ class _PredictPageState extends State<PredictPage> {
                   return Padding(
                     padding: const EdgeInsets.all(1.0),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DiseaseList(
+                              id: endemicity.id,
+                              countryname: endemicity.countryname,
+                            ),
+                          ),
+                        );
+                      },
                       child: Card(
                         child: ListTile(
                           title: Text(endemicity.countryname),
