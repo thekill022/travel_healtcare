@@ -12,24 +12,53 @@ class PredictPage extends StatefulWidget {
 
 class _PredictPageState extends State<PredictPage> {
   EndemicityController endemicityController = EndemicityController();
+  TextEditingController searchController = TextEditingController();
+  late List<EndemicityModel> filteredEndemicityList;
+
+  @override
+  void initState() {
+    super.initState();
+    //filteredEndemicityList = [];
+  }
+
+  void filterEndemicityList(String query) {
+    setState(() {
+      filteredEndemicityList = endemicityController.endemicityList
+          .where((endemicity) => endemicity.countryname
+              .toLowerCase()
+              .contains(query.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: TextField(
+          controller: searchController,
+          onChanged: (query) {
+            filterEndemicityList(query);
+          },
+          decoration: InputDecoration(
+            hintText: 'Search Country',
+          ),
+        ),
+      ),
       body: SafeArea(
         child: FutureBuilder<List<EndemicityModel>>(
-          future: endemicityController.getEndemicity(),
+          future: endemicityController.filterEndemicity(searchController.text),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else {
-              List<EndemicityModel> endemicityList = snapshot.data!;
+              filteredEndemicityList = snapshot.data ?? [];
               return ListView.builder(
-                itemCount: endemicityList.length,
+                itemCount: filteredEndemicityList.length,
                 itemBuilder: (context, index) {
-                  EndemicityModel endemicity = endemicityList[index];
+                  EndemicityModel endemicity = filteredEndemicityList[index];
                   return Padding(
                     padding: const EdgeInsets.all(1.0),
                     child: InkWell(
