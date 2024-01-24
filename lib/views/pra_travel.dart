@@ -32,6 +32,7 @@ class _PredictPageState extends State<PredictPage> {
                   return Padding(
                     padding: const EdgeInsets.all(1.0),
                     child: InkWell(
+                      onTap: () {},
                       child: Card(
                         child: ListTile(
                           title: Text(endemicity.countryname),
