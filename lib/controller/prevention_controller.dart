@@ -6,8 +6,8 @@ import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/prevention_model.dart';
 
 class PreventionController {
-  final String apiUrl = '$baseUrl/diseases';
-  Future<List<PreventionModel>> getDisease() async {
+  final String apiUrl = '$baseUrl/preventions';
+  Future<List<PreventionModel>> getPreventionByDiseaseId(int diseaseId) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? token = prefs.getString('token');
@@ -17,7 +17,8 @@ class PreventionController {
       }
 
       final response = await http.get(
-        Uri.parse(apiUrl),
+        Uri.parse(
+            '$apiUrl/$diseaseId/prevention'), // Use the correct endpoint to get prevention by disease ID
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -33,7 +34,7 @@ class PreventionController {
         return prevention;
       } else {
         print('Response body: ${response.body}');
-        throw Exception('Failed to load symptoms');
+        throw Exception('Failed to load prevention');
       }
     } catch (e) {
       print('Error: $e');

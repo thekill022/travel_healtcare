@@ -6,8 +6,8 @@ class DiseaseModel {
   final String diseaseName;
   final String diseaseDesc;
   final List<dynamic>? diseaseSymptom;
-  final List<TreatmentModel> treatment;
-  final List<PreventionModel> prevention;
+  final List<TreatmentModel>? treatment;
+  final List<PreventionModel>? prevention;
 
   DiseaseModel({
     required this.id,

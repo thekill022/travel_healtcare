@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
-import 'package:travel_healthcare/controller/disease_controller.dart'; // Assuming you have a DiseaseController
+import 'package:travel_healthcare/controller/disease_controller.dart';
 import 'package:travel_healthcare/model/disease_model.dart';
 
 class DetailDisease extends StatefulWidget {
@@ -20,18 +20,20 @@ class DetailDisease extends StatefulWidget {
 }
 
 class _DetailDiseaseState extends State<DetailDisease> {
-  late DiseaseModel disease = DiseaseModel(
-    id: 0, // Provide a default value or initialize it appropriately
-    diseaseName: disease.diseaseName,
-    diseaseDesc: disease.diseaseDesc,
-    diseaseSymptom: [],
-    treatment: [],
-    prevention: [],
-  );
+  late DiseaseModel disease;
 
   @override
   void initState() {
     super.initState();
+    // Initialize the disease field to an empty DiseaseModel
+    disease = DiseaseModel(
+      id: 0,
+      diseaseName: widget.diseaseName,
+      diseaseDesc: widget.diseaseDesc,
+      diseaseSymptom: [],
+      treatment: [],
+      prevention: [],
+    );
     // Fetch disease details when the widget is initialized
     fetchDiseaseDetails();
   }
@@ -41,8 +43,7 @@ class _DetailDiseaseState extends State<DetailDisease> {
       // Assuming you have a DiseaseController instance available
       DiseaseController diseaseController = DiseaseController();
 
-      List<DiseaseModel> diseases =
-          (await diseaseController.getDisease()) as List<DiseaseModel>;
+      List<DiseaseModel> diseases = await diseaseController.getDisease();
 
       // Find the disease with the specified id
       DiseaseModel selectedDisease = diseases.firstWhere(
@@ -84,7 +85,7 @@ class _DetailDiseaseState extends State<DetailDisease> {
                     'Prevention:',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  for (var prevention in disease.prevention)
+                  for (var prevention in disease.prevention!)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -97,7 +98,7 @@ class _DetailDiseaseState extends State<DetailDisease> {
                     'Treatment:',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  for (var treatment in disease.treatment)
+                  for (var treatment in disease.treatment!)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
