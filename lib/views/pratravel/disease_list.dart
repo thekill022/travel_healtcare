@@ -3,6 +3,7 @@ import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/getpretravel_controller.dart';
 import 'package:travel_healthcare/model/disease_model.dart';
 import 'package:travel_healthcare/model/getpretravel_model.dart';
+import 'package:travel_healthcare/views/pratravel/detail_disease.dart';
 
 class DiseaseList extends StatefulWidget {
   const DiseaseList({
@@ -70,14 +71,26 @@ class _DiseaseListState extends State<DiseaseList> {
                   DiseaseModel disease = diseaseList[index];
                   return Padding(
                     padding: const EdgeInsets.all(1.0),
-                    child: Card(
-                      child: ListTile(
-                        title: Text(
-                          disease.diseaseName,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DetailDisease(
+                                      id: disease.id,
+                                      diseaseName: disease.diseaseName,
+                                      diseaseDesc: disease.diseaseDesc,
+                                    )));
+                      },
+                      child: Card(
+                        child: ListTile(
+                          title: Text(
+                            disease.diseaseName,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                          subtitle: Text(disease.diseaseDesc),
                         ),
-                        subtitle: Text(disease.diseaseDesc),
                       ),
                     ),
                   );
