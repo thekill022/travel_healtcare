@@ -77,7 +77,6 @@ class _DiseaseListState extends State<DiseaseList> {
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       subtitle: Text(disease.diseaseDesc),
-                      // Add more details or customize the ListTile as needed
                     ),
                   ),
                 );

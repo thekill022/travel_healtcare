@@ -40,8 +40,8 @@ class _PredictPageState extends State<PredictPage> {
           onChanged: (query) {
             filterEndemicityList(query);
           },
-          decoration: InputDecoration(
-            hintText: 'Search Country',
+          decoration: const InputDecoration(
+            hintText: 'Carilah kota tujuan anda',
           ),
         ),
       ),
