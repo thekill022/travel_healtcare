@@ -34,56 +34,58 @@ class _DiseaseListState extends State<DiseaseList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HeaderSub(context, titleText: '${widget.countryname}'),
-      body: FutureBuilder<GetPreTravelModel>(
-        future: _getPreTravelModelFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Error: ${snapshot.error}'),
-                  SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        // Reload data when the button is pressed
-                        _getPreTravelModelFuture =
-                            getPreTravelController.getDiseaseEndemic(widget.id);
-                      });
-                    },
-                    child: Text('Retry'),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            // Assuming that GetPreTravelModel has a List<DiseaseModel> attribute
-            List<DiseaseModel> diseaseList = snapshot.data!.diseaseEndemic;
-
-            return ListView.builder(
-              itemCount: diseaseList.length,
-              itemBuilder: (context, index) {
-                DiseaseModel disease = diseaseList[index];
-                return Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: Card(
-                    child: ListTile(
-                      title: Text(
-                        disease.diseaseName,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      subtitle: Text(disease.diseaseDesc),
+      body: SafeArea(
+        child: FutureBuilder<GetPreTravelModel>(
+          future: _getPreTravelModelFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Error: ${snapshot.error}'),
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          // Reload data when the button is pressed
+                          _getPreTravelModelFuture = getPreTravelController
+                              .getDiseaseEndemic(widget.id);
+                        });
+                      },
+                      child: Text('Retry'),
                     ),
-                  ),
-                );
-              },
-            );
-          }
-        },
+                  ],
+                ),
+              );
+            } else {
+              // Assuming that GetPreTravelModel has a List<DiseaseModel> attribute
+              List<DiseaseModel> diseaseList = snapshot.data!.diseaseEndemic;
+
+              return ListView.builder(
+                itemCount: diseaseList.length,
+                itemBuilder: (context, index) {
+                  DiseaseModel disease = diseaseList[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: Card(
+                      child: ListTile(
+                        title: Text(
+                          disease.diseaseName,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        subtitle: Text(disease.diseaseDesc),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
     );
   }
