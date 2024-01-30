@@ -7,7 +7,7 @@ import 'package:travel_healthcare/model/prevention_model.dart';
 
 class PreventionController {
   final String apiUrl = '$baseUrl/preventions';
-  Future<List<PreventionModel>> getPreventionByDiseaseId(int diseaseId) async {
+  Future<List<PreventionModel>> getPreventionByDiseaseId(int id) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? token = prefs.getString('token');
@@ -18,7 +18,7 @@ class PreventionController {
 
       final response = await http.get(
         Uri.parse(
-            '$apiUrl/$diseaseId/prevention'), // Use the correct endpoint to get prevention by disease ID
+            '$apiUrl/preventions/$id'), // Use the correct endpoint to get prevention by disease ID
         headers: {
           'Authorization': 'Bearer $token',
         },

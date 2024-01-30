@@ -34,12 +34,40 @@ class _FormPerjalananState extends State<FormPerjalanan> {
   }
 
   List<String> daftarProvinsi = [
+    'Aceh',
+    'Sumatera Utara',
+    'Sumatera Barat',
+    'Riau',
+    'Kepulauan Riau',
+    'Jambi',
+    'Sumatera Selatan',
+    'Bengkulu',
+    'Lampung',
+    'Bangka Belitung',
+    'DKI Jakarta',
     'Jawa Barat',
-    'Jawa Timur',
+    'Banten',
     'Jawa Tengah',
+    'DI Yogyakarta',
+    'Jawa Timur',
+    'Bali',
+    'Nusa Tenggara Barat',
+    'Nusa Tenggara Timur',
     'Kalimantan Barat',
+    'Kalimantan Tengah',
+    'Kalimantan Selatan',
     'Kalimantan Timur',
-    'Kalimantan Tengah'
+    'Kalimantan Utara',
+    'Gorontalo',
+    'Sulawesi Barat',
+    'Sulawesi Utara',
+    'Sulawesi Tengah',
+    'Sulawesi Selatan',
+    'Sulawesi Tenggara',
+    'Maluku',
+    'Maluku Utara',
+    'Papua Barat',
+    'Papua',
   ];
 
   List<DropdownMenuItem> generateProvinsi(List<String> daftarProvinsi) {
@@ -189,7 +217,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                     child: DropdownButton(
                       borderRadius: BorderRadius.circular(10),
                       icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                      dropdownColor: Colors.lightBlueAccent,
+                      dropdownColor: myColor,
                       hint: const Text('pilih provinsi tujuan'),
                       value: provinsiTujuan,
                       items: generateProvinsi(daftarProvinsi),
@@ -231,7 +259,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                     child: DropdownButton(
                       borderRadius: BorderRadius.circular(10),
                       icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                      dropdownColor: Colors.lightBlueAccent,
+                      dropdownColor: myColor,
                       hint: const Text('pilih durasi travel'),
                       value: durasiTravel,
                       items: generateDurasi(daftarDurasi),
@@ -273,7 +301,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                     child: DropdownButton(
                       borderRadius: BorderRadius.circular(10),
                       icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                      dropdownColor: Colors.lightBlueAccent,
+                      dropdownColor: myColor,
                       hint: const Text('pilih tujuan perjalanan'),
                       value: tujuanTravel,
                       items: generateTujuan(daftarTujuan),

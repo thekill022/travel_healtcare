@@ -13,9 +13,9 @@ class TreatmentModel {
   factory TreatmentModel.fromJson(Map<String, dynamic> json) {
     return TreatmentModel(
       id: json['id'],
-      diseaseid: json['disease_id'],
-      titletreat: json['title'],
-      desctreat: json['description'],
+      diseaseid: json['disease_id'] ?? 0,
+      titletreat: json['title'] ?? '',
+      desctreat: json['description'] ?? '',
     );
   }
 

@@ -13,9 +13,9 @@ class PreventionModel {
   factory PreventionModel.fromJson(Map<String, dynamic> json) {
     return PreventionModel(
       id: json['id'],
-      diseaseid: json['disease_id'],
-      titleprev: json['title'],
-      descprev: json['description'],
+      diseaseid: json['disease_id'] ?? 0,
+      titleprev: json['title'] ?? '',
+      descprev: json['description'] ?? '',
     );
   }
 

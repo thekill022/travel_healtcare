@@ -56,6 +56,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const Align(
+                        alignment: Alignment.center,
+                        child: CircleAvatar(
+                          radius: 50,
+                          child: Icon(
+                            Icons.person,
+                            size: 50,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
                       Text(
                         'Nama: ${currentUser.nama.toString()}',
                         style: const TextStyle(

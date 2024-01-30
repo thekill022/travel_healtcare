@@ -60,7 +60,7 @@ class _DataDiriState extends State<DataDiri> {
       List<UserDataModel> userDataList = await userdatactrl.getUserData();
 
       if (userDataList.isNotEmpty) {
-        UserDataModel userData = userDataList.first;
+        UserDataModel userData = userDataList.last;
 
         setState(() {
           umur = userData.umur;
@@ -518,7 +518,6 @@ class _DataDiriState extends State<DataDiri> {
                                   content:
                                       Text('Data diri berhasil disimpan')));
 
-                          Navigator.pop(context, true);
                           Navigator.pop(context, true);
                         }
                       },

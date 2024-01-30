@@ -53,12 +53,40 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
   }
 
   List<String> daftarProvinsi = [
+    'Aceh',
+    'Sumatera Utara',
+    'Sumatera Barat',
+    'Riau',
+    'Kepulauan Riau',
+    'Jambi',
+    'Sumatera Selatan',
+    'Bengkulu',
+    'Lampung',
+    'Bangka Belitung',
+    'DKI Jakarta',
     'Jawa Barat',
-    'Jawa Timur',
+    'Banten',
     'Jawa Tengah',
+    'DI Yogyakarta',
+    'Jawa Timur',
+    'Bali',
+    'Nusa Tenggara Barat',
+    'Nusa Tenggara Timur',
     'Kalimantan Barat',
+    'Kalimantan Tengah',
+    'Kalimantan Selatan',
     'Kalimantan Timur',
-    'Kalimantan Tengah'
+    'Kalimantan Utara',
+    'Gorontalo',
+    'Sulawesi Barat',
+    'Sulawesi Utara',
+    'Sulawesi Tengah',
+    'Sulawesi Selatan',
+    'Sulawesi Tenggara',
+    'Maluku',
+    'Maluku Utara',
+    'Papua Barat',
+    'Papua',
   ];
 
   List<DropdownMenuItem> generateProvinsi(List<String> daftarProvinsi) {
@@ -210,7 +238,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                   child: DropdownButton(
                     borderRadius: BorderRadius.circular(10),
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.white,
+                    dropdownColor: myColor,
                     value: newprovinsiTujuan,
                     items: generateProvinsi(daftarProvinsi),
                     onChanged: (item) {
@@ -251,7 +279,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                   child: DropdownButton(
                     borderRadius: BorderRadius.circular(10),
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.lightBlueAccent,
+                    dropdownColor: myColor,
                     value: newdurasiTravel,
                     items: generateDurasi(daftarDurasi),
                     onChanged: (item) {
@@ -292,7 +320,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                   child: DropdownButton(
                     borderRadius: BorderRadius.circular(10),
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.lightBlueAccent,
+                    dropdownColor: myColor,
                     value: newtujuanTravel,
                     items: generateTujuan(daftarTujuan),
                     onChanged: (item) {
