@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
-import 'package:travel_healthcare/homenavbar.dart';
+import 'package:travel_healthcare/views/login.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -51,13 +51,29 @@ class _RegisterPageState extends State<RegisterPage> {
           // Tambahkan logika atau navigasi tambahan setelah registrasi berhasil
           Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) {
-              return HomeNavbarPage();
+              return LoginPage();
             },
           ));
+        } else if (response.statusCode == 400) {
+          // Registrasi gagal karena email sudah terdaftar
+          print('Registrasi gagal: Email sudah terdaftar');
+          // Show SnackBar with an error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Email sudah terdaftar. Gunakan email lain.'),
+              backgroundColor: Colors.red,
+            ),
+          );
         } else {
-          // Registrasi gagal
+          // Registrasi gagal dengan kode status lain
           print('Registrasi gagal: ${response.statusCode}');
           print('Response body: ${response.body}');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Registrasi gagal!'),
+              backgroundColor: Colors.red,
+            ),
+          );
           Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) {
               return RegisterPage();
@@ -113,6 +129,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   onChanged: (value) {
                     nama = value;
                   },
+                  validator: validateName,
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -132,6 +149,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   onChanged: (value) {
                     email = value;
                   },
+                  validator: validateEmail,
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -161,6 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   onChanged: (value) {
                     password = value;
                   },
+                  validator: validatePassword,
                 ),
                 const SizedBox(height: 60),
                 Column(
@@ -184,4 +203,25 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+}
+
+String? validateName(String? value) {
+  if (value == null || value.isEmpty) {
+    return "Masukan Nama anda!";
+  }
+  return null;
+}
+
+String? validateEmail(String? value) {
+  if (value == null || value.isEmpty) {
+    return "Masukan Email anda!";
+  }
+  return null;
+}
+
+String? validatePassword(String? value) {
+  if (value == null || value.isEmpty) {
+    return "Masukan Password anda!";
+  }
+  return null;
 }

@@ -23,10 +23,21 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
   }
 
   void getTravelHistory() async {
-    final travelhistory = await travelhistoryCtrl.getTravelHistory();
-    setState(() {
-      listtravelHistory = travelhistory;
-    });
+    try {
+      final travelhistory = await travelhistoryCtrl.getTravelHistory();
+      setState(() {
+        listtravelHistory = travelhistory;
+      });
+    } catch (e) {
+      // Handle error and show a message
+      print('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Gagal load travel history'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   void deleteTravelHistory(int id) async {
@@ -52,10 +63,17 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
             } else if (snapshot.hasError) {
               // Menampilkan pesan error jika terjadi kesalahan
               return Center(
-                child: Text('Error: ${snapshot.error}'),
+                child: Text('Belum ada data riwayat perjalanan'),
               );
             } else {
               listtravelHistory = snapshot.data as List<TravelHistoryModel>;
+
+              if (listtravelHistory.isEmpty) {
+                // Display a message or widget when travel history is empty
+                return const Center(
+                  child: Text('Belum ada data riwayat perjalanan.'),
+                );
+              }
 
               return ListView.builder(
                 itemCount: listtravelHistory.length,

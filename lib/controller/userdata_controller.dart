@@ -10,7 +10,7 @@ final String baseUrlProd = "http://18.141.237.4:5000/api";
 
 class UserDataController {
   final bool isEdit;
-  final String apiUrl = '$baseUrl/medicals';
+  final String apiUrl = '$baseUrl/medicals/';
 
   UserDataController({required this.isEdit});
 
@@ -138,6 +138,19 @@ class UserDataController {
     } catch (e) {
       print('Error: $e');
       throw Exception('Error: $e');
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.remove('token'); // Remove the token from shared preferences
+
+      // Perform any additional logout logic here
+
+      print('Logout successful');
+    } catch (e) {
+      print('Error during logout: $e');
     }
   }
 }

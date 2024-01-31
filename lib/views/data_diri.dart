@@ -53,27 +53,35 @@ class _DataDiriState extends State<DataDiri> {
   }
 
   void fetchData() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
 
-    if (token != null) {
-      List<UserDataModel> userDataList = await userdatactrl.getUserData();
+      if (token != null) {
+        List<UserDataModel> userDataList = await userdatactrl.getUserData();
 
-      if (userDataList.isNotEmpty) {
-        UserDataModel userData = userDataList.last;
+        if (userDataList.isNotEmpty) {
+          UserDataModel userData = userDataList.last;
 
-        setState(() {
-          umur = userData.umur;
-          kondisiMedis = userData.kondisiMedis;
-          pengobatan = userData.pengobatan;
-          alergi = userData.alergi;
-          reaksiVaksin = userData.reaksiVaksin;
-          hamilMenyusui = userData.hamilMenyusui;
-          vaccineBcg = userData.vaccineBcg;
-          vaccineHepatitis = userData.vaccineHepatitis;
-          vaccineDengue = userData.vaccineDengue;
-        });
+          setState(() {
+            umur = userData.umur;
+            kondisiMedis = userData.kondisiMedis;
+            pengobatan = userData.pengobatan;
+            alergi = userData.alergi;
+            reaksiVaksin = userData.reaksiVaksin;
+            hamilMenyusui = userData.hamilMenyusui;
+            vaccineBcg = userData.vaccineBcg;
+            vaccineHepatitis = userData.vaccineHepatitis;
+            vaccineDengue = userData.vaccineDengue;
+          });
+        } else {
+          // Handle the case when data is empty
+          print('User data is empty');
+        }
       }
+    } catch (e) {
+      // Handle exceptions
+      print('Error fetching user data: $e');
     }
   }
 

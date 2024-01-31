@@ -4,6 +4,7 @@ import 'package:travel_healthcare/controller/userdata_controller.dart';
 import 'package:travel_healthcare/model/UserDataModel.dart';
 import 'package:travel_healthcare/model/user_model.dart';
 import 'package:travel_healthcare/views/data_diri.dart';
+import 'package:travel_healthcare/views/login.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -103,6 +104,17 @@ class _ProfilePageState extends State<ProfilePage> {
                           );
                         },
                         child: const Text("Data Diri"),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          userdatactrl.logout();
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()));
+                        },
+                        child: const Text("Logout"),
                       ),
                     ],
                   );

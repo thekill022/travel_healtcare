@@ -29,17 +29,17 @@ class UserDataModel {
 
   factory UserDataModel.fromJson(Map<String, dynamic> json) {
     return UserDataModel(
-      id: json['id'],
+      id: json['id'] ?? '',
       // userId: json['user_id'],
-      umur: json['age'],
-      kondisiMedis: json['preexisting_condition'],
-      pengobatan: json['current_medication'],
-      alergi: json['allergies'],
-      reaksiVaksin: json['previous_vaccination'],
-      hamilMenyusui: json['pregnant'],
-      vaccineBcg: json['vaccine_bcg'],
-      vaccineHepatitis: json['vaccine_hepatitis'],
-      vaccineDengue: json['vaccine_dengue'],
+      umur: json['age'] ?? '',
+      kondisiMedis: json['preexisting_condition'] ?? '',
+      pengobatan: json['current_medication'] ?? '',
+      alergi: json['allergies'] ?? '',
+      reaksiVaksin: json['previous_vaccination'] ?? '',
+      hamilMenyusui: json['pregnant'] ?? '',
+      vaccineBcg: json['vaccine_bcg'] ?? '',
+      vaccineHepatitis: json['vaccine_hepatitis'] ?? '',
+      vaccineDengue: json['vaccine_dengue'] ?? '',
     );
   }
 

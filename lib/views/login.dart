@@ -70,6 +70,12 @@ class _LoginPageState extends State<LoginPage> {
 
           // Add any additional logic or navigation you want to perform after successful login
         } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Login Gagal. Email atau Password salah'),
+              backgroundColor: Colors.red,
+            ),
+          );
           // Login failed
           print('Login failed: ${response.statusCode}');
           // Handle the error or show an appropriate message to the user
@@ -122,6 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                   onChanged: (value) {
                     email = value;
                   },
+                  validator: validateEmail,
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -151,6 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                   onChanged: (value) {
                     password = value;
                   },
+                  validator: validatePassword,
                 ),
                 const SizedBox(height: 60),
                 Column(
@@ -195,4 +203,18 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+String? validateEmail(String? value) {
+  if (value == null || value.isEmpty) {
+    return "Masukan Email anda!";
+  }
+  return null;
+}
+
+String? validatePassword(String? value) {
+  if (value == null || value.isEmpty) {
+    return "Masukan Password anda!";
+  }
+  return null;
 }
