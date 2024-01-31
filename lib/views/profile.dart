@@ -29,10 +29,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   UserDataModel? crntuser;
 
+  Color myColor = Color(0xFFE0F4FF);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HeaderSub(context, titleText: "Profil"),
+      backgroundColor: myColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(

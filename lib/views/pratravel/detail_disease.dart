@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/disease_controller.dart';
-import 'package:travel_healthcare/controller/prevention_controller.dart';
 import 'package:travel_healthcare/model/disease_model.dart';
-import 'package:travel_healthcare/model/prevention_model.dart';
 
 class DetailDisease extends StatefulWidget {
   const DetailDisease({
@@ -23,7 +21,6 @@ class DetailDisease extends StatefulWidget {
 
 class _DetailDiseaseState extends State<DetailDisease> {
   late DiseaseModel disease;
-  late List<PreventionModel> preventionList;
 
   @override
   void initState() {
@@ -37,8 +34,7 @@ class _DetailDiseaseState extends State<DetailDisease> {
       treatment: [],
       prevention: [],
     );
-    preventionList = [];
-    // Fetch disease details and prevention data when the widget is initialized
+    // Fetch disease details when the widget is initialized
     fetchDiseaseDetails();
   }
 
@@ -46,25 +42,17 @@ class _DetailDiseaseState extends State<DetailDisease> {
     try {
       // Assuming you have a DiseaseController instance available
       DiseaseController diseaseController = DiseaseController();
-      PreventionController preventionController = PreventionController();
 
       List<DiseaseModel> diseases = await diseaseController.getDisease();
 
       // Find the disease with the specified id
-      DiseaseModel? selectedDisease =
-          diseases.firstWhere((disease) => disease.id == widget.id);
-
-      if (selectedDisease == null) {
-        // Handle the case where the disease is not found
-        throw Exception('Disease not found with id ${widget.id}');
-      }
-
-      List<PreventionModel> preventionData =
-          await preventionController.getPreventionByDiseaseId(widget.id);
+      DiseaseModel selectedDisease = diseases.firstWhere(
+        (disease) => disease.id == widget.id,
+        orElse: () => throw Exception('Disease not found with id ${widget.id}'),
+      );
 
       setState(() {
         disease = selectedDisease;
-        preventionList = preventionData;
       });
     } catch (e) {
       print('Error fetching disease details: $e');
@@ -76,60 +64,57 @@ class _DetailDiseaseState extends State<DetailDisease> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HeaderSub(context, titleText: 'Detail Penyakit'),
-      body: disease.diseaseSymptom == null
+      body: disease == null
           ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Nama Penyakit: ${disease.diseaseName}',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    'Deskripsi Penyakit: ${disease.diseaseDesc}',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    'Prevention:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  if (preventionList.isNotEmpty)
-                    DataTable(
-                      columns: [
-                        DataColumn(label: Text('Title')),
-                        DataColumn(label: Text('Description')),
-                      ],
-                      rows: preventionList
-                          .map(
-                            (prevention) => DataRow(
-                              cells: [
-                                DataCell(Text(prevention.titleprev)),
-                                DataCell(Text(prevention.descprev)),
-                              ],
-                            ),
-                          )
-                          .toList(),
-                    )
-                  else
-                    Text('No prevention data available.'),
-                  SizedBox(height: 12),
-                  Text(
-                    'Treatment:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  for (var treatment in disease.treatment!)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('- ${treatment.titletreat}'),
-                        Text('  ${treatment.desctreat}'),
-                      ],
+          : SafeArea(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        '${disease.diseaseName}',
+                        style: const TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                ],
+                    const SizedBox(height: 10),
+                    Text(
+                      '${disease.diseaseDesc}',
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 12),
+                    for (var prevention in disease.prevention!)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${prevention.titleprev}',
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
+                          Text(
+                            '${prevention.descprev}',
+                            textAlign: TextAlign.justify,
+                          ),
+                        ],
+                      ),
+                    const SizedBox(height: 12),
+                    for (var treatment in disease.treatment!)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${treatment.titletreat}',
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
+                          Text(
+                            '${treatment.desctreat}',
+                            textAlign: TextAlign.justify,
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
               ),
             ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:travel_healthcare/controller/endemicity_controller.dart';
 import 'package:travel_healthcare/model/endemicity_model.dart';
 import 'package:travel_healthcare/views/pratravel/disease_list.dart';
@@ -14,6 +15,8 @@ class _PredictPageState extends State<PredictPage> {
   EndemicityController endemicityController = EndemicityController();
   TextEditingController searchController = TextEditingController();
   late List<EndemicityModel> filteredEndemicityList;
+
+  Color myColor = Color(0xFFE0F4FF);
 
   @override
   void initState() {
@@ -40,8 +43,16 @@ class _PredictPageState extends State<PredictPage> {
           onChanged: (query) {
             filterEndemicityList(query);
           },
-          decoration: const InputDecoration(
-            hintText: 'Carilah kota tujuan anda',
+          decoration: InputDecoration(
+            hintText: 'Cari provinsi tujuan anda',
+            prefixIcon: const Icon(Iconsax.search_normal),
+            filled: true,
+            fillColor: myColor,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              // borderSide: BorderSide.none,
+            ),
+            contentPadding: const EdgeInsets.only(top: 10.0),
           ),
         ),
       ),

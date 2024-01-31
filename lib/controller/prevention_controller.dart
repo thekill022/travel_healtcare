@@ -7,7 +7,7 @@ import 'package:travel_healthcare/model/prevention_model.dart';
 
 class PreventionController {
   final String apiUrl = '$baseUrl/preventions';
-  Future<List<PreventionModel>> getPreventionByDiseaseId(int id) async {
+  Future<List<PreventionModel>> getPreventionByDiseaseId() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? token = prefs.getString('token');
@@ -18,20 +18,25 @@ class PreventionController {
 
       final response = await http.get(
         Uri.parse(
-            '$apiUrl/preventions/$id'), // Use the correct endpoint to get prevention by disease ID
+            '$apiUrl/preventions'), // Use the correct endpoint to get prevention by disease ID
         headers: {
           'Authorization': 'Bearer $token',
         },
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> dataResponse = json.decode(response.body)['data'];
+        final dynamic responseData = json.decode(response.body)['data'];
 
-        List<PreventionModel> prevention = dataResponse
-            .map((prevention) => PreventionModel.fromJson(prevention))
-            .toList();
+        if (responseData != null && responseData is List<dynamic>) {
+          List<PreventionModel> prevention = responseData
+              .map((prevention) => PreventionModel.fromJson(prevention))
+              .toList();
 
-        return prevention;
+          return prevention;
+        } else {
+          throw Exception(
+              'Invalid or missing "data" attribute in the server response');
+        }
       } else {
         print('Response body: ${response.body}');
         throw Exception('Failed to load prevention');
