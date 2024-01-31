@@ -78,8 +78,7 @@ class SymptomController {
 
         return filteredData;
       } else {
-        throw Exception(
-            'Failed to fetch endemicity data: ${response.statusCode}');
+        throw Exception('Failed to fetch symptom data: ${response.statusCode}');
       }
     } catch (error) {
       throw error;
