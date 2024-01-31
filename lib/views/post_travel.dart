@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:travel_healthcare/controller/symptom_controller.dart';
 import 'package:travel_healthcare/model/SymptomModel.dart';
 
@@ -10,52 +11,56 @@ class PostTravelPage extends StatefulWidget {
 }
 
 class _PostTravelPageState extends State<PostTravelPage> {
+  TextEditingController searchController = TextEditingController();
+  late List<SymptomModel> filteredSymptomList;
+
+  Color myColor = Color(0xFFE0F4FF);
   SymptomController symptomController = SymptomController();
   late Future<List<SymptomModel>> _symptoms;
-  late List<SymptomModel> _filteredSymptoms;
+  // late List<SymptomModel> _filteredSymptoms;
 
   @override
   void initState() {
     super.initState();
     _symptoms = symptomController.getSymptoms();
-    _filteredSymptoms = [];
+    filteredSymptomList = []; // Initialize filteredSymptomList
+  }
+
+  void filterSymptomList(String query) async {
+    List<SymptomModel> symptoms = await _symptoms;
+    setState(() {
+      filteredSymptomList = symptoms
+          .where((symptom) =>
+              symptom.symptomName.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: TextField(
+          controller: searchController,
+          onChanged: (query) {
+            filterSymptomList(query);
+          },
+          decoration: InputDecoration(
+            hintText: 'Search Symptoms',
+            prefixIcon: const Icon(Iconsax.search_normal),
+            filled: true,
+            fillColor: myColor,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            contentPadding: const EdgeInsets.only(top: 10.0),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                onChanged: (value) {
-                  // Filter symptoms based on search keyword
-                  _symptoms.then((symptoms) {
-                    setState(() {
-                      _filteredSymptoms = symptoms
-                          .where((symptom) => symptom.symptomName
-                              .toLowerCase()
-                              .contains(value.toLowerCase()))
-                          .toList();
-                    });
-                  });
-                },
-                decoration: InputDecoration(
-                  hintText: 'Search Symptoms',
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () {
-                      // Clear the search field and reset the filtered list
-                      setState(() {
-                        _filteredSymptoms = [];
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ),
             Expanded(
               child: FutureBuilder<List<SymptomModel>>(
                 future: _symptoms,
@@ -71,10 +76,9 @@ class _PostTravelPageState extends State<PostTravelPage> {
                       child: Text('Error: ${snapshot.error}'),
                     );
                   } else {
-                    List<SymptomModel> symptoms = _filteredSymptoms.isNotEmpty
-                        ? _filteredSymptoms
+                    List<SymptomModel> symptoms = filteredSymptomList.isNotEmpty
+                        ? filteredSymptomList
                         : snapshot.data!;
-
                     return SymptomList(symptoms: symptoms);
                   }
                 },
