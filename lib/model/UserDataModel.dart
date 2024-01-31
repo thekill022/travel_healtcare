@@ -37,9 +37,9 @@ class UserDataModel {
       alergi: json['allergies'] ?? '',
       reaksiVaksin: json['previous_vaccination'] ?? '',
       hamilMenyusui: json['pregnant'] ?? '',
-      vaccineBcg: json['vaccine_bcg'] ?? '',
-      vaccineHepatitis: json['vaccine_hepatitis'] ?? '',
-      vaccineDengue: json['vaccine_dengue'] ?? '',
+      vaccineBcg: json['vaccine_bcg'],
+      vaccineHepatitis: json['vaccine_hepatitis'],
+      vaccineDengue: json['vaccine_dengue'],
     );
   }
 

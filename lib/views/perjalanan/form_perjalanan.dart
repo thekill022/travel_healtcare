@@ -25,12 +25,29 @@ class _FormPerjalananState extends State<FormPerjalanan> {
   String? tujuanTravel;
 
   Future<void> addTravelHistory() async {
+    if (kotaTujuan == null ||
+        provinsiTujuan == null ||
+        durasiTravel == null ||
+        tujuanTravel == null) {
+      // Handle empty data case
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Lengkapi semua data sebelum menyimpan')));
+      return;
+    }
+
     TravelHistoryModel travelHistoryModel = TravelHistoryModel(
-        kotaTujuan: kotaTujuan!,
-        provinsiTujuan: provinsiTujuan!,
-        durasiTravel: durasiTravel!,
-        tujuanTravel: tujuanTravel!);
+      kotaTujuan: kotaTujuan!,
+      provinsiTujuan: provinsiTujuan!,
+      durasiTravel: durasiTravel!,
+      tujuanTravel: tujuanTravel!,
+    );
+
     await travelhistoryCtrl.createTravelHistory(travelHistoryModel);
+
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Data Form Perjalanan berhasil disimpan')));
+
+    Navigator.pop(context, true);
   }
 
   List<String> daftarProvinsi = [
@@ -184,6 +201,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                       onSaved: (value) {
                         kotaTujuan = value;
                       },
+                      validator: validateKota,
                     ),
                   ),
                   const SizedBox(height: 15),
@@ -328,12 +346,6 @@ class _FormPerjalananState extends State<FormPerjalanan> {
 
                             addTravelHistory();
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Data Form Perjalanan berhasil disimpan')));
-
-                            Navigator.pop(context, true);
                             // Navigator.pop(context, true);
                             // Navigator.pop(context, true);
                           }
@@ -350,4 +362,11 @@ class _FormPerjalananState extends State<FormPerjalanan> {
       ),
     );
   }
+}
+
+String? validateKota(String? value) {
+  if (value == null || value.isEmpty) {
+    return "Masukan Kota tujuan anda!";
+  }
+  return null;
 }

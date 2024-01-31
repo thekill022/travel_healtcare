@@ -10,7 +10,7 @@ final String baseUrlProd = "http://18.141.237.4:5000/api";
 
 class UserDataController {
   final bool isEdit;
-  final String apiUrl = '$baseUrl/medicals/';
+  final String apiUrl = '$baseUrl/medicals';
 
   UserDataController({required this.isEdit});
 
@@ -51,7 +51,7 @@ class UserDataController {
       }
 
       final response = await http.get(
-        Uri.parse(apiUrl),
+        Uri.parse('$baseUrl/medicals/'),
         headers: {
           'Authorization': 'Bearer $token',
         },

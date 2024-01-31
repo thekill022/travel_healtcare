@@ -31,19 +31,39 @@ class _DataDiriState extends State<DataDiri> {
   bool? vaccineDengue;
 
   Future<void> addDataDiri() async {
-    UserDataModel userDataModel = UserDataModel(
-      umur: umur!,
-      kondisiMedis: kondisiMedis!,
-      pengobatan: pengobatan!,
-      alergi: alergi!,
-      reaksiVaksin: reaksiVaksin!,
-      hamilMenyusui: hamilMenyusui!,
-      vaccineBcg: vaccineBcg,
-      vaccineHepatitis: vaccineHepatitis,
-      vaccineDengue: vaccineDengue,
-      // userId: userId!,
-    );
-    await userdatactrl.createUserData(userDataModel);
+    if (_formKey.currentState?.validate() ?? false) {
+      if (umur == null ||
+          kondisiMedis == null ||
+          pengobatan == null ||
+          alergi == null ||
+          reaksiVaksin == null ||
+          hamilMenyusui == null) {
+        // Handle empty data case
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Lengkapi semua data sebelum menyimpan')),
+        );
+        return;
+      }
+
+      UserDataModel userDataModel = UserDataModel(
+        umur: umur!,
+        kondisiMedis: kondisiMedis!,
+        pengobatan: pengobatan!,
+        alergi: alergi!,
+        reaksiVaksin: reaksiVaksin!,
+        hamilMenyusui: hamilMenyusui!,
+        vaccineBcg: vaccineBcg,
+        vaccineHepatitis: vaccineHepatitis,
+        vaccineDengue: vaccineDengue,
+      );
+      await userdatactrl.createUserData(userDataModel);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Data diri berhasil disimpan')));
+
+      Navigator.pop(context, true);
+    }
   }
 
   @override
@@ -521,12 +541,6 @@ class _DataDiriState extends State<DataDiri> {
                           _formKey.currentState!.save();
 
                           addDataDiri();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content:
-                                      Text('Data diri berhasil disimpan')));
-
-                          Navigator.pop(context, true);
                         }
                       },
                       child: const Text("Simpan"),
