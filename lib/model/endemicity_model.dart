@@ -1,6 +1,8 @@
+import 'package:travel_healthcare/model/disease_model.dart';
+
 class EndemicityModel {
   final int id;
-  final String diseaseEndemic;
+  final List<DiseaseModel> diseaseEndemic;
   final String countryname;
   final String risklevel;
   EndemicityModel({
@@ -13,7 +15,9 @@ class EndemicityModel {
   factory EndemicityModel.fromJson(Map<String, dynamic> json) {
     return EndemicityModel(
       id: json['id'],
-      diseaseEndemic: json['DiseaseEndemic'] ?? '',
+      diseaseEndemic: (json['DiseaseEndemic'] as List<dynamic>)
+          .map((diseaseData) => DiseaseModel.fromJson(diseaseData))
+          .toList(),
       countryname: json['country_name'] ?? '',
       risklevel: json['risk_level'] ?? '',
     );
@@ -22,7 +26,8 @@ class EndemicityModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'DiseaseEndemic': diseaseEndemic,
+      'DiseaseEndemic':
+          diseaseEndemic.map((diseaseModel) => diseaseModel.toJson()).toList(),
       'country_name': countryname,
       'risk_level': risklevel
     };

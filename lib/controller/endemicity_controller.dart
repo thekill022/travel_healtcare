@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
+import 'package:travel_healthcare/model/disease_model.dart';
 import 'package:travel_healthcare/model/endemicity_model.dart';
 
 class EndemicityController {
@@ -10,7 +11,7 @@ class EndemicityController {
 
   List<EndemicityModel> endemicityList = []; // Initialize endemicityList
   List<EndemicityModel> filteredEndemicityList = [];
-  Future<List<EndemicityModel>> getEndemicity() async {
+  Future<EndemicityModel> getEndemicity() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? token = prefs.getString('token');
@@ -27,13 +28,29 @@ class EndemicityController {
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> dataResponse = json.decode(response.body)['data'];
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final Map<String, dynamic> dataResponse = jsonResponse['data'];
 
-        List<EndemicityModel> endemicity = dataResponse
-            .map((endemicity) => EndemicityModel.fromJson(endemicity))
-            .toList();
+        if (dataResponse.containsKey('DiseaseEndemic') &&
+            dataResponse['DiseaseEndemic'] is List<dynamic>) {
+          final List<dynamic> diseaseDataList = dataResponse['DiseaseEndemic'];
 
-        return endemicity;
+          List<DiseaseModel> diseaseList = diseaseDataList
+              .map((diseaseData) => DiseaseModel.fromJson(diseaseData))
+              .toList();
+
+          EndemicityModel result = EndemicityModel(
+            id: dataResponse['id'],
+            diseaseEndemic: diseaseList,
+            countryname: dataResponse['country_name'],
+            risklevel: dataResponse['risk_level'],
+          );
+
+          return result;
+        } else {
+          throw Exception(
+              'Missing or invalid "DiseaseEndemic" attribute in the server response');
+        }
       } else {
         print('Response body: ${response.body}');
         throw Exception('Failed to load symptoms');

@@ -47,7 +47,7 @@ class _PostTravelPageState extends State<PostTravelPage> {
             filterSymptomList(query);
           },
           decoration: InputDecoration(
-            hintText: 'Search Symptoms',
+            hintText: 'Cari gejala anda',
             prefixIcon: const Icon(Iconsax.search_normal),
             filled: true,
             fillColor: myColor,
@@ -96,14 +96,23 @@ class _PostTravelPageState extends State<PostTravelPage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Simpan ke database API dengan menggunakan _temporaryCheckboxStatus
-          // setelah itu, kosongkan _temporaryCheckboxStatus
-          print('Save to API: $_temporaryCheckboxStatus');
-          _temporaryCheckboxStatus.clear();
-        },
-        child: Icon(Icons.save),
+      floatingActionButton: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          margin: EdgeInsets.only(bottom: 16.0),
+          child: ElevatedButton(
+            onPressed: () {
+              // Simpan ke database API dengan menggunakan _temporaryCheckboxStatus
+              // setelah itu, kosongkan _temporaryCheckboxStatus
+              print('Save to API: $_temporaryCheckboxStatus');
+              _temporaryCheckboxStatus.clear();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: myColor, // Warna latar belakang
+            ),
+            child: const Text('Simpan'),
+          ),
+        ),
       ),
     );
   }
