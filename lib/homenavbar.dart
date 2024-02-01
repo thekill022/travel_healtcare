@@ -36,11 +36,11 @@ class _HomeNavbarPageState extends State<HomeNavbarPage> {
       body: pages[currentPage],
       bottomNavigationBar: NavigationBar(
         destinations: const [
-          NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
+          NavigationDestination(icon: Icon(Iconsax.home), label: 'Beranda'),
           NavigationDestination(
-              icon: Icon(Iconsax.search_favorite_1), label: 'Predict'),
+              icon: Icon(Iconsax.shield_search), label: 'Pantau Penyakit'),
           NavigationDestination(
-              icon: Icon(Iconsax.element_plus), label: 'Diagnostics'),
+              icon: Icon(Iconsax.element_plus), label: 'Diagnosis'),
           NavigationDestination(
               icon: Icon(Iconsax.clipboard_text), label: 'Riwayat')
         ],

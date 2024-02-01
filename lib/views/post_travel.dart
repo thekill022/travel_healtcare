@@ -100,7 +100,7 @@ class _PostTravelPageState extends State<PostTravelPage> {
         alignment: Alignment.bottomCenter,
         child: Container(
           margin: EdgeInsets.only(bottom: 16.0),
-          child: ElevatedButton(
+          child: ElevatedButton.icon(
             onPressed: () {
               // Simpan ke database API dengan menggunakan _temporaryCheckboxStatus
               // setelah itu, kosongkan _temporaryCheckboxStatus
@@ -110,7 +110,8 @@ class _PostTravelPageState extends State<PostTravelPage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: myColor, // Warna latar belakang
             ),
-            child: const Text('Simpan'),
+            icon: Icon(Iconsax.shield_tick), // Icon untuk diagnosa
+            label: Text('Diagnosa'), // Tulisan pada tombol
           ),
         ),
       ),
