@@ -488,9 +488,9 @@ class _DataDiriState extends State<DataDiri> {
                     hint: const Text('pilih jawaban anda'),
                     value: hamilMenyusui,
                     items: generateBusui(busui),
-                    onChanged: (item5) {
+                    onChanged: (item6) {
                       setState(() {
-                        hamilMenyusui = item5;
+                        hamilMenyusui = item6;
                       });
                     },
                   ),
