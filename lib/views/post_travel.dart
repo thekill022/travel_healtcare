@@ -102,9 +102,15 @@ class _PostTravelPageState extends State<PostTravelPage> {
           margin: EdgeInsets.only(bottom: 16.0),
           child: ElevatedButton.icon(
             onPressed: () {
-              // Simpan ke database API dengan menggunakan _temporaryCheckboxStatus
+              // Ambil hanya ID dari _temporaryCheckboxStatus yang bernilai true
+              List<int> selectedIds = _temporaryCheckboxStatus.entries
+                  .where((entry) => entry.value)
+                  .map((entry) => entry.key)
+                  .toList();
+
+              // Simpan hanya ID ke database API dengan menggunakan selectedIds
               // setelah itu, kosongkan _temporaryCheckboxStatus
-              print('Save to API: $_temporaryCheckboxStatus');
+              print('Save to API: $selectedIds');
               _temporaryCheckboxStatus.clear();
             },
             style: ElevatedButton.styleFrom(
@@ -147,7 +153,8 @@ class _SymptomListState extends State<SymptomList> {
   void _initCheckboxStatus() {
     // Inisialisasi _checkboxStatus dan tetapkan nilai default
     _checkboxStatus = List<bool>.generate(widget.symptoms.length, (index) {
-      return widget.temporaryCheckboxStatus[widget.symptoms[index].id] ?? false;
+      // Tentukan bahwa semua nilai adalah false
+      return false;
     });
   }
 
