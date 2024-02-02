@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:travel_healthcare/controller/endemicity_controller.dart';
 import 'package:travel_healthcare/model/endemicity_model.dart';
+import 'package:travel_healthcare/views/login.dart';
 import 'package:travel_healthcare/views/perjalanan/form_perjalanan.dart';
 import 'package:travel_healthcare/views/pratravel/disease_list.dart';
 
@@ -65,7 +66,14 @@ class _PredictPageState extends State<PredictPage> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
+              Future.delayed(Duration.zero, () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+              });
+
+              return const Center(
+                child: Text('Anda belum login'),
+              );
             } else {
               filteredEndemicityList = snapshot.data ?? [];
               return ListView.builder(

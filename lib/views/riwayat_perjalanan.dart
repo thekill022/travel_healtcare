@@ -60,8 +60,12 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
                 child: CircularProgressIndicator(),
               );
             } else if (snapshot.hasError) {
-              // Menampilkan pesan error jika terjadi kesalahan
-              return Center(
+              // Future.delayed(Duration.zero, () {
+              //   Navigator.pushReplacement(context,
+              //       MaterialPageRoute(builder: (context) => LoginPage()));
+              // });
+
+              return const Center(
                 child: Text('Belum ada data riwayat perjalanan'),
               );
             } else {

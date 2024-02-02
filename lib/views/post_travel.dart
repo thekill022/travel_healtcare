@@ -3,6 +3,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:travel_healthcare/controller/posttravel_controller.dart';
 import 'package:travel_healthcare/controller/symptom_controller.dart';
 import 'package:travel_healthcare/model/SymptomModel.dart';
+import 'package:travel_healthcare/views/login.dart';
 import 'package:travel_healthcare/views/posttravel/disease_diagnose.dart';
 
 class PostTravelPage extends StatefulWidget {
@@ -74,8 +75,13 @@ class _PostTravelPageState extends State<PostTravelPage> {
                       ),
                     );
                   } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text('Error: ${snapshot.error}'),
+                    Future.delayed(Duration.zero, () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    });
+
+                    return const Center(
+                      child: Text('Anda belum login'),
                     );
                   } else {
                     _allSymptoms = snapshot.data!;

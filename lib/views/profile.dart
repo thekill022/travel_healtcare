@@ -47,7 +47,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
+                  Future.delayed(Duration.zero, () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  });
+
+                  return const Center(
+                    child: Text('Anda belum login'),
+                  );
                 } else if (!snapshot.hasData) {
                   return Text('Data not found');
                 } else {
