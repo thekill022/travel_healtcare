@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/travelhistory_model.dart';
@@ -10,11 +11,13 @@ class UpdateFormPerjalanan extends StatefulWidget {
       this.provinsiTujuan,
       this.durasiTravel,
       this.tujuanTravel,
-      this.id});
+      this.id,
+      this.formattgl});
 
   final int? id;
   final String? kotaTujuan;
   final String? provinsiTujuan;
+  final String? formattgl;
   final String? durasiTravel;
   final String? tujuanTravel;
 
@@ -26,20 +29,24 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
   final _formKey = GlobalKey<FormState>();
 
   final travelhistoryCtrl = TravelHistoryController();
+  final TextEditingController inputtgl = TextEditingController();
 
   Color myColor = Color(0xFFE0F4FF);
 
   String? newkotaTujuan;
   String? newprovinsiTujuan;
+  String? newformattgl;
   String? newdurasiTravel;
   String? newtujuanTravel;
 
   void updateTravelHistory(int id) async {
     TravelHistoryModel travelHistoryModel = TravelHistoryModel(
-        kotaTujuan: newkotaTujuan!,
-        provinsiTujuan: newprovinsiTujuan!,
-        durasiTravel: newdurasiTravel!,
-        tujuanTravel: newtujuanTravel!);
+      kotaTujuan: newkotaTujuan!,
+      provinsiTujuan: newprovinsiTujuan!,
+      formattgl: newformattgl!,
+      durasiTravel: newdurasiTravel!,
+      tujuanTravel: newtujuanTravel!,
+    );
     await travelhistoryCtrl.updateTravelHistory(id, travelHistoryModel);
   }
 
@@ -48,6 +55,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
     super.initState();
     newkotaTujuan = widget.kotaTujuan;
     newprovinsiTujuan = widget.provinsiTujuan;
+    inputtgl.text = widget.formattgl ?? '';
     newdurasiTravel = widget.durasiTravel;
     newtujuanTravel = widget.tujuanTravel;
   }
@@ -245,6 +253,69 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                       setState(() {
                         newprovinsiTujuan = item;
                       });
+                    },
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Tanggal Keberangkatan:',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: TextFormField(
+                    controller: inputtgl,
+                    decoration: InputDecoration(
+                      hintText: 'Piliha tanggal keberangkatan anda',
+                      suffixIcon: const Icon(Icons.event),
+                      filled: true,
+                      fillColor: Colors.white,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide:
+                            BorderSide(color: Colors.transparent, width: 0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide:
+                            BorderSide(color: Colors.transparent, width: 0),
+                      ),
+                    ),
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? picktanggal = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100),
+                      );
+
+                      if (picktanggal != null) {
+                        newformattgl =
+                            DateFormat('dd-MM-yyyy').format(picktanggal);
+
+                        setState(() {
+                          inputtgl.text = newformattgl.toString();
+                        });
+                      }
                     },
                   ),
                 ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/travelhistory_model.dart';
 import 'package:travel_healthcare/views/perjalanan/edit_form_perjalanan.dart';
-import 'package:travel_healthcare/views/perjalanan/form_perjalanan.dart';
 
 class RiwayatPerjalanan extends StatefulWidget {
   const RiwayatPerjalanan({super.key});
@@ -92,6 +91,7 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
                                   listtravelHistory[index].provinsiTujuan,
                               durasiTravel:
                                   listtravelHistory[index].durasiTravel,
+                              formattgl: listtravelHistory[index].formattgl,
                               tujuanTravel:
                                   listtravelHistory[index].tujuanTravel,
                             ),
@@ -140,21 +140,6 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
             }
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const FormPerjalanan()),
-          ).then((value) {
-            if (value == true) {
-              setState(() {
-                getTravelHistory();
-              });
-            }
-          });
-        },
-        child: const Icon(Icons.add),
       ),
     );
   }

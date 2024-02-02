@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/travelhistory_model.dart';
@@ -16,11 +17,13 @@ class _FormPerjalananState extends State<FormPerjalanan> {
   Color myColor = Color(0xFFE0F4FF);
 
   final TextEditingController _kotaTujuan = TextEditingController();
+  final TextEditingController inputtgl = TextEditingController();
 
   final travelhistoryCtrl = TravelHistoryController();
 
   String? kotaTujuan;
   String? provinsiTujuan;
+  String? formattgl;
   String? durasiTravel;
   String? tujuanTravel;
 
@@ -38,6 +41,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
     TravelHistoryModel travelHistoryModel = TravelHistoryModel(
       kotaTujuan: kotaTujuan!,
       provinsiTujuan: provinsiTujuan!,
+      formattgl: formattgl!,
       durasiTravel: durasiTravel!,
       tujuanTravel: tujuanTravel!,
     );
@@ -250,6 +254,70 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                   Container(
                     alignment: Alignment.centerLeft,
                     child: const Text(
+                      'Tanggal Keberangkatan:',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: inputtgl,
+                      decoration: InputDecoration(
+                        hintText: 'Masukkan kota tujuan anda',
+                        suffixIcon: const Icon(Icons.event),
+                        filled: true,
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide:
+                              BorderSide(color: Colors.transparent, width: 0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide:
+                              BorderSide(color: Colors.transparent, width: 0),
+                        ),
+                      ),
+                      readOnly: true,
+                      validator: validateTanggal,
+                      onTap: () async {
+                        DateTime? picktanggal = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                        );
+
+                        if (picktanggal != null) {
+                          formattgl =
+                              DateFormat('dd-MM-yyyy').format(picktanggal);
+
+                          setState(() {
+                            inputtgl.text = formattgl.toString();
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
                       'Durasi Perjalanan :',
                       style: TextStyle(
                         color: Colors.black,
@@ -367,6 +435,13 @@ class _FormPerjalananState extends State<FormPerjalanan> {
 String? validateKota(String? value) {
   if (value == null || value.isEmpty) {
     return "Masukan Kota tujuan anda!";
+  }
+  return null;
+}
+
+String? validateTanggal(String? value) {
+  if (value == null || value.isEmpty) {
+    return "Tolong masukan tanggal ";
   }
   return null;
 }

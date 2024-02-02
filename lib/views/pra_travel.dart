@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:travel_healthcare/controller/endemicity_controller.dart';
 import 'package:travel_healthcare/model/endemicity_model.dart';
+import 'package:travel_healthcare/views/perjalanan/form_perjalanan.dart';
 import 'package:travel_healthcare/views/pratravel/disease_list.dart';
 
 class PredictPage extends StatefulWidget {
@@ -96,6 +97,25 @@ class _PredictPageState extends State<PredictPage> {
               );
             }
           },
+        ),
+      ),
+      floatingActionButton: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const FormPerjalanan()),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: myColor, // Customize the background color
+        ),
+        child: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Iconsax.add_square),
+            SizedBox(width: 5), // Add some spacing between icon and text
+            Text('Tambah data perjalanan'),
+          ],
         ),
       ),
     );
