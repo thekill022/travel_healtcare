@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:travel_healthcare/controller/posttravel_controller.dart';
 import 'package:travel_healthcare/controller/symptom_controller.dart';
 import 'package:travel_healthcare/model/SymptomModel.dart';
+import 'package:travel_healthcare/views/posttravel/disease_diagnose.dart';
 
 class PostTravelPage extends StatefulWidget {
   const PostTravelPage({Key? key}) : super(key: key);
@@ -101,7 +103,7 @@ class _PostTravelPageState extends State<PostTravelPage> {
         child: Container(
           margin: EdgeInsets.only(bottom: 16.0),
           child: ElevatedButton.icon(
-            onPressed: () {
+            onPressed: () async {
               // Ambil hanya ID dari _temporaryCheckboxStatus yang bernilai true
               List<int> selectedIds = _temporaryCheckboxStatus.entries
                   .where((entry) => entry.value)
@@ -112,6 +114,12 @@ class _PostTravelPageState extends State<PostTravelPage> {
               // setelah itu, kosongkan _temporaryCheckboxStatus
               print('Save to API: $selectedIds');
               _temporaryCheckboxStatus.clear();
+
+              // Panggil fungsi createTravelHistory dari controller
+              await PostTravelController().createTravelHistory(selectedIds);
+
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => DiseaseDiagnose()));
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: myColor, // Warna latar belakang

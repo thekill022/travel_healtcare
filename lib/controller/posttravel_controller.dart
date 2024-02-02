@@ -8,7 +8,7 @@ import 'package:travel_healthcare/model/posttravel_model.dart';
 class PostTravelController {
   final String apiUrl = '$baseUrl/posttravel';
 
-  Future<void> createTravelHistory(PostTravelModel postTravelModel) async {
+  Future<void> createTravelHistory(List<int> selectedSymptomIds) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? token = prefs.getString('token');
@@ -16,6 +16,9 @@ class PostTravelController {
       if (token == null) {
         throw Exception('Bearer token not found in SharedPreferences');
       }
+
+      // Buat objek PostTravelModel dengan menggunakan selectedSymptomIds
+      final postTravelModel = PostTravelModel(symptom: selectedSymptomIds);
 
       print('Request Payload: ${jsonEncode(postTravelModel.toJson())}');
       final response = await http.post(
@@ -26,10 +29,11 @@ class PostTravelController {
         },
         body: jsonEncode(postTravelModel.toJson()),
       );
+
       print('Response Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         print('Travel history created successfully');
       } else {
         print('Response body: ${response.body}');
@@ -37,7 +41,7 @@ class PostTravelController {
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Error: $e');
+      //throw Exception('Error: $e');
     }
   }
 }

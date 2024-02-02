@@ -51,20 +51,28 @@ class UserDataController {
       }
 
       final response = await http.get(
-        Uri.parse('$baseUrl/medicals/'),
+        Uri.parse('$baseUrl/medical'),
         headers: {
           'Authorization': 'Bearer $token',
         },
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> dataResponse = json.decode(response.body)['data'];
+        final dynamic responseData = json.decode(response.body)['data'];
 
-        List<UserDataModel> symptoms = dataResponse
-            .map((symptom) => UserDataModel.fromJson(symptom))
-            .toList();
+        if (responseData is List<dynamic>) {
+          List<UserDataModel> userdata =
+              responseData.map((user) => UserDataModel.fromJson(user)).toList();
 
-        return symptoms;
+          return userdata;
+        } else if (responseData is Map<String, dynamic>) {
+          // If the response is a single object, create a list with a single element
+          List<UserDataModel> userdata = [UserDataModel.fromJson(responseData)];
+
+          return userdata;
+        } else {
+          throw Exception('Invalid response format');
+        }
       } else {
         print('Response body: ${response.body}');
         throw Exception('Failed to load symptoms');
