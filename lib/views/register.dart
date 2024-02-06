@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/views/login.dart';
 
@@ -91,6 +92,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: HeaderSub(context, titleText: 'Register'),
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: SafeArea(
         child: Form(

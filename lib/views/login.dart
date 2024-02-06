@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/homenavbar.dart';
 import 'package:travel_healthcare/views/register.dart';
@@ -90,6 +91,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: HeaderSub(context, titleText: 'Login'),
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: SafeArea(
         child: Form(
