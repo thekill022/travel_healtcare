@@ -3,6 +3,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:travel_healthcare/controller/posttravel_controller.dart';
 import 'package:travel_healthcare/controller/symptom_controller.dart';
 import 'package:travel_healthcare/model/SymptomModel.dart';
+import 'package:travel_healthcare/model/diagnose_model.dart';
 import 'package:travel_healthcare/views/login.dart';
 import 'package:travel_healthcare/views/posttravel/disease_diagnose.dart';
 
@@ -110,28 +111,41 @@ class _PostTravelPageState extends State<PostTravelPage> {
           margin: EdgeInsets.only(bottom: 16.0),
           child: ElevatedButton.icon(
             onPressed: () async {
-              // Ambil hanya ID dari _temporaryCheckboxStatus yang bernilai true
               List<int> selectedIds = _temporaryCheckboxStatus.entries
                   .where((entry) => entry.value)
                   .map((entry) => entry.key)
                   .toList();
 
-              // Simpan hanya ID ke database API dengan menggunakan selectedIds
-              // setelah itu, kosongkan _temporaryCheckboxStatus
-              print('Save to API: $selectedIds');
-              _temporaryCheckboxStatus.clear();
+              try {
+                List<DiagnoseModel> diagnoses = await PostTravelController()
+                    .createTravelHistory(selectedIds);
 
-              // Panggil fungsi createTravelHistory dari controller
-              await PostTravelController().createTravelHistory(selectedIds);
-
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => DiseaseDiagnose()));
+                // DiagnoseResult diubah menjadi List<DiagnoseModel>
+                // Karena createTravelHistory mengembalikan List<DiagnoseModel>
+                if (diagnoses.isNotEmpty) {
+                  // Cek apakah ada hasil diagnosa
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DiseaseDiagnosePage(
+                        diagnosisData: diagnoses,
+                      ),
+                    ),
+                  );
+                } else {
+                  // Tidak ada hasil diagnosa
+                  print('No diseases detected.');
+                }
+              } catch (e) {
+                // Handle error
+                print('Error: $e');
+              }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: myColor, // Warna latar belakang
+              backgroundColor: myColor,
             ),
-            icon: Icon(Iconsax.shield_tick), // Icon untuk diagnosa
-            label: Text('Diagnosa'), // Tulisan pada tombol
+            icon: Icon(Iconsax.shield_tick),
+            label: Text('Diagnosa'),
           ),
         ),
       ),

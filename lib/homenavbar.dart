@@ -42,7 +42,7 @@ class _HomeNavbarPageState extends State<HomeNavbarPage> {
           NavigationDestination(
               icon: Icon(Iconsax.element_plus), label: 'Diagnosis'),
           NavigationDestination(
-              icon: Icon(Iconsax.clipboard_text), label: 'Riwayat')
+              icon: Icon(Iconsax.clipboard_text), label: 'Perjalanan saya')
         ],
         onDestinationSelected: (int index) {
           setState(() {
