@@ -43,7 +43,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
     TravelHistoryModel travelHistoryModel = TravelHistoryModel(
       kotaTujuan: newkotaTujuan!,
       provinsiTujuan: newprovinsiTujuan!,
-      formattgl: newformattgl!,
+      formattgl: inputtgl.text,
       durasiTravel: newdurasiTravel!,
       tujuanTravel: newtujuanTravel!,
     );

@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
               Container(
                 padding: const EdgeInsets.only(top: 10, left: 10),
                 child: const Text(
-                  "Travel Healthcare",
+                  " Selamat Datang di \n Travel Healthcare",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
