@@ -100,19 +100,19 @@ class _DetailDiseaseState extends State<DetailDisease> {
                         ],
                       ),
                     const SizedBox(height: 12),
-                    for (var treatment in disease.treatment!)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('${treatment.titletreat}',
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold)),
-                          Text(
-                            '${treatment.desctreat}',
-                            textAlign: TextAlign.justify,
-                          ),
-                        ],
-                      ),
+                    // for (var treatment in disease.treatment!)
+                    //   Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       Text('${treatment.titletreat}',
+                    //           style: const TextStyle(
+                    //               fontSize: 18, fontWeight: FontWeight.bold)),
+                    //       Text(
+                    //         '${treatment.desctreat}',
+                    //         textAlign: TextAlign.justify,
+                    //       ),
+                    //     ],
+                    //   ),
                   ],
                 ),
               ),

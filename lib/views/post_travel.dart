@@ -77,7 +77,7 @@ class _PostTravelPageState extends State<PostTravelPage> {
                     );
                   } else if (snapshot.hasError) {
                     Future.delayed(Duration.zero, () {
-                      Navigator.pushReplacement(context,
+                      Navigator.push(context,
                           MaterialPageRoute(builder: (context) => LoginPage()));
                     });
 

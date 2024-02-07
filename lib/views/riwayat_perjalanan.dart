@@ -32,7 +32,7 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
       print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Gagal load travel history'),
+          content: Text('Tidak ada data perjalanan'),
           backgroundColor: Colors.red,
         ),
       );

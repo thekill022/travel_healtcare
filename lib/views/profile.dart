@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/userdata_controller.dart';
+import 'package:travel_healthcare/homenavbar.dart';
 import 'package:travel_healthcare/model/UserDataModel.dart';
 import 'package:travel_healthcare/model/user_model.dart';
 import 'package:travel_healthcare/views/data_diri.dart';
@@ -48,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   return CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   Future.delayed(Duration.zero, () {
-                    Navigator.pushReplacement(context,
+                    Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginPage()));
                   });
 
@@ -119,7 +120,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const LoginPage()));
+                                  builder: (context) =>
+                                      const HomeNavbarPage()));
                         },
                         child: const Text("Logout"),
                       ),

@@ -67,7 +67,7 @@ class _PredictPageState extends State<PredictPage> {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               Future.delayed(Duration.zero, () {
-                Navigator.pushReplacement(context,
+                Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginPage()));
               });
 
