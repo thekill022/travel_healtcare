@@ -124,6 +124,7 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
                             ),
                           ),
                           title: Text(listtravelHistory[index].kotaTujuan),
+                          subtitle: Text(listtravelHistory[index].formattgl),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
