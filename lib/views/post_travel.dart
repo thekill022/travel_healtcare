@@ -182,7 +182,7 @@ class _SymptomListState extends State<SymptomList> {
     // Inisialisasi _checkboxStatus dan tetapkan nilai default
     _checkboxStatus = List<bool>.generate(widget.symptoms.length, (index) {
       // Tentukan bahwa semua nilai adalah false
-      return false;
+      return widget.temporaryCheckboxStatus[widget.symptoms[index].id] ?? false;
     });
   }
 
