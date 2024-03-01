@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                padding: const EdgeInsets.all(10.0),
                 child: KontenSection(context, imgUrl: "images/konten.png"),
               ),
               const SizedBox(height: 5),
@@ -33,7 +34,8 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(left: 10, right: 20),
                 child: const Text(
                   "Aplikasi Travel Healthcare menyediakan fitur pra dan post travel yang informatif. Pengguna dapat memilih provinsi di Indonesia dan mendapatkan informasi tentang lima penyakit kesehatan khas setiap provinsi.",
-                  style: TextStyle(fontSize: 14, color: Colors.black),
+                  style: TextStyle(
+                      fontSize: 14, color: Color.fromARGB(255, 78, 76, 76)),
                   textAlign: TextAlign.justify,
                 ),
               )

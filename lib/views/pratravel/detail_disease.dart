@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/disease_controller.dart';
+import 'package:travel_healthcare/controller/medicalscore_controller.dart';
 import 'package:travel_healthcare/model/disease_model.dart';
+import 'package:travel_healthcare/model/medical_score.dart';
 
 class DetailDisease extends StatefulWidget {
   const DetailDisease({
@@ -21,6 +23,7 @@ class DetailDisease extends StatefulWidget {
 
 class _DetailDiseaseState extends State<DetailDisease> {
   late DiseaseModel disease;
+  late List<MedicalScore> medicalScores;
 
   @override
   void initState() {
@@ -34,6 +37,7 @@ class _DetailDiseaseState extends State<DetailDisease> {
       treatment: [],
       prevention: [],
     );
+    medicalScores = [];
     // Fetch disease details when the widget is initialized
     fetchDiseaseDetails();
   }
@@ -53,6 +57,16 @@ class _DetailDiseaseState extends State<DetailDisease> {
 
       setState(() {
         disease = selectedDisease;
+      });
+
+      // Fetch the associated medical scores
+      MedicalScoreController medicalScoreController = MedicalScoreController();
+      List<MedicalScore> scores =
+          await medicalScoreController.getMedicalScore();
+
+      setState(() {
+        disease = selectedDisease;
+        medicalScores = scores;
       });
     } catch (e) {
       print('Error fetching disease details: $e');
@@ -86,6 +100,16 @@ class _DetailDiseaseState extends State<DetailDisease> {
                       textAlign: TextAlign.justify,
                     ),
                     const SizedBox(height: 12),
+                    for (var score in medicalScores)
+                      Text(
+                        'Resiko Medis : ${score.categories}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: _getColorBasedOnCategory(score.categories),
+                        ),
+                      ),
+                    const SizedBox(height: 10),
                     for (var prevention in disease.prevention!)
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,5 +142,20 @@ class _DetailDiseaseState extends State<DetailDisease> {
               ),
             ),
     );
+  }
+
+  Color _getColorBasedOnCategory(String category) {
+    switch (category) {
+      case 'Tinggi':
+        return Colors.red;
+      case 'Medium':
+        return Colors.orange;
+      case 'Rendah':
+        return Colors.yellow;
+      case 'Tidak ada Resiko':
+        return Colors.green;
+      default:
+        return Colors.black; // or any default color
+    }
   }
 }
