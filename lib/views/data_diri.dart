@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
+import 'package:travel_healthcare/controller/medicalscore_controller.dart';
 import 'package:travel_healthcare/controller/userdata_controller.dart';
 import 'package:travel_healthcare/model/UserDataModel.dart';
+import 'package:travel_healthcare/model/medical_score.dart';
 
 class DataDiri extends StatefulWidget {
   DataDiri({
@@ -17,6 +19,7 @@ class _DataDiriState extends State<DataDiri> {
   final _formKey = GlobalKey<FormState>();
 
   var userdatactrl = UserDataController(isEdit: true);
+  MedicalScoreController medicalScoreController = MedicalScoreController();
 
   // int? userId;
   String? umur;
@@ -29,6 +32,13 @@ class _DataDiriState extends State<DataDiri> {
   bool? vaccineBcg;
   bool? vaccineHepatitis;
   bool? vaccineDengue;
+
+  int? umurbobot;
+  int? kondisiMedisbobot;
+  int? pengobatanbobot;
+  int? alergibobot;
+  int? reaksiVaksinbobot;
+  int? hamilMenyusuibobot;
 
   Future<void> addDataDiri() async {
     if (_formKey.currentState?.validate() ?? false) {
@@ -58,6 +68,25 @@ class _DataDiriState extends State<DataDiri> {
         vaccineDengue: vaccineDengue,
       );
       await userdatactrl.createUserData(userDataModel);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Data diri berhasil disimpan')));
+
+      Navigator.pop(context, true);
+    }
+  }
+
+  Future<void> addMedicalScore() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      MedicalScore medicalScore = MedicalScore(
+        umurbobot: umurbobot!,
+        kondisiMedisbobot: kondisiMedisbobot!,
+        pengobatanbobot: pengobatanbobot!,
+        alergibobot: alergibobot!,
+        reaksiVaksinbobot: reaksiVaksinbobot!,
+        hamilMenyusuibobot: hamilMenyusuibobot!,
+      );
+      await medicalScoreController.createMedicalScore(medicalScore);
 
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Data diri berhasil disimpan')));
@@ -106,13 +135,21 @@ class _DataDiriState extends State<DataDiri> {
   }
 
   List<String> ket = ['Kurang dari 65 tahun', 'Lebih dari 65 tahun'];
+  List<int> ketBobot = [0, 15];
 
-  List<DropdownMenuItem> generateItems(List<String> ket) {
+  List<DropdownMenuItem> generateItems(List<String> ket, List<int> ketBobot) {
     List<DropdownMenuItem> items = [];
-    for (var item in ket) {
+    for (var i = 0; i < ket.length; i++) {
       items.add(DropdownMenuItem(
-        child: Text(item),
-        value: item,
+        child: Text(ket[i]),
+        value: ket[i],
+        onTap: () {
+          // Simpan bobot yang sesuai saat opsi dipilih
+          setState(() {
+            umur = ket[i];
+            umurbobot = ketBobot[i];
+          });
+        },
       ));
     }
     return items;
@@ -130,19 +167,48 @@ class _DataDiriState extends State<DataDiri> {
     'Penyakit autoimun',
     'Gangguan jiwa/depresi',
     'Penyakit paru-paru',
-    'Kencing manis',
+    'Diabetes',
     'Penyakit radang usus',
+    'Penyakit Hati',
     'Pengangkatan kelenjar timus',
     'Lainnya',
     'Tidak ada penyakit'
   ];
 
-  List<DropdownMenuItem> generateKondisi(List<String> kondisimed) {
+  List<int> kondisimedbobot = [
+    5,
+    10,
+    10,
+    5,
+    10,
+    20,
+    10,
+    20,
+    20,
+    20,
+    5,
+    10,
+    20,
+    10,
+    20,
+    5,
+    0
+  ];
+
+  List<DropdownMenuItem> generateKondisi(
+      List<String> kondisimed, List<int> kondisimedbobot) {
     List<DropdownMenuItem> items2 = [];
-    for (var item2 in kondisimed) {
+    for (var i = 0; i < kondisimed.length; i++) {
       items2.add(DropdownMenuItem(
-        child: Text(item2),
-        value: item2,
+        child: Text(kondisimed[i]),
+        value: kondisimed[i],
+        onTap: () {
+          // Simpan bobot yang sesuai saat opsi dipilih
+          setState(() {
+            kondisiMedis = kondisimed[i];
+            kondisiMedisbobot = kondisimedbobot[i];
+          });
+        },
       ));
     }
     return items2;
@@ -164,12 +230,21 @@ class _DataDiriState extends State<DataDiri> {
     'Tidak ada obat'
   ];
 
-  List<DropdownMenuItem> generateObat(List<String> obat) {
+  List<int> obatbobot = [5, 10, 20, 20, 20, 10, 10, 10, 5, 5, 5, 5, 0];
+
+  List<DropdownMenuItem> generateObat(List<String> obat, List<int> obatbobot) {
     List<DropdownMenuItem> items3 = [];
-    for (var item3 in obat) {
+    for (var i = 0; i < obat.length; i++) {
       items3.add(DropdownMenuItem(
-        child: Text(item3),
-        value: item3,
+        child: Text(obat[i]),
+        value: obat[i],
+        onTap: () {
+          // Simpan bobot yang sesuai saat opsi dipilih
+          setState(() {
+            pengobatan = obat[i];
+            pengobatanbobot = obatbobot[i];
+          });
+        },
       ));
     }
     return items3;
@@ -185,38 +260,66 @@ class _DataDiriState extends State<DataDiri> {
     'Tidak ada alergi'
   ];
 
-  List<DropdownMenuItem> generateAlergi(List<String> alergidd) {
+  List<int> alergiddbobot = [20, 0, 5, 10, 20, 5, 0];
+
+  List<DropdownMenuItem> generateAlergi(
+      List<String> alergidd, List<int> alergiddbobot) {
     List<DropdownMenuItem> items4 = [];
-    for (var item4 in alergidd) {
+    for (var i = 0; i < alergidd.length; i++) {
       items4.add(DropdownMenuItem(
-        child: Text(item4),
-        value: item4,
+        child: Text(alergidd[i]),
+        value: alergidd[i],
+        onTap: () {
+          // Simpan bobot yang sesuai saat opsi dipilih
+          setState(() {
+            alergi = alergidd[i];
+            alergibobot = alergiddbobot[i];
+          });
+        },
       ));
     }
     return items4;
   }
 
   List<String> reakvaksin = ['Ya', 'Tidak'];
+  List<int> reakvaksinbobot = [20, 0];
 
-  List<DropdownMenuItem> generateReakvaksin(List<String> reakvaksin) {
+  List<DropdownMenuItem> generateReakvaksin(
+      List<String> reakvaksin, List<int> reakvaksinbobot) {
     List<DropdownMenuItem> items5 = [];
-    for (var item5 in reakvaksin) {
+    for (var i = 0; i < reakvaksin.length; i++) {
       items5.add(DropdownMenuItem(
-        child: Text(item5),
-        value: item5,
+        child: Text(reakvaksin[i]),
+        value: reakvaksin[i],
+        onTap: () {
+          // Simpan bobot yang sesuai saat opsi dipilih
+          setState(() {
+            reaksiVaksin = reakvaksin[i];
+            reaksiVaksinbobot = reakvaksinbobot[i];
+          });
+        },
       ));
     }
     return items5;
   }
 
   List<String> busui = ['Ya', 'Tidak'];
+  List<int> busuibobot = [20, 0];
 
-  List<DropdownMenuItem> generateBusui(List<String> busui) {
+  List<DropdownMenuItem> generateBusui(
+      List<String> busui, List<int> busuibobot) {
     List<DropdownMenuItem> items6 = [];
-    for (var item6 in busui) {
+    for (var i = 0; i < busui.length; i++) {
       items6.add(DropdownMenuItem(
-        child: Text(item6),
-        value: item6,
+        child: Text(busui[i]),
+        value: busui[i],
+        onTap: () {
+          // Simpan bobot yang sesuai saat opsi dipilih
+          setState(() {
+            hamilMenyusui = busui[i];
+            hamilMenyusuibobot = busuibobot[i];
+          });
+        },
       ));
     }
     return items6;
@@ -270,7 +373,7 @@ class _DataDiriState extends State<DataDiri> {
                     dropdownColor: Colors.lightBlueAccent,
                     hint: const Text('pilih umur anda'),
                     value: umur,
-                    items: generateItems(ket),
+                    items: generateItems(ket, ketBobot),
                     onChanged: (item) {
                       setState(() {
                         umur = item;
@@ -313,7 +416,7 @@ class _DataDiriState extends State<DataDiri> {
                     dropdownColor: Colors.lightBlueAccent,
                     hint: const Text('pilih kondisi medis sebelumnya'),
                     value: kondisiMedis,
-                    items: generateKondisi(kondisimed),
+                    items: generateKondisi(kondisimed, kondisimedbobot),
                     onChanged: (item2) {
                       setState(() {
                         kondisiMedis = item2;
@@ -356,7 +459,7 @@ class _DataDiriState extends State<DataDiri> {
                     dropdownColor: Colors.lightBlueAccent,
                     hint: const Text('pilih pengobatan anda saat ini'),
                     value: pengobatan,
-                    items: generateObat(obat),
+                    items: generateObat(obat, obatbobot),
                     onChanged: (item3) {
                       setState(() {
                         pengobatan = item3;
@@ -399,7 +502,7 @@ class _DataDiriState extends State<DataDiri> {
                     dropdownColor: Colors.lightBlueAccent,
                     hint: const Text('pilih alergi anda'),
                     value: alergi,
-                    items: generateAlergi(alergidd),
+                    items: generateAlergi(alergidd, alergiddbobot),
                     onChanged: (item4) {
                       setState(() {
                         alergi = item4;
@@ -442,7 +545,7 @@ class _DataDiriState extends State<DataDiri> {
                     dropdownColor: Colors.lightBlueAccent,
                     hint: const Text('pilih reaksi anda terhadap vaksin'),
                     value: reaksiVaksin,
-                    items: generateReakvaksin(reakvaksin),
+                    items: generateReakvaksin(reakvaksin, reakvaksinbobot),
                     onChanged: (item5) {
                       setState(
                         () {
@@ -487,7 +590,7 @@ class _DataDiriState extends State<DataDiri> {
                     dropdownColor: Colors.lightBlueAccent,
                     hint: const Text('pilih jawaban anda'),
                     value: hamilMenyusui,
-                    items: generateBusui(busui),
+                    items: generateBusui(busui, busuibobot),
                     onChanged: (item6) {
                       setState(() {
                         hamilMenyusui = item6;
@@ -541,6 +644,7 @@ class _DataDiriState extends State<DataDiri> {
                           _formKey.currentState!.save();
 
                           addDataDiri();
+                          addMedicalScore();
                         }
                       },
                       child: const Text("Simpan"),
