@@ -85,6 +85,7 @@ class _DataDiriState extends State<DataDiri> {
         alergibobot: alergibobot!,
         reaksiVaksinbobot: reaksiVaksinbobot!,
         hamilMenyusuibobot: hamilMenyusuibobot!,
+        categories: '',
       );
       await medicalScoreController.createMedicalScore(medicalScore);
 
@@ -112,17 +113,35 @@ class _DataDiriState extends State<DataDiri> {
         if (userDataList.isNotEmpty) {
           UserDataModel userData = userDataList.last;
 
-          setState(() {
-            umur = userData.umur;
-            kondisiMedis = userData.kondisiMedis;
-            pengobatan = userData.pengobatan;
-            alergi = userData.alergi;
-            reaksiVaksin = userData.reaksiVaksin;
-            hamilMenyusui = userData.hamilMenyusui;
-            vaccineBcg = userData.vaccineBcg;
-            vaccineHepatitis = userData.vaccineHepatitis;
-            vaccineDengue = userData.vaccineDengue;
-          });
+          List<MedicalScore> medicalScores =
+              await medicalScoreController.getMedicalScore();
+
+          if (medicalScores.isNotEmpty) {
+            MedicalScore medicalScore = medicalScores.last;
+
+            setState(() {
+              umur = userData.umur;
+              kondisiMedis = userData.kondisiMedis;
+              pengobatan = userData.pengobatan;
+              alergi = userData.alergi;
+              reaksiVaksin = userData.reaksiVaksin;
+              hamilMenyusui = userData.hamilMenyusui;
+              vaccineBcg = userData.vaccineBcg;
+              vaccineHepatitis = userData.vaccineHepatitis;
+              vaccineDengue = userData.vaccineDengue;
+
+              // Set the weights
+              umurbobot = medicalScore.umurbobot;
+              kondisiMedisbobot = medicalScore.kondisiMedisbobot;
+              pengobatanbobot = medicalScore.pengobatanbobot;
+              alergibobot = medicalScore.alergibobot;
+              reaksiVaksinbobot = medicalScore.reaksiVaksinbobot;
+              hamilMenyusuibobot = medicalScore.hamilMenyusuibobot;
+            });
+          } else {
+            // Handle the case when medical scores are empty
+            print('Medical scores are empty');
+          }
         } else {
           // Handle the case when data is empty
           print('User data is empty');

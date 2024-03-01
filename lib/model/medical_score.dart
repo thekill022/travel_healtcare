@@ -5,15 +5,16 @@ class MedicalScore {
   final int alergibobot;
   final int reaksiVaksinbobot;
   final int hamilMenyusuibobot;
+  final String categories;
 
-  MedicalScore({
-    required this.umurbobot,
-    required this.kondisiMedisbobot,
-    required this.pengobatanbobot,
-    required this.alergibobot,
-    required this.reaksiVaksinbobot,
-    required this.hamilMenyusuibobot,
-  });
+  MedicalScore(
+      {required this.umurbobot,
+      required this.kondisiMedisbobot,
+      required this.pengobatanbobot,
+      required this.alergibobot,
+      required this.reaksiVaksinbobot,
+      required this.hamilMenyusuibobot,
+      required this.categories});
 
   factory MedicalScore.fromJson(Map<String, dynamic> json) {
     return MedicalScore(
@@ -23,6 +24,7 @@ class MedicalScore {
       alergibobot: json['allergies'] ?? '',
       reaksiVaksinbobot: json['previous_vaccination'] ?? '',
       hamilMenyusuibobot: json['pregnant'] ?? '',
+      categories: json['categories'] ?? '',
     );
   }
 
@@ -34,6 +36,7 @@ class MedicalScore {
       'allergies': alergibobot,
       'previous_vaccination': reaksiVaksinbobot,
       'pregnant': hamilMenyusuibobot,
+      'categories': categories
     };
   }
 }

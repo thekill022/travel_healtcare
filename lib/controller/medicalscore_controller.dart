@@ -40,4 +40,47 @@ class MedicalScoreController {
       throw Exception('Error: $e');
     }
   }
+
+  Future<List<MedicalScore>> getMedicalScore() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+
+      if (token == null) {
+        throw Exception('Bearer token not found in SharedPreferences');
+      }
+
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final dynamic responseData = json.decode(response.body)['data'];
+
+        if (responseData is List<dynamic>) {
+          List<MedicalScore> medscore = responseData
+              .map((score) => MedicalScore.fromJson(score))
+              .toList();
+
+          return medscore;
+        } else if (responseData is Map<String, dynamic>) {
+          // If the response is a single object, create a list with a single element
+          List<MedicalScore> medscore = [MedicalScore.fromJson(responseData)];
+
+          return medscore;
+        } else {
+          throw Exception('Invalid response format');
+        }
+      } else {
+        print('Response body: ${response.body}');
+        throw Exception('Failed to load symptoms');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
+    }
+  }
 }
