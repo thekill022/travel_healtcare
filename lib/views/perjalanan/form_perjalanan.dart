@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
+import 'package:travel_healthcare/controller/travelscore_controller.dart';
 import 'package:travel_healthcare/model/travelhistory_model.dart';
+import 'package:travel_healthcare/model/travelscore_model.dart';
 
 class FormPerjalanan extends StatefulWidget {
   const FormPerjalanan({super.key});
@@ -20,12 +22,16 @@ class _FormPerjalananState extends State<FormPerjalanan> {
   final TextEditingController inputtgl = TextEditingController();
 
   final travelhistoryCtrl = TravelHistoryController();
+  TravelScoreController travelScoreController = TravelScoreController();
 
   String? kotaTujuan;
   String? provinsiTujuan;
   String? formattgl;
   String? durasiTravel;
   String? tujuanTravel;
+
+  int? durasiTravelbobot;
+  int? tujuanTravelbobot;
 
   Future<void> addTravelHistory() async {
     if (kotaTujuan == null ||
@@ -51,7 +57,32 @@ class _FormPerjalananState extends State<FormPerjalanan> {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Data Form Perjalanan berhasil disimpan')));
 
-    Navigator.pop(context, true);
+    //Navigator.pop(context, true);
+  }
+
+  Future<void> addTravelScore() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      if (kotaTujuan == null ||
+          provinsiTujuan == null ||
+          durasiTravel == null ||
+          tujuanTravel == null) {
+        // Handle empty data case
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Lengkapi semua data sebelum menyimpan')));
+        return;
+      }
+
+      TravelScoreModel travelScoreModel = TravelScoreModel(
+        durasiTravelBobot: durasiTravelbobot!,
+        tujuanTavelBobot: tujuanTravelbobot!,
+        categories: '',
+      );
+      await travelScoreController.createTravelScore(travelScoreModel);
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Data Form Perjalanan berhasil disimpan')));
+    }
+    return;
   }
 
   List<String> daftarProvinsi = [
@@ -108,13 +139,22 @@ class _FormPerjalananState extends State<FormPerjalanan> {
     '31 hari hingga 6 bulan',
     'lebih dari 6 bulan'
   ];
+  List<int> daftarDurasibobot = [0, 5, 10, 20];
 
-  List<DropdownMenuItem> generateDurasi(List<String> daftarDurasi) {
+  List<DropdownMenuItem> generateDurasi(
+      List<String> daftarDurasi, List<int> daftarDurasibobot) {
     List<DropdownMenuItem> items = [];
-    for (var item in daftarDurasi) {
+    for (var i = 0; i < daftarDurasi.length; i++) {
       items.add(DropdownMenuItem(
-        child: Text(item),
-        value: item,
+        child: Text(daftarDurasi[i]),
+        value: daftarDurasi[i],
+        onTap: () {
+          // Simpan bobot yang sesuai saat opsi dipilih
+          setState(() {
+            durasiTravel = daftarDurasi[i];
+            durasiTravelbobot = daftarDurasibobot[i];
+          });
+        },
       ));
     }
     return items;
@@ -129,19 +169,29 @@ class _FormPerjalananState extends State<FormPerjalanan> {
     'Berpergian ke luar daerah',
     'Safari',
     'Kegiatan olahraga',
-    'Pelayaran'
-        'Kerja sukarela',
+    'Pelayaran',
+    'Kerja sukarela',
     'Daerah pegunungan tinggi',
     'Ziarah',
     'lainnya'
   ];
 
-  List<DropdownMenuItem> generateTujuan(List<String> daftarTujuan) {
+  List<int> daftarTujuanbobot = [5, 20, 5, 10, 0, 10, 5, 10, 20, 20, 5, 10, 5];
+
+  List<DropdownMenuItem> generateTujuan(
+      List<String> daftarTujuan, List<int> daftarTujuanbobot) {
     List<DropdownMenuItem> items = [];
-    for (var item in daftarTujuan) {
+    for (var i = 0; i < daftarTujuan.length; i++) {
       items.add(DropdownMenuItem(
-        child: Text(item),
-        value: item,
+        child: Text(daftarTujuan[i]),
+        value: daftarTujuan[i],
+        onTap: () {
+          // Simpan bobot yang sesuai saat opsi dipilih
+          setState(() {
+            tujuanTravel = daftarTujuan[i];
+            tujuanTravelbobot = daftarTujuanbobot[i];
+          });
+        },
       ));
     }
     return items;
@@ -348,7 +398,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                       dropdownColor: myColor,
                       hint: const Text('pilih durasi travel'),
                       value: durasiTravel,
-                      items: generateDurasi(daftarDurasi),
+                      items: generateDurasi(daftarDurasi, daftarDurasibobot),
                       onChanged: (item) {
                         setState(() {
                           durasiTravel = item;
@@ -390,7 +440,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                       dropdownColor: myColor,
                       hint: const Text('pilih tujuan perjalanan'),
                       value: tujuanTravel,
-                      items: generateTujuan(daftarTujuan),
+                      items: generateTujuan(daftarTujuan, daftarTujuanbobot),
                       onChanged: (item) {
                         setState(() {
                           tujuanTravel = item;
@@ -413,8 +463,9 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                             _formKey.currentState!.save();
 
                             addTravelHistory();
+                            addTravelScore();
 
-                            // Navigator.pop(context, true);
+                            Navigator.pop(context, true);
                             // Navigator.pop(context, true);
                           }
                         },

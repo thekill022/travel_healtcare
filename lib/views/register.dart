@@ -92,7 +92,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderSub(context, titleText: 'Register'),
+      appBar: HeaderSub(context, titleText: 'Daftar Akun'),
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: SafeArea(
         child: Form(
@@ -102,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               children: [
                 const Text(
-                  "Register",
+                  "Daftar",
                   style: TextStyle(
                       color: Colors.blueAccent,
                       fontSize: 30,
@@ -112,6 +112,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 const Text(
                   "Selamat Datang di Travel Healthcare",
                   style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  "Silahkan daftarkan akun anda",
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 const SizedBox(height: 40),
                 TextFormField(
@@ -194,7 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       onPressed: _register,
-                      child: const Text("Sign Up"),
+                      child: const Text("Daftar"),
                     ),
                   ],
                 ),

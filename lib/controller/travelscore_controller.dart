@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
-import 'package:travel_healthcare/model/medical_score.dart';
+import 'package:travel_healthcare/model/travelscore_model.dart';
 
-class MedicalScoreController {
-  final String apiUrl = '$baseUrl/medicalScore';
+class TravelScoreController {
+  final String apiUrl = '$baseUrl/travelScore';
 
-  Future<void> createMedicalScore(MedicalScore medicalScore) async {
+  Future<void> createTravelScore(TravelScoreModel travelScoreModel) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? token = prefs.getString('token');
@@ -17,14 +17,14 @@ class MedicalScoreController {
         throw Exception('Bearer token not found in SharedPreferences');
       }
 
-      print('Request Payload: ${jsonEncode(medicalScore.toJson())}');
+      print('Request Payload: ${jsonEncode(travelScoreModel.toJson())}');
       final response = await http.put(
         Uri.parse(apiUrl),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        body: jsonEncode(medicalScore.toJson()),
+        body: jsonEncode(travelScoreModel.toJson()),
       );
       print('Response Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
@@ -41,7 +41,7 @@ class MedicalScoreController {
     }
   }
 
-  Future<List<MedicalScore>> getMedicalScore() async {
+  Future<List<TravelScoreModel>> getTravelScore() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? token = prefs.getString('token');
@@ -61,16 +61,18 @@ class MedicalScoreController {
         final dynamic responseData = json.decode(response.body)['data'];
 
         if (responseData is List<dynamic>) {
-          List<MedicalScore> medscore = responseData
-              .map((score) => MedicalScore.fromJson(score))
+          List<TravelScoreModel> travscore = responseData
+              .map((score) => TravelScoreModel.fromJson(score))
               .toList();
 
-          return medscore;
+          return travscore;
         } else if (responseData is Map<String, dynamic>) {
           // If the response is a single object, create a list with a single element
-          List<MedicalScore> medscore = [MedicalScore.fromJson(responseData)];
+          List<TravelScoreModel> travscore = [
+            TravelScoreModel.fromJson(responseData)
+          ];
 
-          return medscore;
+          return travscore;
         } else {
           throw Exception('Invalid response format');
         }

@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderSub(context, titleText: 'Login'),
+      appBar: HeaderSub(context, titleText: 'Travel Healthcare'),
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: SafeArea(
         child: Form(
@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: [
                 const Text(
-                  "Login",
+                  "Masuk",
                   style: TextStyle(
                       color: Colors.blueAccent,
                       fontSize: 30,
@@ -111,6 +111,11 @@ class _LoginPageState extends State<LoginPage> {
                 const Text(
                   "Selamat Datang di Travel Healthcare",
                   style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  "Silahkan masuk ke akun anda",
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 const SizedBox(height: 40),
                 TextFormField(
@@ -173,12 +178,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onPressed: loginUser,
-                      child: const Text("Login"),
+                      child: const Text("Masuk"),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Don't have an account?"),
+                        const Text("Tidak memiliki akun?"),
                         TextButton(
                           onPressed: () {
                             _formKey.currentState?.reset();
@@ -192,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             );
                           },
-                          child: const Text("Signup"),
+                          child: const Text("Daftar"),
                         ),
                       ],
                     ),

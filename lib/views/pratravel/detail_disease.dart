@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/disease_controller.dart';
 import 'package:travel_healthcare/controller/medicalscore_controller.dart';
+import 'package:travel_healthcare/controller/travelscore_controller.dart';
 import 'package:travel_healthcare/model/disease_model.dart';
 import 'package:travel_healthcare/model/medical_score.dart';
+import 'package:travel_healthcare/model/travelscore_model.dart';
 
 class DetailDisease extends StatefulWidget {
   const DetailDisease({
@@ -24,6 +26,7 @@ class DetailDisease extends StatefulWidget {
 class _DetailDiseaseState extends State<DetailDisease> {
   late DiseaseModel disease;
   late List<MedicalScore> medicalScores;
+  late List<TravelScoreModel> travelScores;
 
   @override
   void initState() {
@@ -38,6 +41,7 @@ class _DetailDiseaseState extends State<DetailDisease> {
       prevention: [],
     );
     medicalScores = [];
+    travelScores = [];
     // Fetch disease details when the widget is initialized
     fetchDiseaseDetails();
   }
@@ -64,9 +68,14 @@ class _DetailDiseaseState extends State<DetailDisease> {
       List<MedicalScore> scores =
           await medicalScoreController.getMedicalScore();
 
+      TravelScoreController travelScoreController = TravelScoreController();
+      List<TravelScoreModel> travscores =
+          await travelScoreController.getTravelScore();
+
       setState(() {
         disease = selectedDisease;
         medicalScores = scores;
+        travelScores = travscores;
       });
     } catch (e) {
       print('Error fetching disease details: $e');
@@ -103,6 +112,16 @@ class _DetailDiseaseState extends State<DetailDisease> {
                     for (var score in medicalScores)
                       Text(
                         'Resiko Medis : ${score.categories}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: _getColorBasedOnCategory(score.categories),
+                        ),
+                      ),
+                    const SizedBox(height: 12),
+                    for (var score in travelScores)
+                      Text(
+                        'Resiko Travel : ${score.categories}',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

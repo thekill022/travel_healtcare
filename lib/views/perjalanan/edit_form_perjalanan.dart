@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
+import 'package:travel_healthcare/controller/travelscore_controller.dart';
 import 'package:travel_healthcare/model/travelhistory_model.dart';
+import 'package:travel_healthcare/model/travelscore_model.dart';
 
 class UpdateFormPerjalanan extends StatefulWidget {
   const UpdateFormPerjalanan(
@@ -12,7 +14,9 @@ class UpdateFormPerjalanan extends StatefulWidget {
       this.durasiTravel,
       this.tujuanTravel,
       this.id,
-      this.formattgl});
+      this.formattgl,
+      this.durasiTravelbobot,
+      this.tujuanTravelbobot});
 
   final int? id;
   final String? kotaTujuan;
@@ -20,6 +24,8 @@ class UpdateFormPerjalanan extends StatefulWidget {
   final String? formattgl;
   final String? durasiTravel;
   final String? tujuanTravel;
+  final int? durasiTravelbobot;
+  final int? tujuanTravelbobot;
 
   @override
   State<UpdateFormPerjalanan> createState() => _UpdateFormPerjalananState();
@@ -29,6 +35,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
   final _formKey = GlobalKey<FormState>();
 
   final travelhistoryCtrl = TravelHistoryController();
+  TravelScoreController travelScoreController = TravelScoreController();
   final TextEditingController inputtgl = TextEditingController();
 
   Color myColor = Color(0xFFE0F4FF);
@@ -38,6 +45,8 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
   String? newformattgl;
   String? newdurasiTravel;
   String? newtujuanTravel;
+  int? newdurasiTravelbobot;
+  int? newtujuanTravelbobot;
 
   void updateTravelHistory(int id) async {
     TravelHistoryModel travelHistoryModel = TravelHistoryModel(
@@ -50,6 +59,19 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
     await travelhistoryCtrl.updateTravelHistory(id, travelHistoryModel);
   }
 
+  Future<void> addTravelScore() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      TravelScoreModel travelScoreModel = TravelScoreModel(
+        durasiTravelBobot: newdurasiTravelbobot!,
+        tujuanTavelBobot: newtujuanTravelbobot!,
+        categories: '',
+      );
+      await travelScoreController.createTravelScore(travelScoreModel);
+
+      //Navigator.pop(context, true);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -58,6 +80,8 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
     inputtgl.text = widget.formattgl ?? '';
     newdurasiTravel = widget.durasiTravel;
     newtujuanTravel = widget.tujuanTravel;
+    newdurasiTravelbobot = widget.durasiTravelbobot ?? 0;
+    newtujuanTravelbobot = widget.tujuanTravelbobot ?? 0;
   }
 
   List<String> daftarProvinsi = [
@@ -115,12 +139,22 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
     'lebih dari 6 bulan'
   ];
 
-  List<DropdownMenuItem> generateDurasi(List<String> daftarDurasi) {
+  List<int> daftarDurasibobot = [0, 5, 10, 20];
+
+  List<DropdownMenuItem> generateDurasi(
+      List<String> daftarDurasi, List<int> daftarDurasibobot) {
     List<DropdownMenuItem> items = [];
-    for (var item in daftarDurasi) {
+    for (var i = 0; i < daftarDurasi.length; i++) {
       items.add(DropdownMenuItem(
-        child: Text(item),
-        value: item,
+        child: Text(daftarDurasi[i]),
+        value: daftarDurasi[i],
+        onTap: () {
+          // Simpan bobot yang sesuai saat opsi dipilih
+          setState(() {
+            newdurasiTravel = daftarDurasi[i];
+            newdurasiTravelbobot = daftarDurasibobot[i];
+          });
+        },
       ));
     }
     return items;
@@ -142,12 +176,22 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
     'lainnya'
   ];
 
-  List<DropdownMenuItem> generateTujuan(List<String> daftarTujuan) {
+  List<int> daftarTujuanbobot = [5, 20, 5, 10, 0, 10, 5, 10, 20, 20, 5, 10, 5];
+
+  List<DropdownMenuItem> generateTujuan(
+      List<String> daftarTujuan, List<int> daftarTujuanbobot) {
     List<DropdownMenuItem> items = [];
-    for (var item in daftarTujuan) {
+    for (var i = 0; i < daftarTujuan.length; i++) {
       items.add(DropdownMenuItem(
-        child: Text(item),
-        value: item,
+        child: Text(daftarTujuan[i]),
+        value: daftarTujuan[i],
+        onTap: () {
+          // Simpan bobot yang sesuai saat opsi dipilih
+          setState(() {
+            newtujuanTravel = daftarTujuan[i];
+            newtujuanTravelbobot = daftarTujuanbobot[i];
+          });
+        },
       ));
     }
     return items;
@@ -352,7 +396,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     dropdownColor: myColor,
                     value: newdurasiTravel,
-                    items: generateDurasi(daftarDurasi),
+                    items: generateDurasi(daftarDurasi, daftarDurasibobot),
                     onChanged: (item) {
                       setState(() {
                         newdurasiTravel = item;
@@ -393,7 +437,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     dropdownColor: myColor,
                     value: newtujuanTravel,
-                    items: generateTujuan(daftarTujuan),
+                    items: generateTujuan(daftarTujuan, daftarTujuanbobot),
                     onChanged: (item) {
                       setState(() {
                         newtujuanTravel = item;
@@ -416,6 +460,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                           _formKey.currentState!.save();
 
                           updateTravelHistory(widget.id!);
+                          addTravelScore();
 
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

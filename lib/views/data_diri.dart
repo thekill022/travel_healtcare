@@ -78,6 +78,20 @@ class _DataDiriState extends State<DataDiri> {
 
   Future<void> addMedicalScore() async {
     if (_formKey.currentState?.validate() ?? false) {
+      if (umur == null ||
+          kondisiMedis == null ||
+          pengobatan == null ||
+          alergi == null ||
+          reaksiVaksin == null ||
+          hamilMenyusui == null) {
+        // Handle empty data case
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Lengkapi semua data sebelum menyimpan')),
+        );
+        return;
+      }
+
       MedicalScore medicalScore = MedicalScore(
         umurbobot: umurbobot!,
         kondisiMedisbobot: kondisiMedisbobot!,
