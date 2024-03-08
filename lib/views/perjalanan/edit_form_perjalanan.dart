@@ -16,7 +16,8 @@ class UpdateFormPerjalanan extends StatefulWidget {
       this.id,
       this.formattgl,
       this.durasiTravelbobot,
-      this.tujuanTravelbobot});
+      this.tujuanTravelbobot,
+      this.provinsiTujuanbobot});
 
   final int? id;
   final String? kotaTujuan;
@@ -24,6 +25,7 @@ class UpdateFormPerjalanan extends StatefulWidget {
   final String? formattgl;
   final String? durasiTravel;
   final String? tujuanTravel;
+  final int? provinsiTujuanbobot;
   final int? durasiTravelbobot;
   final int? tujuanTravelbobot;
 
@@ -45,6 +47,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
   String? newformattgl;
   String? newdurasiTravel;
   String? newtujuanTravel;
+  int? newprovinsiTujuanbobot;
   int? newdurasiTravelbobot;
   int? newtujuanTravelbobot;
 
@@ -65,6 +68,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
         durasiTravelBobot: newdurasiTravelbobot!,
         tujuanTavelBobot: newtujuanTravelbobot!,
         categories: '',
+        provinsiTujuanBobot: newprovinsiTujuanbobot!,
       );
       await travelScoreController.createTravelScore(travelScoreModel);
 
@@ -80,6 +84,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
     inputtgl.text = widget.formattgl ?? '';
     newdurasiTravel = widget.durasiTravel;
     newtujuanTravel = widget.tujuanTravel;
+    newprovinsiTujuanbobot = widget.provinsiTujuanbobot;
     newdurasiTravelbobot = widget.durasiTravelbobot ?? 0;
     newtujuanTravelbobot = widget.tujuanTravelbobot ?? 0;
   }
@@ -121,12 +126,57 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
     'Papua',
   ];
 
-  List<DropdownMenuItem> generateProvinsi(List<String> daftarProvinsi) {
+  List<int> daftarprovinsibobot = [
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+  ];
+
+  List<DropdownMenuItem> generateProvinsi(
+      List<String> daftarProvinsi, List<int> daftarprovinsibobot) {
     List<DropdownMenuItem> items = [];
-    for (var item in daftarProvinsi) {
+    for (var i = 0; i < daftarProvinsi.length; i++) {
       items.add(DropdownMenuItem(
-        child: Text(item),
-        value: item,
+        child: Text(daftarProvinsi[i]),
+        value: daftarProvinsi[i],
+        onTap: () {
+          // Simpan bobot yang sesuai saat opsi dipilih
+          setState(() {
+            newprovinsiTujuan = daftarProvinsi[i];
+            newprovinsiTujuanbobot = daftarprovinsibobot[i];
+          });
+        },
       ));
     }
     return items;
@@ -292,7 +342,8 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     dropdownColor: myColor,
                     value: newprovinsiTujuan,
-                    items: generateProvinsi(daftarProvinsi),
+                    items:
+                        generateProvinsi(daftarProvinsi, daftarprovinsibobot),
                     onChanged: (item) {
                       setState(() {
                         newprovinsiTujuan = item;

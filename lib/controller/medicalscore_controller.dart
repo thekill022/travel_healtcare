@@ -29,7 +29,7 @@ class MedicalScoreController {
       print('Response Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         print('Travel history created successfully');
       } else {
         print('Response body: ${response.body}');

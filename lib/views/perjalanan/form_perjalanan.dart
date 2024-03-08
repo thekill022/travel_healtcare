@@ -30,6 +30,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
   String? durasiTravel;
   String? tujuanTravel;
 
+  int? provinsiTujuanbobot;
   int? durasiTravelbobot;
   int? tujuanTravelbobot;
 
@@ -73,6 +74,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
       }
 
       TravelScoreModel travelScoreModel = TravelScoreModel(
+        provinsiTujuanBobot: provinsiTujuanbobot!,
         durasiTravelBobot: durasiTravelbobot!,
         tujuanTavelBobot: tujuanTravelbobot!,
         categories: '',
@@ -122,12 +124,57 @@ class _FormPerjalananState extends State<FormPerjalanan> {
     'Papua',
   ];
 
-  List<DropdownMenuItem> generateProvinsi(List<String> daftarProvinsi) {
+  List<int> daftarprovinsibobot = [
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+    70,
+  ];
+
+  List<DropdownMenuItem> generateProvinsi(
+      List<String> daftarProvinsi, List<int> daftarprovinsibobot) {
     List<DropdownMenuItem> items = [];
-    for (var item in daftarProvinsi) {
+    for (var i = 0; i < daftarProvinsi.length; i++) {
       items.add(DropdownMenuItem(
-        child: Text(item),
-        value: item,
+        child: Text(daftarProvinsi[i]),
+        value: daftarProvinsi[i],
+        onTap: () {
+          // Simpan bobot yang sesuai saat opsi dipilih
+          setState(() {
+            provinsiTujuan = daftarProvinsi[i];
+            provinsiTujuanbobot = daftarprovinsibobot[i];
+          });
+        },
       ));
     }
     return items;
@@ -292,7 +339,8 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                       dropdownColor: myColor,
                       hint: const Text('pilih provinsi tujuan'),
                       value: provinsiTujuan,
-                      items: generateProvinsi(daftarProvinsi),
+                      items:
+                          generateProvinsi(daftarProvinsi, daftarprovinsibobot),
                       onChanged: (item) {
                         setState(() {
                           provinsiTujuan = item;
