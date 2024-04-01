@@ -18,7 +18,7 @@ class HomeNavbarPage extends StatefulWidget {
 }
 
 class _HomeNavbarPageState extends State<HomeNavbarPage> {
-  final String apiUrl = '$baseUrl/symptoms/';
+  final String apiUrl = '$baseUrlProd/symptoms/';
   int currentPage = 0;
   bool isAuthenticated = false;
 

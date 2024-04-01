@@ -6,7 +6,7 @@ import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/SymptomModel.dart';
 
 class SymptomController {
-  final String apiUrl = '$baseUrl/symptoms/';
+  final String apiUrl = '$baseUrlProd/symptoms/';
 
   List<SymptomModel> symptomList = []; // Initialize endemicityList
   List<SymptomModel> filteredSymptomList = [];

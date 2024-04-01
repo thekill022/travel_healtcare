@@ -55,8 +55,8 @@ class _FormPerjalananState extends State<FormPerjalanan> {
 
     await travelhistoryCtrl.createTravelHistory(travelHistoryModel);
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Data Form Perjalanan berhasil disimpan')));
+    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //     content: Text('Data Form Perjalanan berhasil disimpan')));
 
     //Navigator.pop(context, true);
   }
@@ -83,6 +83,8 @@ class _FormPerjalananState extends State<FormPerjalanan> {
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Data Form Perjalanan berhasil disimpan')));
+
+      Navigator.pop(context, true);
     }
     return;
   }
@@ -376,7 +378,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                     child: TextFormField(
                       controller: inputtgl,
                       decoration: InputDecoration(
-                        hintText: 'Masukkan kota tujuan anda',
+                        hintText: 'Pilih tanggal keberangkatan anda',
                         suffixIcon: const Icon(Icons.event),
                         filled: true,
                         fillColor: Colors.white,
@@ -513,7 +515,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                             addTravelHistory();
                             addTravelScore();
 
-                            Navigator.pop(context, true);
+                            //Navigator.pop(context, true);
                             // Navigator.pop(context, true);
                           }
                         },

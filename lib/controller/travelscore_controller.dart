@@ -6,7 +6,7 @@ import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/travelscore_model.dart';
 
 class TravelScoreController {
-  final String apiUrl = '$baseUrl/travelScore';
+  final String apiUrl = '$baseUrlProd/travelScore';
 
   Future<void> createTravelScore(TravelScoreModel travelScoreModel) async {
     try {
@@ -29,7 +29,7 @@ class TravelScoreController {
       print('Response Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         print('Travel history created successfully');
       } else {
         print('Response body: ${response.body}');

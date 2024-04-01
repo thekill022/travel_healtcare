@@ -2,15 +2,15 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/UserDataModel.dart';
 import 'package:travel_healthcare/model/user_model.dart';
 
 final String baseUrl = "http://10.0.2.2:5000/api";
-final String baseUrlProd = "http://18.141.237.4:5000/api";
 
 class UserDataController {
   final bool isEdit;
-  final String apiUrl = '$baseUrl/medicals';
+  final String apiUrl = '$baseUrlProd/medicals';
 
   UserDataController({required this.isEdit});
 
@@ -20,7 +20,7 @@ class UserDataController {
       final String? token = prefs.getString('token');
 
       final response = await http.get(
-        Uri.parse('$baseUrl/users/'),
+        Uri.parse('$baseUrlProd/users/'),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ class UserDataController {
       }
 
       final response = await http.get(
-        Uri.parse('$baseUrl/medical'),
+        Uri.parse('$baseUrlProd/medical'),
         headers: {
           'Authorization': 'Bearer $token',
         },

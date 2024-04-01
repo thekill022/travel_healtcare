@@ -7,9 +7,9 @@ import 'package:travel_healthcare/model/diagnose_model.dart';
 import 'package:travel_healthcare/model/posttravel_model.dart';
 
 class PostTravelController {
-  final String apiUrl = '$baseUrl/posttravel';
+  final String apiUrl = '$baseUrlProd/posttravel';
 
-  Future<List<DiagnoseModel>> createTravelHistory(
+  Future<List<DiagnoseModel>> createDiagnosis(
       List<int> selectedSymptomIds) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();

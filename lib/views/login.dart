@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
 
   String? password;
 
-  static String apiUrl = '$baseUrl/users/login';
+  static String apiUrl = '$baseUrlProd/users/login';
 
   Future<void> loginUser() async {
     if (_formKey.currentState?.validate() ?? false) {

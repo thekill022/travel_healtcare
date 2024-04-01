@@ -41,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       try {
         final http.Response response = await http.post(
-          Uri.parse('$baseUrl/users/register'),
+          Uri.parse('$baseUrlProd/users/register'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(data),
         );

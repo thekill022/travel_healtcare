@@ -1,0 +1,566 @@
+@startuml
+set namespaceSeparator ::
+
+class "travel_healthcare::controller::disease_controller.dart::DiseaseController" {
+  +String apiUrl
+  +dynamic getDisease()
+}
+
+class "travel_healthcare::controller::endemicity_controller.dart::EndemicityController" {
+  +String apiUrl
+  +List<EndemicityModel> endemicityList
+  +List<EndemicityModel> filteredEndemicityList
+  +dynamic getEndemicity()
+  +dynamic filterEndemicity()
+}
+
+class "travel_healthcare::controller::getpretravel_controller.dart::GetPreTravelController" {
+  +String apiUrl
+  +dynamic getDiseaseEndemic()
+}
+
+class "travel_healthcare::controller::medicalscore_controller.dart::MedicalScoreController" {
+  +String apiUrl
+  +dynamic createMedicalScore()
+  +dynamic getMedicalScore()
+}
+
+class "travel_healthcare::controller::posttravel_controller.dart::PostTravelController" {
+  +String apiUrl
+  +dynamic createTravelHistory()
+  +dynamic getDiagnose()
+}
+
+class "travel_healthcare::controller::prevention_controller.dart::PreventionController" {
+  +String apiUrl
+  +dynamic getPreventionByDiseaseId()
+}
+
+class "travel_healthcare::controller::symptom_controller.dart::SymptomController" {
+  +String apiUrl
+  +List<SymptomModel> symptomList
+  +List<SymptomModel> filteredSymptomList
+  +dynamic getSymptoms()
+  +dynamic filterSymptom()
+}
+
+class "travel_healthcare::controller::travelhistory_controller.dart::TravelHistoryController" {
+  +String apiUrl
+  +dynamic createTravelHistory()
+  +dynamic getTravelHistory()
+  +dynamic updateTravelHistory()
+  +dynamic deleteTravelHistory()
+}
+
+class "travel_healthcare::controller::travelscore_controller.dart::TravelScoreController" {
+  +String apiUrl
+  +dynamic createTravelScore()
+  +dynamic getTravelScore()
+}
+
+class "travel_healthcare::controller::treatment_controller.dart::TreatmentController" {
+  +String apiUrl
+  +dynamic getDisease()
+}
+
+class "travel_healthcare::controller::userdata_controller.dart::UserDataController" {
+  +bool isEdit
+  +String apiUrl
+  +dynamic getCurrentUser()
+  +dynamic getUserData()
+  +dynamic createUserData()
+  +dynamic updateUserData()
+  +dynamic logout()
+}
+
+
+class "travel_healthcare::homenavbar.dart::_HomeNavbarPageState" {
+  +String apiUrl
+  +int currentPage
+  +bool isAuthenticated
+  +List<Widget> pages
+  +void initState()
+  -dynamic _checkAuthentication()
+  -void _redirectToLogin()
+  +Widget build()
+}
+
+
+class "travel_healthcare::model::diagnose_model.dart::DiagnoseModel" {
+  +int diseaseId
+  +String diseaseName
+  +String diseaseDesc
+  +int percentage
+  +Map<String, dynamic> toJson()
+}
+
+class "travel_healthcare::model::disease_model.dart::DiseaseModel" {
+  +int id
+  +String diseaseName
+  +String diseaseDesc
+  +List<dynamic>? diseaseSymptom
+  +List<TreatmentModel>? treatment
+  +List<PreventionModel>? prevention
+  +Map<String, dynamic> toJson()
+}
+
+class "travel_healthcare::model::endemicity_model.dart::EndemicityModel" {
+  +int id
+  +List<DiseaseModel> diseaseEndemic
+  +String countryname
+  +String risklevel
+  +Map<String, dynamic> toJson()
+}
+
+class "travel_healthcare::model::getpretravel_model.dart::GetPreTravelModel" {
+  +int id
+  +List<DiseaseModel> diseaseEndemic
+  +String countryName
+  +String riskLevel
+  +Map<String, dynamic> toJson()
+}
+
+class "travel_healthcare::model::medical_score.dart::MedicalScore" {
+  +int umurbobot
+  +int kondisiMedisbobot
+  +int pengobatanbobot
+  +int alergibobot
+  +int reaksiVaksinbobot
+  +int hamilMenyusuibobot
+  +String categories
+  +Map<String, dynamic> toJson()
+}
+
+class "travel_healthcare::model::posttravel_model.dart::PostTravelModel" {
+  +List<int>? symptom
+  +Map<String, dynamic> toJson()
+}
+
+class "travel_healthcare::model::prevention_model.dart::PreventionModel" {
+  +int id
+  +int diseaseid
+  +String titleprev
+  +String descprev
+  +Map<String, dynamic> toJson()
+}
+
+class "travel_healthcare::model::SymptomModel.dart::SymptomModel" {
+  +int id
+  +String symptomName
+  +String symptomChar
+  +bool isChecked
+  +Map<String, dynamic> toJson()
+}
+
+class "travel_healthcare::model::travelhistory_model.dart::TravelHistoryModel" {
+  +dynamic id
+  +String kotaTujuan
+  +String provinsiTujuan
+  +String formattgl
+  +String durasiTravel
+  +String tujuanTravel
+  +Map<String, dynamic> toJson()
+}
+
+class "travel_healthcare::model::travelscore_model.dart::TravelScoreModel" {
+  +int provinsiTujuanBobot
+  +int durasiTravelBobot
+  +int tujuanTavelBobot
+  +String categories
+  +Map<String, dynamic> toJson()
+}
+
+class "travel_healthcare::model::treatment_model.dart::TreatmentModel" {
+  +int id
+  +int diseaseid
+  +String titletreat
+  +String desctreat
+  +Map<String, dynamic> toJson()
+}
+
+class "travel_healthcare::model::UserDataModel.dart::UserDataModel" {
+  +dynamic id
+  +String umur
+  +String kondisiMedis
+  +String pengobatan
+  +String alergi
+  +String reaksiVaksin
+  +String hamilMenyusui
+  +bool vaccineBcg
+  +bool vaccineHepatitis
+  +bool vaccineDengue
+  +Map<String, dynamic> toJson()
+}
+
+class "travel_healthcare::model::user_model.dart::UserModel" {
+  +dynamic id
+  +String nama
+  +String email
+  +Map<String, dynamic> toJson()
+}
+
+
+
+class "travel_healthcare::views::data_diri.dart::_DataDiriState" {
+  -GlobalKey<FormState> _formKey
+  +UserDataController userdatactrl
+  +MedicalScoreController medicalScoreController
+  +String? umur
+  +String? kondisiMedis
+  +String? pengobatan
+  +String? alergi
+  +String? reaksiVaksin
+  +String? hamilMenyusui
+  +bool? vaccineBcg
+  +bool? vaccineHepatitis
+  +bool? vaccineDengue
+  +int? umurbobot
+  +int? kondisiMedisbobot
+  +int? pengobatanbobot
+  +int? alergibobot
+  +int? reaksiVaksinbobot
+  +int? hamilMenyusuibobot
+  +List<String> ket
+  +List<int> ketBobot
+  +List<String> kondisimed
+  +List<int> kondisimedbobot
+  +List<String> obat
+  +List<int> obatbobot
+  +List<String> alergidd
+  +List<int> alergiddbobot
+  +List<String> reakvaksin
+  +List<int> reakvaksinbobot
+  +List<String> busui
+  +List<int> busuibobot
+  +Color myColor
+  +dynamic addDataDiri()
+  +dynamic addMedicalScore()
+  +void initState()
+  +void fetchData()
+  +List<DropdownMenuItem<dynamic>> generateItems()
+  +List<DropdownMenuItem<dynamic>> generateKondisi()
+  +List<DropdownMenuItem<dynamic>> generateObat()
+  +List<DropdownMenuItem<dynamic>> generateAlergi()
+  +List<DropdownMenuItem<dynamic>> generateReakvaksin()
+  +List<DropdownMenuItem<dynamic>> generateBusui()
+  +Widget build()
+  +Widget buildVaksinCheckbox()
+}
+
+"travel_healthcare::views::data_diri.dart::_DataDiriState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"travel_healthcare::views::data_diri.dart::_DataDiriState" o-- "travel_healthcare::controller::userdata_controller.dart::UserDataController"    
+"travel_healthcare::views::data_diri.dart::_DataDiriState" o-- "travel_healthcare::controller::medicalscore_controller.dart::MedicalScoreController"
+"travel_healthcare::views::data_diri.dart::_DataDiriState" o-- "dart::ui::Color"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::data_diri.dart::_DataDiriState"
+
+
+class "travel_healthcare::views::login.dart::_LoginPageState" {
+  -GlobalKey<FormState> _formKey
+  -FocusNode _focusNodePassword
+  -TextEditingController _controllerEmail
+  -TextEditingController _controllerPassword
+  -bool _obscurePassword
+  +String? email
+  +String? password
+  {static} +String apiUrl
+  +dynamic loginUser()
+  +Widget build()
+}
+
+"travel_healthcare::views::login.dart::_LoginPageState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"travel_healthcare::views::login.dart::_LoginPageState" o-- "flutter::src::widgets::focus_manager.dart::FocusNode"
+"travel_healthcare::views::login.dart::_LoginPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::login.dart::_LoginPageState"
+
+class "travel_healthcare::views::perjalanan::edit_form_perjalanan.dart::UpdateFormPerjalanan" {
+  +int? id
+  +String? kotaTujuan
+  +String? provinsiTujuan
+  +String? formattgl
+  +String? durasiTravel
+  +String? tujuanTravel
+  +int? provinsiTujuanbobot
+  +int? durasiTravelbobot
+  +int? tujuanTravelbobot
+  +State<UpdateFormPerjalanan> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "travel_healthcare::views::perjalanan::edit_form_perjalanan.dart::UpdateFormPerjalanan"
+
+class "travel_healthcare::views::perjalanan::edit_form_perjalanan.dart::_UpdateFormPerjalananState" {
+  -GlobalKey<FormState> _formKey
+  +TravelHistoryController travelhistoryCtrl
+  +TravelScoreController travelScoreController
+  +TextEditingController inputtgl
+  +Color myColor
+  +String? newkotaTujuan
+  +String? newprovinsiTujuan
+  +String? newformattgl
+  +String? newdurasiTravel
+  +String? newtujuanTravel
+  +int? newprovinsiTujuanbobot
+  +int? newdurasiTravelbobot
+  +int? newtujuanTravelbobot
+  +List<String> daftarProvinsi
+  +List<int> daftarprovinsibobot
+  +List<String> daftarDurasi
+  +List<int> daftarDurasibobot
+  +List<String> daftarTujuan
+  +List<int> daftarTujuanbobot
+  +void updateTravelHistory()
+  +dynamic addTravelScore()
+  +void initState()
+  +List<DropdownMenuItem<dynamic>> generateProvinsi()
+  +List<DropdownMenuItem<dynamic>> generateDurasi()
+  +List<DropdownMenuItem<dynamic>> generateTujuan()
+  +Widget build()
+}
+
+"travel_healthcare::views::perjalanan::edit_form_perjalanan.dart::_UpdateFormPerjalananState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"travel_healthcare::views::perjalanan::edit_form_perjalanan.dart::_UpdateFormPerjalananState" o-- "travel_healthcare::controller::travelhistory_controller.dart::TravelHistoryController"
+"travel_healthcare::views::perjalanan::edit_form_perjalanan.dart::_UpdateFormPerjalananState" o-- "travel_healthcare::controller::travelscore_controller.dart::TravelScoreController"
+"travel_healthcare::views::perjalanan::edit_form_perjalanan.dart::_UpdateFormPerjalananState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"travel_healthcare::views::perjalanan::edit_form_perjalanan.dart::_UpdateFormPerjalananState" o-- "dart::ui::Color"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::perjalanan::edit_form_perjalanan.dart::_UpdateFormPerjalananState"       
+
+class "travel_healthcare::views::perjalanan::form_perjalanan.dart::_FormPerjalananState" {
+  -GlobalKey<FormState> _formKey
+  +Color myColor
+  -TextEditingController _kotaTujuan
+  +TextEditingController inputtgl
+  +TravelHistoryController travelhistoryCtrl
+  +TravelScoreController travelScoreController
+  +String? kotaTujuan
+  +String? provinsiTujuan
+  +String? formattgl
+  +String? durasiTravel
+  +String? tujuanTravel
+  +int? provinsiTujuanbobot
+  +int? durasiTravelbobot
+  +int? tujuanTravelbobot
+  +List<String> daftarProvinsi
+  +List<int> daftarprovinsibobot
+  +List<String> daftarDurasi
+  +List<int> daftarDurasibobot
+  +List<String> daftarTujuan
+  +List<int> daftarTujuanbobot
+  +dynamic addTravelHistory()
+  +dynamic addTravelScore()
+  +List<DropdownMenuItem<dynamic>> generateProvinsi()
+  +List<DropdownMenuItem<dynamic>> generateDurasi()
+  +List<DropdownMenuItem<dynamic>> generateTujuan()
+  +Widget build()
+}
+
+"travel_healthcare::views::perjalanan::form_perjalanan.dart::_FormPerjalananState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"travel_healthcare::views::perjalanan::form_perjalanan.dart::_FormPerjalananState" o-- "dart::ui::Color"
+"travel_healthcare::views::perjalanan::form_perjalanan.dart::_FormPerjalananState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"travel_healthcare::views::perjalanan::form_perjalanan.dart::_FormPerjalananState" o-- "travel_healthcare::controller::travelhistory_controller.dart::TravelHistoryController"
+"travel_healthcare::views::perjalanan::form_perjalanan.dart::_FormPerjalananState" o-- "travel_healthcare::controller::travelscore_controller.dart::TravelScoreController"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::perjalanan::form_perjalanan.dart::_FormPerjalananState"
+
+class "travel_healthcare::views::posttravel::detail_diagnose.dart::DetailDiagnose" {
+  +int diseaseId
+  +String diseaseName
+  +String diseaseDesc
+  +State<DetailDiagnose> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "travel_healthcare::views::posttravel::detail_diagnose.dart::DetailDiagnose"       
+
+class "travel_healthcare::views::posttravel::detail_diagnose.dart::_DetailDiagnoseState" {
+  +DiseaseModel disease
+  +void initState()
+  +dynamic fetchDiseaseDetails()
+  +Widget build()
+}
+
+"travel_healthcare::views::posttravel::detail_diagnose.dart::_DetailDiagnoseState" o-- "travel_healthcare::model::disease_model.dart::DiseaseModel"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::posttravel::detail_diagnose.dart::_DetailDiagnoseState"
+
+class "travel_healthcare::views::posttravel::disease_diagnose.dart::DiseaseDiagnosePage" {
+  +List<DiagnoseModel> diagnosisData
+  +State<DiseaseDiagnosePage> createState()
+}
+
+"travel_healthcare::views::posttravel::disease_diagnose.dart::_DiseaseDiagnosePageState" o-- "dart::ui::Color"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::posttravel::disease_diagnose.dart::_DiseaseDiagnosePageState"    
+
+"travel_healthcare::views::posttravel::disease_diagnose.dart::DiseaseCard" o-- "travel_healthcare::model::diagnose_model.dart::DiagnoseModel"   
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "travel_healthcare::views::posttravel::disease_diagnose.dart::DiseaseCard"        
+
+
+class "travel_healthcare::views::post_travel.dart::_PostTravelPageState" {
+  +TextEditingController searchController
+  +Color myColor
+  +SymptomController symptomController
+  -dynamic _symptoms
+  -List<SymptomModel> _allSymptoms
+  -List<SymptomModel> _filteredSymptoms
+  -Map<int, bool> _temporaryCheckboxStatus
+  +void initState()
+  +void filterSymptomList()
+  +Widget build()
+}
+
+"travel_healthcare::views::post_travel.dart::_PostTravelPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"       
+"travel_healthcare::views::post_travel.dart::_PostTravelPageState" o-- "dart::ui::Color"
+"travel_healthcare::views::post_travel.dart::_PostTravelPageState" o-- "travel_healthcare::controller::symptom_controller.dart::SymptomController"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::post_travel.dart::_PostTravelPageState"
+
+class "travel_healthcare::views::post_travel.dart::SymptomList" {
+  +List<SymptomModel> symptoms
+  +Map<int, bool> temporaryCheckboxStatus
+  +dynamic Function(int, bool) onCheckboxChanged
+  +_SymptomListState createState()
+}
+
+"travel_healthcare::views::post_travel.dart::SymptomList" o-- "null::dynamic Function(int, bool)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "travel_healthcare::views::post_travel.dart::SymptomList"
+
+class "travel_healthcare::views::post_travel.dart::_SymptomListState" {
+  -List<bool> _checkboxStatus
+  +void initState()
+  -void _initCheckboxStatus()
+  +void didUpdateWidget()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::post_travel.dart::_SymptomListState"
+
+class "travel_healthcare::views::post_travel.dart::SymptomCheckbox" {
+  +SymptomModel symptom
+  +bool isChecked
+  +void Function(bool?) onChanged
+  +Widget build()
+}
+
+"travel_healthcare::views::post_travel.dart::SymptomCheckbox" o-- "travel_healthcare::model::SymptomModel.dart::SymptomModel"
+"travel_healthcare::views::post_travel.dart::SymptomCheckbox" o-- "flutter::src::foundation::basic_types.dart::void Function(bool)"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "travel_healthcare::views::post_travel.dart::SymptomCheckbox"
+
+class "travel_healthcare::views::pratravel::detail_disease.dart::DetailDisease" {
+  +int id
+  +String diseaseName
+  +String diseaseDesc
+  +State<DetailDisease> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "travel_healthcare::views::pratravel::detail_disease.dart::DetailDisease"
+
+class "travel_healthcare::views::pratravel::detail_disease.dart::_DetailDiseaseState" {
+  +DiseaseModel disease
+  +List<MedicalScore> medicalScores
+  +List<TravelScoreModel> travelScores
+  +void initState()
+  +dynamic fetchDiseaseDetails()
+  +Widget build()
+  -Color _getColorBasedOnCategory()
+}
+
+"travel_healthcare::views::pratravel::detail_disease.dart::_DetailDiseaseState" o-- "travel_healthcare::model::disease_model.dart::DiseaseModel"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::pratravel::detail_disease.dart::_DetailDiseaseState"
+
+class "travel_healthcare::views::pratravel::disease_list.dart::DiseaseList" {
+  +int id
+  +String countryname
+  +State<DiseaseList> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "travel_healthcare::views::pratravel::disease_list.dart::DiseaseList"
+
+class "travel_healthcare::views::pratravel::disease_list.dart::_DiseaseListState" {
+  +GetPreTravelController getPreTravelController
+  -dynamic _getPreTravelModelFuture
+  +void initState()
+  +Widget build()
+}
+
+"travel_healthcare::views::pratravel::disease_list.dart::_DiseaseListState" o-- "travel_healthcare::controller::getpretravel_controller.dart::GetPreTravelController"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::pratravel::disease_list.dart::_DiseaseListState"
+
+class "travel_healthcare::views::pra_travel.dart::PredictPage" {
+  +State<PredictPage> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "travel_healthcare::views::pra_travel.dart::PredictPage"
+
+class "travel_healthcare::views::pra_travel.dart::_PredictPageState" {
+  +EndemicityController endemicityController
+  +TextEditingController searchController
+  +List<EndemicityModel> filteredEndemicityList
+  +Color myColor
+  +void initState()
+  +void filterEndemicityList()
+  +Widget build()
+}
+
+"travel_healthcare::views::pra_travel.dart::_PredictPageState" o-- "travel_healthcare::controller::endemicity_controller.dart::EndemicityController"
+"travel_healthcare::views::pra_travel.dart::_PredictPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"travel_healthcare::views::pra_travel.dart::_PredictPageState" o-- "dart::ui::Color"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::pra_travel.dart::_PredictPageState"
+
+
+class "travel_healthcare::views::profile.dart::_ProfilePageState" {
+  +UserDataController userdatactrl
+  +int? userId
+  +String? umur
+  +String? kondisiMedis
+  +String? pengobatan
+  +String? alergi
+  +String? reaksiVaksin
+  +String? hamilMenyusui
+  +bool? vaccineBcg
+  +bool? vaccineHepatitis
+  +bool? vaccineDengue
+  +UserDataModel? crntuser
+  +Color myColor
+  +Widget build()
+}
+
+"travel_healthcare::views::profile.dart::_ProfilePageState" o-- "travel_healthcare::controller::userdata_controller.dart::UserDataController"   
+"travel_healthcare::views::profile.dart::_ProfilePageState" o-- "travel_healthcare::model::UserDataModel.dart::UserDataModel"
+"travel_healthcare::views::profile.dart::_ProfilePageState" o-- "dart::ui::Color"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::profile.dart::_ProfilePageState"
+
+
+
+class "travel_healthcare::views::register.dart::_RegisterPageState" {
+  -GlobalKey<FormState> _formKey
+  -FocusNode _focusNodePassword
+  -TextEditingController _controllerUsername
+  -TextEditingController _controllerEmail
+  -TextEditingController _controllerPassword
+  -bool _obscurePassword
+  +String? nama
+  +String? email
+  +String? password
+  -dynamic _register()
+  +Widget build()
+}
+
+"travel_healthcare::views::register.dart::_RegisterPageState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"travel_healthcare::views::register.dart::_RegisterPageState" o-- "flutter::src::widgets::focus_manager.dart::FocusNode"
+"travel_healthcare::views::register.dart::_RegisterPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::register.dart::_RegisterPageState"
+
+
+class "travel_healthcare::views::riwayat_perjalanan.dart::_RiwayatPerjalananState" {
+  +TravelHistoryController travelhistoryCtrl
+  +List<TravelHistoryModel> listtravelHistory
+  +String? kotaTujuan
+  +String? provinsiTujuan
+  +String? durasiTravel
+  +String? tujuanTravel
+  +void initState()
+  +void getTravelHistory()
+  +void deleteTravelHistory()
+  +Widget build()
+  -dynamic _showDeleteConfirmationDialog()
+}
+
+"travel_healthcare::views::riwayat_perjalanan.dart::_RiwayatPerjalananState" o-- "travel_healthcare::controller::travelhistory_controller.dart::TravelHistoryController"
+"flutter::src::widgets::framework.dart::State" <|-- "travel_healthcare::views::riwayat_perjalanan.dart::_RiwayatPerjalananState"
+
+
+@enduml

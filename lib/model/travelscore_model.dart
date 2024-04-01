@@ -21,6 +21,7 @@ class TravelScoreModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'destination_score': provinsiTujuanBobot,
       'duration': durasiTravelBobot,
       'travel_purpose': tujuanTavelBobot,
       'categories': categories

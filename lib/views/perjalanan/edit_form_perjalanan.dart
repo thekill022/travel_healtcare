@@ -84,7 +84,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
     inputtgl.text = widget.formattgl ?? '';
     newdurasiTravel = widget.durasiTravel;
     newtujuanTravel = widget.tujuanTravel;
-    newprovinsiTujuanbobot = widget.provinsiTujuanbobot;
+    newprovinsiTujuanbobot = widget.provinsiTujuanbobot ?? 0;
     newdurasiTravelbobot = widget.durasiTravelbobot ?? 0;
     newtujuanTravelbobot = widget.tujuanTravelbobot ?? 0;
   }

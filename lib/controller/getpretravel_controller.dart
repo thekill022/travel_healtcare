@@ -7,7 +7,7 @@ import 'package:travel_healthcare/model/disease_model.dart';
 import 'package:travel_healthcare/model/getpretravel_model.dart';
 
 class GetPreTravelController {
-  final String apiUrl = '$baseUrl/pretravel';
+  final String apiUrl = '$baseUrlProd/pretravel';
 
   Future<GetPreTravelModel> getDiseaseEndemic(int id) async {
     try {

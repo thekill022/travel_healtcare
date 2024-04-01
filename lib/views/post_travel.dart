@@ -117,8 +117,8 @@ class _PostTravelPageState extends State<PostTravelPage> {
                   .toList();
 
               try {
-                List<DiagnoseModel> diagnoses = await PostTravelController()
-                    .createTravelHistory(selectedIds);
+                List<DiagnoseModel> diagnoses =
+                    await PostTravelController().createDiagnosis(selectedIds);
 
                 // DiagnoseResult diubah menjadi List<DiagnoseModel>
                 // Karena createTravelHistory mengembalikan List<DiagnoseModel>

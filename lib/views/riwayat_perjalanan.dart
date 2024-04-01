@@ -171,6 +171,7 @@ class _RiwayatPerjalananState extends State<RiwayatPerjalanan> {
                 deleteTravelHistory(listtravelHistory[index].id);
                 setState(() {
                   listtravelHistory.removeAt(index);
+                  getTravelHistory();
                 });
 
                 var snackBar =

@@ -5,10 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_healthcare/model/travelhistory_model.dart';
 
 final String baseUrl = "http://10.0.2.2:5000/api";
-final String baseUrlProd = "http://18.141.237.4:5000/api";
+final String baseUrlProd = "https://api.iqbalalhabib.com/api";
 
 class TravelHistoryController {
-  final String apiUrl = '$baseUrl/travels';
+  final String apiUrl = '$baseUrlProd/travels';
 
   Future<void> createTravelHistory(TravelHistoryModel travelHistory) async {
     try {

@@ -140,6 +140,7 @@ class _DetailDiseaseState extends State<DetailDisease> {
                             '${prevention.descprev}',
                             textAlign: TextAlign.justify,
                           ),
+                          const SizedBox(height: 10)
                         ],
                       ),
                     const SizedBox(height: 12),

@@ -6,7 +6,7 @@ import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/medical_score.dart';
 
 class MedicalScoreController {
-  final String apiUrl = '$baseUrl/medicalScore';
+  final String apiUrl = '$baseUrlProd/medicalScore';
 
   Future<void> createMedicalScore(MedicalScore medicalScore) async {
     try {

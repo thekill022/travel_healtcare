@@ -7,7 +7,7 @@ import 'package:travel_healthcare/model/disease_model.dart';
 import 'package:travel_healthcare/model/endemicity_model.dart';
 
 class EndemicityController {
-  final String apiUrl = '$baseUrl/endemics';
+  final String apiUrl = '$baseUrlProd/endemics';
 
   List<EndemicityModel> endemicityList = []; // Initialize endemicityList
   List<EndemicityModel> filteredEndemicityList = [];

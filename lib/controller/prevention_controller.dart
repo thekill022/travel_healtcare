@@ -6,7 +6,7 @@ import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/prevention_model.dart';
 
 class PreventionController {
-  final String apiUrl = '$baseUrl/preventions';
+  final String apiUrl = '$baseUrlProd/preventions';
   Future<List<PreventionModel>> getPreventionByDiseaseId() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();

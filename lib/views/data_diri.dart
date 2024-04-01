@@ -69,10 +69,10 @@ class _DataDiriState extends State<DataDiri> {
       );
       await userdatactrl.createUserData(userDataModel);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Data diri berhasil disimpan')));
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text('Data diri berhasil disimpan')));
 
-      Navigator.pop(context, true);
+      // Navigator.pop(context, true);
     }
   }
 
