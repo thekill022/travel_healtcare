@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_healthcare/model/travelhistory_model.dart';
 
-final String baseUrl = "http://10.0.2.2:5000/api";
-final String baseUrlProd = "https://api.iqbalalhabib.com/api";
+final String baseUrl = "http://103.187.146.36:8080/api";
+final String baseUrlProd = "http://103.187.146.36:8080/api";
 
 class TravelHistoryController {
   final String apiUrl = '$baseUrlProd/travels';

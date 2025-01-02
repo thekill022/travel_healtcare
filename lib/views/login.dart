@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
-import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/homenavbar.dart';
 import 'package:travel_healthcare/views/register.dart';
 
@@ -30,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
 
   String? password;
 
-  static String apiUrl = '$baseUrlProd/users/login';
+  static String apiUrl = "http://103.187.146.36:8080/api/users/login";
 
   Future<void> loginUser() async {
     if (_formKey.currentState?.validate() ?? false) {
@@ -58,31 +57,33 @@ class _LoginPageState extends State<LoginPage> {
             final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
             prefs.setString('token', bearerToken);
+
+            // Print the login success and token (optional)
+            print('Login successful');
+            print('Bearer Token: $bearerToken');
+
+            // Navigate to HomeNavbarPage after successful login
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return HomeNavbarPage();
+                },
+              ),
+            );
           }
-
-          print('Login successful');
-          print('Bearer Token: $bearerToken');
-
-          Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) {
-              return HomeNavbarPage();
-            },
-          ));
-
-          // Add any additional logic or navigation you want to perform after successful login
         } else {
+          // Show an error message if login fails
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Login Gagal. Email atau Password salah'),
               backgroundColor: Colors.red,
             ),
           );
-          // Login failed
           print('Login failed: ${response.statusCode}');
-          // Handle the error or show an appropriate message to the user
         }
       } catch (e) {
-        // Handle any exception that occurs during the HTTP request
+        // Handle any exception during the login attempt
         print('Error during login: $e');
       }
     }
@@ -101,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: [
                 const Text(
-                  "Masuk",
+                  "Login",
                   style: TextStyle(
                       color: Colors.blueAccent,
                       fontSize: 30,
@@ -109,12 +110,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  "Selamat Datang di Travel Healthcare",
+                  "Welcome To Travel Healthcare",
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  "Silahkan masuk ke akun anda",
+                  "please login to your account",
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 const SizedBox(height: 40),
@@ -178,16 +179,15 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onPressed: loginUser,
-                      child: const Text("Masuk"),
+                      child: const Text("Login"),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Tidak memiliki akun?"),
+                        const Text("Don't Have an Account?"),
                         TextButton(
                           onPressed: () {
                             _formKey.currentState?.reset();
-
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -197,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             );
                           },
-                          child: const Text("Daftar"),
+                          child: const Text("Register"),
                         ),
                       ],
                     ),

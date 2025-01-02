@@ -50,8 +50,7 @@ class _DataDiriState extends State<DataDiri> {
           hamilMenyusui == null) {
         // Handle empty data case
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Lengkapi semua data sebelum menyimpan')),
+          const SnackBar(content: Text('Complete all data before saving')),
         );
         return;
       }
@@ -86,8 +85,7 @@ class _DataDiriState extends State<DataDiri> {
           hamilMenyusui == null) {
         // Handle empty data case
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Lengkapi semua data sebelum menyimpan')),
+          const SnackBar(content: Text('Complete all data before saving')),
         );
         return;
       }
@@ -104,7 +102,7 @@ class _DataDiriState extends State<DataDiri> {
       await medicalScoreController.createMedicalScore(medicalScore);
 
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Data diri berhasil disimpan')));
+          const SnackBar(content: Text('Personal data successfully saved')));
 
       Navigator.pop(context, true);
     }
@@ -167,7 +165,7 @@ class _DataDiriState extends State<DataDiri> {
     }
   }
 
-  List<String> ket = ['Kurang dari 65 tahun', 'Lebih dari 65 tahun'];
+  List<String> ket = ['Under 65 years', 'Over 65 years'];
   List<int> ketBobot = [0, 15];
 
   List<DropdownMenuItem> generateItems(List<String> ket, List<int> ketBobot) {
@@ -189,23 +187,23 @@ class _DataDiriState extends State<DataDiri> {
   }
 
   List<String> kondisimed = [
-    'Tekanan darah tinggi',
-    'penyakit jantung',
-    'Gangguan pembekuan darah',
-    'Disfungsi ginjal',
-    'Epilepsi',
-    'Kerusakan limpa',
-    'Kanker',
+    'High blood pressure',
+    'heart disease',
+    'Blood clotting disorders',
+    'Kidney dysfunction',
+    'Epilepsy',
+    'Spleen damage',
+    'Cancer',
     'HIV/AIDS',
-    'Penyakit autoimun',
-    'Gangguan jiwa/depresi',
-    'Penyakit paru-paru',
+    'Autoimmune disease',
+    'Mental disorder/depression',
+    'Lung disease',
     'Diabetes',
-    'Penyakit radang usus',
-    'Penyakit Hati',
-    'Pengangkatan kelenjar timus',
-    'Lainnya',
-    'Tidak ada penyakit'
+    'Inflammatory bowel disease',
+    'Liver disease',
+    'Thymus gland removal',
+    'Other',
+    'No disease'
   ];
 
   List<int> kondisimedbobot = [
@@ -248,19 +246,19 @@ class _DataDiriState extends State<DataDiri> {
   }
 
   List<String> obat = [
-    'obat antihipertensi',
-    'kortison',
-    'obat pengencer darah',
-    'Obat imunosupresif',
-    'Kemoterapi',
-    'Radioterapi',
-    'Antibiotik',
-    'Antidepresan',
-    'Hormon (seperti pil kontrasepsi)',
-    'Obat antivirus',
-    'Terapi desensitisasi alergen',
-    'Lainnya',
-    'Tidak ada obat'
+    'antihypertensive drugs',
+    'cortisone',
+    'blood thinners',
+    'immunosuppressive drugs',
+    'chemotherapy',
+    'radiotherapy',
+    'antibiotics',
+    'antidepressants',
+    'hormones (such as contraceptive pills)',
+    'antiviral drugs',
+    'allergen desensitization therapy',
+    'others',
+    'no drugs'
   ];
 
   List<int> obatbobot = [5, 10, 20, 20, 20, 10, 10, 10, 5, 5, 5, 5, 0];
@@ -284,13 +282,13 @@ class _DataDiriState extends State<DataDiri> {
   }
 
   List<String> alergidd = [
-    'ayam atau telur',
-    'Demam',
-    'Asma',
-    'Antibiotik',
-    'Sengatan lebah atau tawon',
-    'Lainnya',
-    'Tidak ada alergi'
+    'chicken or egg',
+    'Fever',
+    'Asthma',
+    'Antibiotics',
+    'Bee or wasp sting',
+    'Other',
+    'No allergies'
   ];
 
   List<int> alergiddbobot = [20, 0, 5, 10, 20, 5, 0];
@@ -314,7 +312,7 @@ class _DataDiriState extends State<DataDiri> {
     return items4;
   }
 
-  List<String> reakvaksin = ['Ya', 'Tidak'];
+  List<String> reakvaksin = ['Yes', 'No'];
   List<int> reakvaksinbobot = [20, 0];
 
   List<DropdownMenuItem> generateReakvaksin(
@@ -363,7 +361,7 @@ class _DataDiriState extends State<DataDiri> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderSub(context, titleText: "Data Diri"),
+      appBar: HeaderSub(context, titleText: "Personal data"),
       backgroundColor: myColor,
       body: SafeArea(
         child: Form(
@@ -375,7 +373,7 @@ class _DataDiriState extends State<DataDiri> {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
-                    'Umur : ',
+                    'Age : ',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -385,214 +383,41 @@ class _DataDiriState extends State<DataDiri> {
                 ),
                 const SizedBox(height: 5),
                 Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(right: 130),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: DropdownButton(
-                    borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.lightBlueAccent,
-                    hint: const Text('pilih umur anda'),
-                    value: umur,
-                    items: generateItems(ket, ketBobot),
-                    onChanged: (item) {
-                      setState(() {
-                        umur = item;
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Kondisi medis sebelumnya :',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(right: 65),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: DropdownButton(
-                    borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.lightBlueAccent,
-                    hint: const Text('pilih kondisi medis sebelumnya'),
-                    value: kondisiMedis,
-                    items: generateKondisi(kondisimed, kondisimedbobot),
-                    onChanged: (item2) {
-                      setState(() {
-                        kondisiMedis = item2;
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Pengobatan saat ini :',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(right: 42),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: DropdownButton(
-                    borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.lightBlueAccent,
-                    hint: const Text('pilih pengobatan anda saat ini'),
-                    value: pengobatan,
-                    items: generateObat(obat, obatbobot),
-                    onChanged: (item3) {
-                      setState(() {
-                        pengobatan = item3;
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Alergi :',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(right: 90),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: DropdownButton(
-                    borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.lightBlueAccent,
-                    hint: const Text('pilih alergi anda'),
-                    value: alergi,
-                    items: generateAlergi(alergidd, alergiddbobot),
-                    onChanged: (item4) {
-                      setState(() {
-                        alergi = item4;
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Reaksi terhadap vaksin sebelumnya :',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(right: 50),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: DropdownButton(
-                    borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.lightBlueAccent,
-                    hint: const Text('pilih reaksi anda terhadap vaksin'),
-                    value: reaksiVaksin,
-                    items: generateReakvaksin(reakvaksin, reakvaksinbobot),
-                    onChanged: (item5) {
-                      setState(
-                        () {
-                          reaksiVaksin = item5;
+                    child: Flexible(
+                      child: DropdownButton(
+                        isExpanded: true,
+                        borderRadius: BorderRadius.circular(10),
+                        icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                        dropdownColor: Colors.lightBlueAccent,
+                        hint: const Text('Select your age'),
+                        value: umur,
+                        items: generateItems(ket, ketBobot),
+                        onChanged: (item) {
+                          setState(() {
+                            umur = item;
+                          });
                         },
-                      );
-                    },
-                  ),
-                ),
+                      ),
+                    )),
                 const SizedBox(height: 15),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
-                    'Apakah anda Hamil/Menyusui :',
+                    'Previous medical conditions :',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -602,40 +427,219 @@ class _DataDiriState extends State<DataDiri> {
                 ),
                 const SizedBox(height: 5),
                 Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(right: 150),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Flexible(
+                      child: DropdownButton(
+                        isExpanded: true,
+                        borderRadius: BorderRadius.circular(10),
+                        icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                        dropdownColor: Colors.lightBlueAccent,
+                        hint: const Text('Select previous medical conditions'),
+                        value: kondisiMedis,
+                        items: generateKondisi(kondisimed, kondisimedbobot),
+                        onChanged: (item2) {
+                          setState(() {
+                            kondisiMedis = item2;
+                          });
+                        },
                       ),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: DropdownButton(
-                    borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: Colors.lightBlueAccent,
-                    hint: const Text('pilih jawaban anda'),
-                    value: hamilMenyusui,
-                    items: generateBusui(busui, busuibobot),
-                    onChanged: (item6) {
-                      setState(() {
-                        hamilMenyusui = item6;
-                      });
-                    },
-                  ),
-                ),
+                    )),
                 const SizedBox(height: 15),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
-                    'Riwayat Vaksin :',
+                    'Current treatment :',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Flexible(
+                      child: DropdownButton(
+                        isExpanded: true,
+                        borderRadius: BorderRadius.circular(10),
+                        icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                        dropdownColor: Colors.lightBlueAccent,
+                        hint: const Text('Choose your current treatment'),
+                        value: pengobatan,
+                        items: generateObat(obat, obatbobot),
+                        onChanged: (item3) {
+                          setState(() {
+                            pengobatan = item3;
+                          });
+                        },
+                      ),
+                    )),
+                const SizedBox(height: 15),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Allergy :',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Flexible(
+                      child: DropdownButton(
+                        isExpanded: true,
+                        borderRadius: BorderRadius.circular(10),
+                        icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                        dropdownColor: Colors.lightBlueAccent,
+                        hint: const Text('select your allergies'),
+                        value: alergi,
+                        items: generateAlergi(alergidd, alergiddbobot),
+                        onChanged: (item4) {
+                          setState(() {
+                            alergi = item4;
+                          });
+                        },
+                      ),
+                    )),
+                const SizedBox(height: 15),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Reaction to previous vaccine :',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Flexible(
+                      child: DropdownButton(
+                        isExpanded: true,
+                        borderRadius: BorderRadius.circular(10),
+                        icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                        dropdownColor: Colors.lightBlueAccent,
+                        hint: const Text('choose your reaction to the vaccine'),
+                        value: reaksiVaksin,
+                        items: generateReakvaksin(reakvaksin, reakvaksinbobot),
+                        onChanged: (item5) {
+                          setState(
+                            () {
+                              reaksiVaksin = item5;
+                            },
+                          );
+                        },
+                      ),
+                    )),
+                const SizedBox(height: 15),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Are you Pregnant/Breastfeeding :',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Flexible(
+                      child: DropdownButton(
+                        isExpanded: true,
+                        borderRadius: BorderRadius.circular(10),
+                        icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                        dropdownColor: Colors.lightBlueAccent,
+                        hint: const Text('choose your answer'),
+                        value: hamilMenyusui,
+                        items: generateBusui(busui, busuibobot),
+                        onChanged: (item6) {
+                          setState(() {
+                            hamilMenyusui = item6;
+                          });
+                        },
+                      ),
+                    )),
+                const SizedBox(height: 15),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Vaccine History :',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -645,17 +649,17 @@ class _DataDiriState extends State<DataDiri> {
                 ),
                 Column(
                   children: [
-                    buildVaksinCheckbox('Vaksin BCG', (value) {
+                    buildVaksinCheckbox('BCG vaccine', (value) {
                       setState(() {
                         vaccineBcg = value;
                       });
                     }),
-                    buildVaksinCheckbox('Vaksin Hepatitis A (HAV)', (value) {
+                    buildVaksinCheckbox('Hepatitis A Vaccine (HAV)', (value) {
                       setState(() {
                         vaccineHepatitis = value;
                       });
                     }),
-                    buildVaksinCheckbox('Vaksin Dengue', (value) {
+                    buildVaksinCheckbox('Dengue Vaccine', (value) {
                       setState(() {
                         vaccineDengue = value;
                       });
@@ -680,7 +684,7 @@ class _DataDiriState extends State<DataDiri> {
                           addMedicalScore();
                         }
                       },
-                      child: const Text("Simpan"),
+                      child: const Text("Save"),
                     ),
                   ],
                 ),
@@ -698,9 +702,9 @@ class _DataDiriState extends State<DataDiri> {
       children: [
         Checkbox(
           value: onChanged != null
-              ? vaksinName == 'Vaksin BCG'
+              ? vaksinName == 'BCG vaccine'
                   ? vaccineBcg ?? false
-                  : vaksinName == 'Vaksin Hepatitis A (HAV)'
+                  : vaksinName == 'Hepatitis A Vaccine (HAV)'
                       ? vaccineHepatitis ?? false
                       : vaccineDengue ?? false
               : false,

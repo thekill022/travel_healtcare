@@ -24,19 +24,107 @@ class _ProfilePageState extends State<ProfilePage> {
   String? alergi;
   String? reaksiVaksin;
   String? hamilMenyusui;
-  // String? riwayatVaksin;
   bool? vaccineBcg;
   bool? vaccineHepatitis;
   bool? vaccineDengue;
 
   UserDataModel? crntuser;
-
   Color myColor = Color(0xFFE0F4FF);
+
+  Future<void> _showDeleteConfirmationDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Delete Account'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure you want to delete your account?'),
+                SizedBox(height: 8),
+                Text(
+                  'All your data will be deleted and cannot be restored.',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cencel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                'Delete',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _performDelete();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _performDelete() async {
+    try {
+      // Tampilkan loading
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
+
+      await userdatactrl.deleteUser();
+
+      // Tutup loading dialog
+      Navigator.pop(context);
+
+      // Tampilkan pesan sukses
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Account successfully deleted'),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      // Redirect ke halaman login
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      // Tutup loading dialog jika masih ada
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
+      // Tampilkan error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString().replaceAll('Exception: ', '')),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderSub(context, titleText: "Profil"),
+      appBar: HeaderSub(context, titleText: "Profile"),
       backgroundColor: myColor,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -46,25 +134,23 @@ class _ProfilePageState extends State<ProfilePage> {
               future: userdatactrl.getCurrentUser(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   Future.delayed(Duration.zero, () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginPage()));
                   });
-
                   return const Center(
-                    child: Text('Anda belum login'),
+                    child: Text('You are not logged in'),
                   );
                 } else if (!snapshot.hasData) {
-                  return Text('Data not found');
+                  return Center(child: Text('Data not found'));
                 } else {
-                  // Data user berhasil diambil, tampilkan nama dan email
                   UserModel currentUser = snapshot.data!;
                   print(
                       'Nama: ${currentUser.nama}, Email: ${currentUser.email}');
-
                   print('Umur: ${crntuser?.umur}');
+
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -96,32 +182,30 @@ class _ProfilePageState extends State<ProfilePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DataDiri(
-                                  // umur: umur,
-                                  // kondisiMedis: kondisiMedis,
-                                  // pengobatan: pengobatan,
-                                  // alergi: alergi,
-                                  // reaksiVaksin: reaksiVaksin,
-                                  // hamilMenyusui: hamilMenyusui,
-                                  // vaccineBcg: vaccineBcg,
-                                  // vaccineHepatitis: vaccineHepatitis,
-                                  // vaccineDengue: vaccineDengue,
-                                  // isEdit: true,
-                                  ),
+                              builder: (context) => DataDiri(),
                             ),
                           );
                         },
-                        child: const Text("Data Diri"),
+                        child: const Text("Personal data"),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: _showDeleteConfirmationDialog,
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                          onPrimary: Colors.white,
+                        ),
+                        child: const Text("Delete Account"),
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {
                           userdatactrl.logout();
                           Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const HomeNavbarPage()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeNavbarPage()),
+                          );
                         },
                         child: const Text("Logout"),
                       ),

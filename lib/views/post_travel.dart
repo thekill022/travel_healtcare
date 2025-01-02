@@ -51,7 +51,7 @@ class _PostTravelPageState extends State<PostTravelPage> {
             filterSymptomList(query);
           },
           decoration: InputDecoration(
-            hintText: 'Cari gejala anda',
+            hintText: 'Find Your Symptoms',
             prefixIcon: const Icon(Iconsax.search_normal),
             filled: true,
             fillColor: myColor,
@@ -82,7 +82,7 @@ class _PostTravelPageState extends State<PostTravelPage> {
                     });
 
                     return const Center(
-                      child: Text('Anda belum login'),
+                      child: Text('You are not logged in'),
                     );
                   } else {
                     _allSymptoms = snapshot.data!;
@@ -145,7 +145,7 @@ class _PostTravelPageState extends State<PostTravelPage> {
               backgroundColor: myColor,
             ),
             icon: Icon(Iconsax.shield_tick),
-            label: Text('Diagnosa'),
+            label: Text('Diagnosis'),
           ),
         ),
       ),

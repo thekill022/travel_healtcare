@@ -9,6 +9,7 @@ import 'package:travel_healthcare/model/travelscore_model.dart';
 class UpdateFormPerjalanan extends StatefulWidget {
   const UpdateFormPerjalanan(
       {super.key,
+      this.negaraTujuan,
       this.kotaTujuan,
       this.provinsiTujuan,
       this.durasiTravel,
@@ -20,6 +21,7 @@ class UpdateFormPerjalanan extends StatefulWidget {
       this.provinsiTujuanbobot});
 
   final int? id;
+  final String? negaraTujuan;
   final String? kotaTujuan;
   final String? provinsiTujuan;
   final String? formattgl;
@@ -43,6 +45,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
   Color myColor = Color(0xFFE0F4FF);
 
   String? newkotaTujuan;
+  String? newNegaraTujuan;
   String? newprovinsiTujuan;
   String? newformattgl;
   String? newdurasiTravel;
@@ -53,6 +56,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
 
   void updateTravelHistory(int id) async {
     TravelHistoryModel travelHistoryModel = TravelHistoryModel(
+      negaraTujuan: newNegaraTujuan!,
       kotaTujuan: newkotaTujuan!,
       provinsiTujuan: newprovinsiTujuan!,
       formattgl: inputtgl.text,
@@ -79,6 +83,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
   @override
   void initState() {
     super.initState();
+    newNegaraTujuan = widget.negaraTujuan;
     newkotaTujuan = widget.kotaTujuan;
     newprovinsiTujuan = widget.provinsiTujuan;
     inputtgl.text = widget.formattgl ?? '';
@@ -89,104 +94,13 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
     newtujuanTravelbobot = widget.tujuanTravelbobot ?? 0;
   }
 
-  List<String> daftarProvinsi = [
-    'Aceh',
-    'Sumatera Utara',
-    'Sumatera Barat',
-    'Riau',
-    'Kepulauan Riau',
-    'Jambi',
-    'Sumatera Selatan',
-    'Bengkulu',
-    'Lampung',
-    'Bangka Belitung',
-    'DKI Jakarta',
-    'Jawa Barat',
-    'Banten',
-    'Jawa Tengah',
-    'DI Yogyakarta',
-    'Jawa Timur',
-    'Bali',
-    'Nusa Tenggara Barat',
-    'Nusa Tenggara Timur',
-    'Kalimantan Barat',
-    'Kalimantan Tengah',
-    'Kalimantan Selatan',
-    'Kalimantan Timur',
-    'Kalimantan Utara',
-    'Gorontalo',
-    'Sulawesi Barat',
-    'Sulawesi Utara',
-    'Sulawesi Tengah',
-    'Sulawesi Selatan',
-    'Sulawesi Tenggara',
-    'Maluku',
-    'Maluku Utara',
-    'Papua Barat',
-    'Papua',
-  ];
-
-  List<int> daftarprovinsibobot = [
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-  ];
-
-  List<DropdownMenuItem> generateProvinsi(
-      List<String> daftarProvinsi, List<int> daftarprovinsibobot) {
-    List<DropdownMenuItem> items = [];
-    for (var i = 0; i < daftarProvinsi.length; i++) {
-      items.add(DropdownMenuItem(
-        child: Text(daftarProvinsi[i]),
-        value: daftarProvinsi[i],
-        onTap: () {
-          // Simpan bobot yang sesuai saat opsi dipilih
-          setState(() {
-            newprovinsiTujuan = daftarProvinsi[i];
-            newprovinsiTujuanbobot = daftarprovinsibobot[i];
-          });
-        },
-      ));
-    }
-    return items;
-  }
+  List<int> daftarprovinsibobot = [70];
 
   List<String> daftarDurasi = [
-    '1 - 7 hari',
-    '8 - 30 hari',
-    '31 hari hingga 6 bulan',
-    'lebih dari 6 bulan'
+    '1 - 7 Days',
+    '8 - 30 Days',
+    '31 days to 6 months',
+    'more than 6 months'
   ];
 
   List<int> daftarDurasibobot = [0, 5, 10, 20];
@@ -211,19 +125,19 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
   }
 
   List<String> daftarTujuan = [
-    'Belajar di luar daerah',
-    'Backpaker',
-    'Perjalanan untuk pekerjaan',
-    'Mengunjungi teman dan kerabat',
-    'Liburan',
-    'Berpergian ke luar daerah',
+    'Studying outside the area',
+    'Backpacker',
+    'Travel for work',
+    'Visiting friends and relatives',
+    'Holiday',
+    'Traveling outside the area',
     'Safari',
-    'Kegiatan olahraga',
-    'Pelayaran'
-        'Kerja sukarela',
-    'Daerah pegunungan tinggi',
-    'Ziarah',
-    'lainnya'
+    'Sports activities',
+    'Cruising',
+    'Volunteering',
+    'Highland areas',
+    'Pilgrimage',
+    'others'
   ];
 
   List<int> daftarTujuanbobot = [5, 20, 5, 10, 0, 10, 5, 10, 20, 20, 5, 10, 5];
@@ -262,7 +176,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
-                    'Nama Kota Tujuan :',
+                    'Destination Country :',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -284,6 +198,108 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                     ],
                   ),
                   child: TextFormField(
+                    enabled: false,
+                    // controller: _kotaTujuan,
+                    keyboardType: TextInputType.name,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors
+                          .white, // Set the background color to light blue
+                      border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.transparent, width: 0),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                            color: Colors.transparent,
+                            width: 0), // Set border color
+                      ),
+                    ),
+                    onSaved: (value) {
+                      newkotaTujuan = value;
+                    },
+                    initialValue: widget.negaraTujuan,
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Destination State :',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: TextFormField(
+                    enabled: false,
+                    // controller: _kotaTujuan,
+                    keyboardType: TextInputType.name,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors
+                          .white, // Set the background color to light blue
+                      border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.transparent, width: 0),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                            color: Colors.transparent,
+                            width: 0), // Set border color
+                      ),
+                    ),
+                    onSaved: (value) {
+                      newkotaTujuan = value;
+                    },
+                    initialValue: widget.provinsiTujuan,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Destination City :',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: TextFormField(
+                    enabled: false,
                     // controller: _kotaTujuan,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
@@ -312,50 +328,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
-                    'Provinsi Tujuan :',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(right: 130),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: DropdownButton(
-                    borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: myColor,
-                    value: newprovinsiTujuan,
-                    items:
-                        generateProvinsi(daftarProvinsi, daftarprovinsibobot),
-                    onChanged: (item) {
-                      setState(() {
-                        newprovinsiTujuan = item;
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Tanggal Keberangkatan:',
+                    'Departure Date:',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -379,7 +352,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                   child: TextFormField(
                     controller: inputtgl,
                     decoration: InputDecoration(
-                      hintText: 'Piliha tanggal keberangkatan anda',
+                      hintText: 'Select your departure date',
                       suffixIcon: const Icon(Icons.event),
                       filled: true,
                       fillColor: Colors.white,
@@ -418,7 +391,7 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
-                    'Durasi Perjalanan :',
+                    'Travel Duration :',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -428,38 +401,41 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                 ),
                 const SizedBox(height: 5),
                 Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(right: 130),
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: DropdownButton(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: myColor,
-                    value: newdurasiTravel,
-                    items: generateDurasi(daftarDurasi, daftarDurasibobot),
-                    onChanged: (item) {
-                      setState(() {
-                        newdurasiTravel = item;
-                      });
-                    },
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      isExpanded: true,
+                      borderRadius: BorderRadius.circular(10),
+                      icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                      dropdownColor: myColor,
+                      value: newdurasiTravel,
+                      items: generateDurasi(daftarDurasi, daftarDurasibobot),
+                      onChanged: (item) {
+                        setState(() {
+                          newdurasiTravel = item;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 15),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: const Text(
-                    'Tujuan Perjalanan :',
+                    'purpose of travel :',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -469,31 +445,33 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                 ),
                 const SizedBox(height: 5),
                 Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10),
-                  margin: const EdgeInsets.only(right: 50),
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: DropdownButton(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    dropdownColor: myColor,
-                    value: newtujuanTravel,
-                    items: generateTujuan(daftarTujuan, daftarTujuanbobot),
-                    onChanged: (item) {
-                      setState(() {
-                        newtujuanTravel = item;
-                      });
-                    },
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      borderRadius: BorderRadius.circular(10),
+                      icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                      dropdownColor: myColor,
+                      value: newtujuanTravel,
+                      items: generateTujuan(daftarTujuan, daftarTujuanbobot),
+                      onChanged: (item) {
+                        setState(() {
+                          newtujuanTravel = item;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 80),
@@ -513,10 +491,12 @@ class _UpdateFormPerjalananState extends State<UpdateFormPerjalanan> {
                           updateTravelHistory(widget.id!);
                           addTravelScore();
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text(
-                                      'Data Form Perjalanan berhasil diubah')));
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content:
+                                Text('Travel Form Data successfully changed'),
+                            backgroundColor: Colors.green,
+                          ));
 
                           Navigator.pop(context, true);
                           //Navigator.pop(context, true);

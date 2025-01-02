@@ -6,8 +6,6 @@ import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/model/UserDataModel.dart';
 import 'package:travel_healthcare/model/user_model.dart';
 
-final String baseUrl = "http://10.0.2.2:5000/api";
-
 class UserDataController {
   final bool isEdit;
   final String apiUrl = '$baseUrlProd/medicals';
@@ -146,6 +144,73 @@ class UserDataController {
     } catch (e) {
       print('Error: $e');
       throw Exception('Error: $e');
+    }
+  }
+
+  Future<int?> getUserId() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+
+      final response = await http.get(
+        Uri.parse('$baseUrlProd/users/'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> userDataJson =
+            jsonDecode(response.body)['data'];
+        final UserModel currentUser = UserModel.fromJson(userDataJson);
+        return currentUser.id;
+      } else {
+        print('Response body: ${response.body}');
+        throw Exception('Failed to get user ID');
+      }
+    } catch (e) {
+      print('Error getting user ID: $e');
+      throw Exception('Error: $e');
+    }
+  }
+
+  Future<void> deleteUser() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+
+      if (token == null) {
+        throw Exception('Bearer token not found in SharedPreferences');
+      }
+
+      // Sesuaikan dengan endpoint yang benar
+      final response = await http.delete(
+        Uri.parse('$baseUrlProd/users'), // Hapus /api dari URL
+        headers: {
+          'Authorization': 'Bearer $token', // Bearer token wajib sesuai API
+          'Content-Type': 'application/json',
+        },
+      );
+
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      // Parse response body
+      final responseData = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && responseData['status'] == 'success') {
+        // Jika berhasil, hapus token
+        await prefs.remove('token');
+        print('User deleted successfully: ${responseData['message']}');
+      } else {
+        // Ambil pesan error dari response API
+        final errorMessage = responseData['message'] ?? 'Failed to delete user';
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error deleting user: $e');
     }
   }
 

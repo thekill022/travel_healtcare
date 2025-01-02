@@ -18,7 +18,7 @@ class HomeNavbarPage extends StatefulWidget {
 }
 
 class _HomeNavbarPageState extends State<HomeNavbarPage> {
-  final String apiUrl = '$baseUrlProd/symptoms/';
+  final String apiUrl = '$baseUrl/symptoms/';
   int currentPage = 0;
   bool isAuthenticated = false;
 
@@ -51,9 +51,12 @@ class _HomeNavbarPageState extends State<HomeNavbarPage> {
             isAuthenticated = true;
           });
           print('Bearer Token: $token'); // Print the bearer token
+
+          return;
         } else {
           // Jika token tidak valid, atau terdapat error lain, redirect ke halaman login
           _redirectToLogin();
+          return;
         }
       }
     } catch (e) {
@@ -67,7 +70,7 @@ class _HomeNavbarPageState extends State<HomeNavbarPage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => LoginPage(),
+        builder: (context) => const LoginPage(),
       ),
     );
   }
@@ -86,17 +89,25 @@ class _HomeNavbarPageState extends State<HomeNavbarPage> {
             appBar: Header(context, titleText: "Travel Healthcare"),
             body: pages[currentPage],
             bottomNavigationBar: NavigationBar(
+              labelBehavior: NavigationDestinationLabelBehavior
+                  .alwaysShow, // Selalu tampilkan label
               destinations: const [
                 NavigationDestination(
-                    icon: Icon(Iconsax.home), label: 'Beranda'),
+                  icon: Icon(Iconsax.home),
+                  label: 'Home',
+                ),
                 NavigationDestination(
-                    icon: Icon(Iconsax.shield_search),
-                    label: 'Pantau Penyakit'),
+                  icon: Icon(Iconsax.shield_search),
+                  label: 'monitor disease',
+                ),
                 NavigationDestination(
-                    icon: Icon(Iconsax.element_plus), label: 'Diagnosis'),
+                  icon: Icon(Iconsax.element_plus),
+                  label: 'Diagnosis',
+                ),
                 NavigationDestination(
-                    icon: Icon(Iconsax.clipboard_text),
-                    label: 'Perjalanan saya')
+                  icon: Icon(Iconsax.clipboard_text),
+                  label: 'My Travel',
+                ),
               ],
               onDestinationSelected: (int index) {
                 setState(() {

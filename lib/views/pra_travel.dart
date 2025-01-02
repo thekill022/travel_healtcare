@@ -47,7 +47,7 @@ class _PredictPageState extends State<PredictPage> {
             filterEndemicityList(query);
           },
           decoration: InputDecoration(
-            hintText: 'Cari provinsi tujuan anda',
+            hintText: 'Search your destination',
             prefixIcon: const Icon(Iconsax.search_normal),
             filled: true,
             fillColor: myColor,
@@ -72,7 +72,7 @@ class _PredictPageState extends State<PredictPage> {
               });
 
               return const Center(
-                child: Text('Anda belum login'),
+                child: Text('you are not logged in'),
               );
             } else {
               filteredEndemicityList = snapshot.data ?? [];
@@ -111,7 +111,7 @@ class _PredictPageState extends State<PredictPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const FormPerjalanan()),
+            MaterialPageRoute(builder: (context) => FormPerjalanan()),
           );
         },
         style: ElevatedButton.styleFrom(
@@ -122,7 +122,7 @@ class _PredictPageState extends State<PredictPage> {
           children: [
             Icon(Iconsax.add_square),
             SizedBox(width: 5), // Add some spacing between icon and text
-            Text('Tambah data perjalanan'),
+            Text('Add travel data'),
           ],
         ),
       ),

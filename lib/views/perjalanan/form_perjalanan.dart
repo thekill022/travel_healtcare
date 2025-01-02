@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_healthcare/components/header_sub.dart';
 import 'package:travel_healthcare/controller/travelhistory_controller.dart';
 import 'package:travel_healthcare/controller/travelscore_controller.dart';
+import 'package:travel_healthcare/model/getCitiesData_model.dart';
+import 'package:travel_healthcare/model/getCountryData_model.dart';
+import 'package:travel_healthcare/model/getProvinceData_model.dart';
 import 'package:travel_healthcare/model/travelhistory_model.dart';
 import 'package:travel_healthcare/model/travelscore_model.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class FormPerjalanan extends StatefulWidget {
   const FormPerjalanan({super.key});
@@ -24,6 +31,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
   final travelhistoryCtrl = TravelHistoryController();
   TravelScoreController travelScoreController = TravelScoreController();
 
+  String? negaraTujuan;
   String? kotaTujuan;
   String? provinsiTujuan;
   String? formattgl;
@@ -35,19 +43,17 @@ class _FormPerjalananState extends State<FormPerjalanan> {
   int? tujuanTravelbobot;
 
   Future<void> addTravelHistory() async {
-    if (kotaTujuan == null ||
-        provinsiTujuan == null ||
-        durasiTravel == null ||
-        tujuanTravel == null) {
+    if (negaraTujuan == null) {
       // Handle empty data case
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Lengkapi semua data sebelum menyimpan')));
+          content: Text('Destination country must be selected')));
       return;
     }
 
     TravelHistoryModel travelHistoryModel = TravelHistoryModel(
-      kotaTujuan: kotaTujuan!,
-      provinsiTujuan: provinsiTujuan!,
+      negaraTujuan: negaraTujuan!,
+      kotaTujuan: (kotaTujuan) ?? "Not Found",
+      provinsiTujuan: (provinsiTujuan) ?? "",
       formattgl: formattgl!,
       durasiTravel: durasiTravel!,
       tujuanTravel: tujuanTravel!,
@@ -63,13 +69,12 @@ class _FormPerjalananState extends State<FormPerjalanan> {
 
   Future<void> addTravelScore() async {
     if (_formKey.currentState?.validate() ?? false) {
-      if (kotaTujuan == null ||
-          provinsiTujuan == null ||
+      if (negaraTujuan == null ||
           durasiTravel == null ||
           tujuanTravel == null) {
         // Handle empty data case
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Lengkapi semua data sebelum menyimpan')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Complete all data before saving')));
         return;
       }
 
@@ -81,112 +86,93 @@ class _FormPerjalananState extends State<FormPerjalanan> {
       );
       await travelScoreController.createTravelScore(travelScoreModel);
 
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Data Form Perjalanan berhasil disimpan')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Travel Form Data successfully saved')));
 
       Navigator.pop(context, true);
     }
     return;
   }
 
-  List<String> daftarProvinsi = [
-    'Aceh',
-    'Sumatera Utara',
-    'Sumatera Barat',
-    'Riau',
-    'Kepulauan Riau',
-    'Jambi',
-    'Sumatera Selatan',
-    'Bengkulu',
-    'Lampung',
-    'Bangka Belitung',
-    'DKI Jakarta',
-    'Jawa Barat',
-    'Banten',
-    'Jawa Tengah',
-    'DI Yogyakarta',
-    'Jawa Timur',
-    'Bali',
-    'Nusa Tenggara Barat',
-    'Nusa Tenggara Timur',
-    'Kalimantan Barat',
-    'Kalimantan Tengah',
-    'Kalimantan Selatan',
-    'Kalimantan Timur',
-    'Kalimantan Utara',
-    'Gorontalo',
-    'Sulawesi Barat',
-    'Sulawesi Utara',
-    'Sulawesi Tengah',
-    'Sulawesi Selatan',
-    'Sulawesi Tenggara',
-    'Maluku',
-    'Maluku Utara',
-    'Papua Barat',
-    'Papua',
-  ];
+  List<int> daftarprovinsibobot = [70];
 
-  List<int> daftarprovinsibobot = [
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-    70,
-  ];
-
-  List<DropdownMenuItem> generateProvinsi(
-      List<String> daftarProvinsi, List<int> daftarprovinsibobot) {
-    List<DropdownMenuItem> items = [];
-    for (var i = 0; i < daftarProvinsi.length; i++) {
-      items.add(DropdownMenuItem(
-        child: Text(daftarProvinsi[i]),
-        value: daftarProvinsi[i],
-        onTap: () {
-          // Simpan bobot yang sesuai saat opsi dipilih
-          setState(() {
-            provinsiTujuan = daftarProvinsi[i];
-            provinsiTujuanbobot = daftarprovinsibobot[i];
+  Future<List<Country>> getDataCountry() async {
+    try {
+      final response = await http.get(
+          Uri.parse("https://api.countrystatecity.in/v1/countries"),
+          headers: {
+            "X-CSCAPI-KEY":
+                "UXlSNVBtQWNxWlBEaTJwd215Y3dGTGIzWUJHaDRlZGZvWTA2TTVrZQ=="
           });
-        },
-      ));
+      final bodyRes = json.decode(response.body) as List;
+
+      if (response.statusCode == 200) {
+        return bodyRes.map((e) {
+          final map = e as Map<String, dynamic>;
+
+          return Country(name: map['name'], iso2: map['iso2']);
+        }).toList();
+      }
+    } on SocketException {
+      throw Exception("No Internet");
     }
-    return items;
+    throw Exception("Error While Fetching Data");
+  }
+
+  Future<List<States>> getDataStates(String? iso2) async {
+    try {
+      final response = await http.get(
+          Uri.parse(
+              "https://api.countrystatecity.in/v1/countries/$iso2/states"),
+          headers: {
+            "X-CSCAPI-KEY":
+                "UXlSNVBtQWNxWlBEaTJwd215Y3dGTGIzWUJHaDRlZGZvWTA2TTVrZQ=="
+          });
+      final bodyRes = json.decode(response.body) as List;
+
+      if (response.statusCode == 200) {
+        return bodyRes.map((e) {
+          final map = e as Map<String, dynamic>;
+
+          return States(name: map['name'], iso2: map['iso2']);
+        }).toList();
+      }
+    } on SocketException {
+      throw Exception("No Internet");
+    }
+    throw Exception("Error While Fetching Data");
+  }
+
+  Future<List<Cities>> getDataCities(
+      String? iso2Country, String? iso2State) async {
+    try {
+      final response = await http.get(
+          Uri.parse(
+              "https://api.countrystatecity.in/v1/countries/$iso2Country/states/$iso2State/cities"),
+          headers: {
+            "X-CSCAPI-KEY":
+                "UXlSNVBtQWNxWlBEaTJwd215Y3dGTGIzWUJHaDRlZGZvWTA2TTVrZQ=="
+          });
+      final bodyRes = json.decode(response.body) as List;
+
+      if (response.statusCode == 200) {
+        return bodyRes.map((e) {
+          final map = e as Map<String, dynamic>;
+
+          return Cities(name: map['name']);
+        }).toList();
+      }
+    } on SocketException {
+      throw Exception("No Internet");
+    }
+    throw Exception("Error While Fetching Data");
   }
 
   List<String> daftarDurasi = [
-    '1 - 7 hari',
-    '8 - 30 hari',
-    '31 hari hingga 6 bulan',
-    'lebih dari 6 bulan'
+    '1 - 7 Days',
+    '8 - 30 Days',
+    '31 days to 6 months',
+    'more than 6 months'
   ];
   List<int> daftarDurasibobot = [0, 5, 10, 20];
 
@@ -210,19 +196,19 @@ class _FormPerjalananState extends State<FormPerjalanan> {
   }
 
   List<String> daftarTujuan = [
-    'Belajar di luar daerah',
-    'Backpaker',
-    'Perjalanan untuk pekerjaan',
-    'Mengunjungi teman dan kerabat',
-    'Liburan',
-    'Berpergian ke luar daerah',
+    'Studying outside the area',
+    'Backpacker',
+    'Travel for work',
+    'Visiting friends and relatives',
+    'Holiday',
+    'Traveling outside the area',
     'Safari',
-    'Kegiatan olahraga',
-    'Pelayaran',
-    'Kerja sukarela',
-    'Daerah pegunungan tinggi',
-    'Ziarah',
-    'lainnya'
+    'Sports activities',
+    'Cruising',
+    'Volunteering',
+    'Highland areas',
+    'Pilgrimage',
+    'others'
   ];
 
   List<int> daftarTujuanbobot = [5, 20, 5, 10, 0, 10, 5, 10, 20, 20, 5, 10, 5];
@@ -246,10 +232,12 @@ class _FormPerjalananState extends State<FormPerjalanan> {
     return items;
   }
 
+  var selectedCountry, selectedState, selectedCities, isoCountry, isoState;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderSub(context, titleText: 'Form Perjalanan'),
+      appBar: HeaderSub(context, titleText: 'Travel Form'),
       backgroundColor: myColor,
       body: SafeArea(
         child: Form(
@@ -262,7 +250,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                   Container(
                     alignment: Alignment.centerLeft,
                     child: const Text(
-                      'Nama Kota Tujuan :',
+                      'Select Country :',
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -272,8 +260,9 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                   ),
                   const SizedBox(height: 5),
                   Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.5),
@@ -282,79 +271,50 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                           offset: Offset(0, 3),
                         ),
                       ],
-                    ),
-                    child: TextFormField(
-                      controller: _kotaTujuan,
-                      keyboardType: TextInputType.name,
-                      decoration: InputDecoration(
-                        hintText: 'Masukkan kota tujuan anda',
-                        filled: true,
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide:
-                              BorderSide(color: Colors.transparent, width: 0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide:
-                              BorderSide(color: Colors.transparent, width: 0),
-                        ),
-                      ),
-                      onSaved: (value) {
-                        kotaTujuan = value;
-                      },
-                      validator: validateKota,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      'Provinsi Tujuan :',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 10),
-                    margin: const EdgeInsets.only(right: 130),
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: DropdownButton(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                      dropdownColor: myColor,
-                      hint: const Text('pilih provinsi tujuan'),
-                      value: provinsiTujuan,
-                      items:
-                          generateProvinsi(daftarProvinsi, daftarprovinsibobot),
-                      onChanged: (item) {
-                        setState(() {
-                          provinsiTujuan = item;
-                        });
-                      },
                     ),
+                    child: FutureBuilder<List<Country>>(
+                        future: getDataCountry(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                  isExpanded: true,
+                                  hint: Text(
+                                      validateCountry(negaraTujuan) ?? 'null'),
+                                  value: selectedCountry,
+                                  items: snapshot.data!.map((e) {
+                                    return DropdownMenuItem(
+                                      value: e.iso2.toString(),
+                                      child: Text(e.name.toString()),
+                                      onTap: () {
+                                        isoCountry = e.iso2;
+                                        negaraTujuan = e.name;
+                                        selectedState = null;
+                                        selectedCities = null;
+                                        provinsiTujuan = null;
+                                        kotaTujuan = null;
+                                        setState(() {});
+                                      },
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    selectedCountry = value;
+                                    print(isoCountry);
+                                    setState(() {});
+                                  }),
+                            );
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        }),
                   ),
                   const SizedBox(height: 15),
                   Container(
                     alignment: Alignment.centerLeft,
                     child: const Text(
-                      'Tanggal Keberangkatan:',
+                      'Select State :',
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -364,8 +324,9 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                   ),
                   const SizedBox(height: 5),
                   Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.5),
@@ -374,11 +335,140 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                           offset: Offset(0, 3),
                         ),
                       ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: FutureBuilder<List<States>>(
+                      future: getDataStates(isoCountry),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              isExpanded: true,
+                              hint: Text("Select State (Optional)"),
+                              value: selectedState,
+                              items: snapshot.data!.map((e) {
+                                return DropdownMenuItem(
+                                  value: e.iso2.toString(),
+                                  child: Text(e.name.toString()),
+                                  onTap: () {
+                                    isoState = e.iso2;
+                                    provinsiTujuan = e.name;
+                                    kotaTujuan = null;
+                                    setState(() {});
+                                  },
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                selectedState = value;
+                                selectedCities = null;
+                                setState(() {});
+                              },
+                            ),
+                          );
+                        } else {
+                          return DropdownMenuItem(
+                            child: Text("Select Country First"),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      'Select Cities :',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: FutureBuilder<List<Cities>>(
+                      future: getDataCities(isoCountry, isoState),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData &&
+                            isoCountry != null &&
+                            isoState != null) {
+                          return DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              isExpanded: true,
+                              hint: Text("Select City (Optional)"),
+                              value: selectedCities,
+                              items: snapshot.data!.map((e) {
+                                return DropdownMenuItem(
+                                  value: e.name.toString(),
+                                  child: Text(e.name.toString()),
+                                  onTap: () {
+                                    kotaTujuan = e.name.toString();
+                                    setState(() {});
+                                  },
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                selectedCities = value;
+                                setState(() {});
+                              },
+                            ),
+                          );
+                        } else {
+                          return DropdownMenuItem(
+                            child: Text("Select State First"),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      'departure date :',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: TextFormField(
                       controller: inputtgl,
                       decoration: InputDecoration(
-                        hintText: 'Pilih tanggal keberangkatan anda',
+                        hintText: 'select your departure date',
                         suffixIcon: const Icon(Icons.event),
                         filled: true,
                         fillColor: Colors.white,
@@ -418,7 +508,7 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                   Container(
                     alignment: Alignment.centerLeft,
                     child: const Text(
-                      'Durasi Perjalanan :',
+                      'travel duration :',
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -428,39 +518,41 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                   ),
                   const SizedBox(height: 5),
                   Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 10),
-                    margin: const EdgeInsets.only(right: 130),
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: DropdownButton(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                      dropdownColor: myColor,
-                      hint: const Text('pilih durasi travel'),
-                      value: durasiTravel,
-                      items: generateDurasi(daftarDurasi, daftarDurasibobot),
-                      onChanged: (item) {
-                        setState(() {
-                          durasiTravel = item;
-                        });
-                      },
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        borderRadius: BorderRadius.circular(10),
+                        icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                        dropdownColor: myColor,
+                        hint: const Text('Select Travel Duration'),
+                        value: durasiTravel,
+                        items: generateDurasi(daftarDurasi, daftarDurasibobot),
+                        onChanged: (item) {
+                          setState(() {
+                            durasiTravel = item;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   const SizedBox(height: 15),
                   Container(
                     alignment: Alignment.centerLeft,
                     child: const Text(
-                      'Tujuan Perjalanan :',
+                      'purpose of travel :',
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -470,32 +562,34 @@ class _FormPerjalananState extends State<FormPerjalanan> {
                   ),
                   const SizedBox(height: 5),
                   Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 10),
-                    margin: const EdgeInsets.only(right: 50),
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: DropdownButton(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                      dropdownColor: myColor,
-                      hint: const Text('pilih tujuan perjalanan'),
-                      value: tujuanTravel,
-                      items: generateTujuan(daftarTujuan, daftarTujuanbobot),
-                      onChanged: (item) {
-                        setState(() {
-                          tujuanTravel = item;
-                        });
-                      },
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        borderRadius: BorderRadius.circular(10),
+                        icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                        dropdownColor: myColor,
+                        hint: const Text('Select Purpose'),
+                        value: tujuanTravel,
+                        items: generateTujuan(daftarTujuan, daftarTujuanbobot),
+                        onChanged: (item) {
+                          setState(() {
+                            tujuanTravel = item;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   const SizedBox(height: 80),
@@ -514,12 +608,16 @@ class _FormPerjalananState extends State<FormPerjalanan> {
 
                             addTravelHistory();
                             addTravelScore();
-
-                            //Navigator.pop(context, true);
-                            // Navigator.pop(context, true);
+                            var snackBar = const SnackBar(
+                              content: Text('Data Added Successfully'),
+                              backgroundColor: Colors.green,
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                            Navigator.pop(context);
                           }
                         },
-                        child: const Text("Simpan"),
+                        child: const Text("Save"),
                       ),
                     ],
                   ),
@@ -533,16 +631,16 @@ class _FormPerjalananState extends State<FormPerjalanan> {
   }
 }
 
-String? validateKota(String? value) {
-  if (value == null || value.isEmpty) {
-    return "Masukan Kota tujuan anda!";
+String? validateCountry(String? value) {
+  if (value == null || value == "null") {
+    return "must choose one country";
   }
   return null;
 }
 
 String? validateTanggal(String? value) {
   if (value == null || value.isEmpty) {
-    return "Tolong masukan tanggal ";
+    return "Please enter the date";
   }
   return null;
 }

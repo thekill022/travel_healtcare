@@ -64,7 +64,7 @@ class _DetailDiagnoseState extends State<DetailDiagnose> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: HeaderSub(context, titleText: 'Detail Penyakit'),
+        appBar: HeaderSub(context, titleText: 'Disease Details'),
         body: disease == null
             ? Center(child: CircularProgressIndicator())
             : SafeArea(
@@ -128,7 +128,7 @@ class _DetailDiagnoseState extends State<DetailDiagnose> {
                 Navigator.pop(context, true);
                 Navigator.pop(context, true);
               },
-              child: const Text("Selesai"),
+              child: const Text("Finished"),
             ),
           ),
         ));

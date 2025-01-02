@@ -41,7 +41,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
       try {
         final http.Response response = await http.post(
-          Uri.parse('$baseUrlProd/users/register'),
+          Uri.parse(
+              '$baseUrl/users/register'), // Endpoint API Go untuk register
           headers: {'Content-Type': 'application/json'},
           body: json.encode(data),
         );
@@ -49,24 +50,13 @@ class _RegisterPageState extends State<RegisterPage> {
         if (response.statusCode == 201) {
           // Registrasi berhasil
           print('Registrasi berhasil');
-          // Tambahkan logika atau navigasi tambahan setelah registrasi berhasil
           Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) {
               return LoginPage();
             },
           ));
-        } else if (response.statusCode == 400) {
-          // Registrasi gagal karena email sudah terdaftar
-          print('Registrasi gagal: Email sudah terdaftar');
-          // Show SnackBar with an error message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Email sudah terdaftar. Gunakan email lain.'),
-              backgroundColor: Colors.red,
-            ),
-          );
         } else {
-          // Registrasi gagal dengan kode status lain
+          // Registrasi gagal
           print('Registrasi gagal: ${response.statusCode}');
           print('Response body: ${response.body}');
           ScaffoldMessenger.of(context).showSnackBar(
@@ -75,15 +65,9 @@ class _RegisterPageState extends State<RegisterPage> {
               backgroundColor: Colors.red,
             ),
           );
-          Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) {
-              return RegisterPage();
-            },
-          ));
-          // Handle error atau tampilkan pesan kesalahan yang sesuai
         }
       } catch (e) {
-        // Handle exception yang terjadi selama permintaan HTTP
+        // Handle exception
         print('Error selama registrasi: $e');
       }
     }

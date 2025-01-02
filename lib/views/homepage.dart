@@ -18,22 +18,18 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                child: KontenSection(context, imgUrl: "images/konten.png"),
-              ),
               const SizedBox(height: 5),
               Container(
                 padding: const EdgeInsets.only(top: 10, left: 10),
                 child: const Text(
-                  " Selamat Datang di \n Travel Healthcare",
+                  " Welcome to \n Travel Healthcare",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
                 padding: const EdgeInsets.only(left: 10, right: 20),
                 child: const Text(
-                  "Aplikasi Travel Healthcare menyediakan fitur pra dan post travel yang informatif. Pengguna dapat memilih provinsi di Indonesia dan mendapatkan informasi tentang lima penyakit kesehatan khas setiap provinsi.",
+                  "The Travel Healthcare application provides informative pre- and post-travel features. Users can select a country,province and cities and get information about five health diseases typical of each province.",
                   style: TextStyle(
                       fontSize: 14, color: Color.fromARGB(255, 78, 76, 76)),
                   textAlign: TextAlign.justify,
